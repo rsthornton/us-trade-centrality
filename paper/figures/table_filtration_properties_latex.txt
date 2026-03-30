@@ -1,0 +1,17 @@
+\begin{table}[ht]
+  \centering
+  \caption{Network Properties Before and After 33\% Graph Filtration (51$\times$51 Domestic Network). Filtration removes edges below the 33rd percentile (\$298M threshold), the maximum level before network fragmentation.}
+  \label{tab:filtration_properties}
+  \begin{tabular}{lcc}
+  \hline
+  \textbf{Property} & \textbf{Full Network} & \textbf{Filtered (33\%)} \\
+  \hline
+  Nodes & 51 & 51 \\
+  Edges & 2,534 & 1,698 \\
+  Density & 0.994 & 0.666 \\
+  Diameter & 2 & 3 \\
+  Avg.\ Path Length & 1.006 & 1.338 \\
+  Reciprocity & 0.994 & 0.898 \\
+  \hline
+  \end{tabular}
+\end{table}

@@ -1,0 +1,15 @@
+\begin{table}[H]
+\centering
+\caption{Centrality Rank Stability Under Graph Filtration (51×51 Network). With proper weight semantics (weight inversion applied), all centrality measures remain perfectly stable under 30\% filtration.}
+\label{tab:filtration_sensitivity}
+\begin{tabular}{lccc}
+\hline
+\textbf{Centrality Measure} & \textbf{Spearman $\rho$} & \textbf{Top-5 Stability} & \textbf{States Changed} \\
+                             & \textbf{(Full vs. 30th \%ile)} & & \\
+\hline
+Betweenness   &  1.000  & 100\% &  0/51 (0\%) \\
+Eigenvector   &  1.000  & 100\% &  0/51 (0\%) \\
+Out-Degree    &  1.000  & 100\% &  0/51 (0\%) \\
+\hline
+\end{tabular}
+\end{table}

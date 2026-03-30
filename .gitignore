@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+dist/
+build/
+*.so
+.eggs/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Data (large files — use scripts/download_data.sh)
+data/cfs_2017_puf.csv
+data/FAF5*.csv
+
+# Pipeline regenerable outputs
+results/viz_all_output/
+
+# LaTeX build artifacts
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.bbl
+paper/*.blg
+paper/*.fdb_latexmk
+paper/*.fls
+paper/*.synctex.gz
+paper/*.toc
+paper/*.lof
+paper/*.lot
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Claude Code (private development overlay)
+CLAUDE.md
+.claude/
+
+# Environment
+.env
+*.env

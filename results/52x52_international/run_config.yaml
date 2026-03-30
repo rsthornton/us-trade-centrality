@@ -1,0 +1,58 @@
+data:
+  source: cfs
+  source_file: data/cfs_2017_puf.csv
+  faf_path: data/FAF5.7.1_State.csv
+  sample_size: null
+  year: 2017
+filters:
+  modes:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  sctg2:
+  - '15'
+  - '16'
+  - '17'
+network:
+  interstate_only: true
+  include_international: true
+  weight_column: weighted_value
+centrality:
+  measures:
+  - betweenness
+  - eigenvector
+  - out_degree
+validation:
+  check_components: true
+  check_strongly_connected: true
+  verify_normalization: true
+output:
+  results_dir: results
+  formats:
+  - csv
+  - json
+  - xlsx
+  verbose: true
+visualizations:
+  generate: true
+  formats:
+  - png
+  - html
+  commodity_name: ''
+  include_structure_analysis: true
+  include_sectoral_analysis: true
+  run_full_sectoral_analysis: false
+analysis:
+  comparative:
+    enabled: true
+    use_cached_counterpart: true
+    top_k:
+    - 5
+    - 10
+    - 20
+    measures:
+    - betweenness
+    - eigenvector
+    - out_degree

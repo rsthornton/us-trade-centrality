@@ -1,0 +1,985 @@
+\documentclass[12pt,oneside]{book}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage[numbers,square]{natbib}
+\usepackage{longtable}
+\usepackage{url}
+\usepackage[breaklinks=true]{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usetikzlibrary{positioning, arrows.meta, shapes}
+
+% Black hyperlinks (Binghamton requirement)
+\hypersetup{colorlinks=true, linkcolor=black, citecolor=black, urlcolor=black}
+
+% Chapter heading: 2-inch top margin (0.75in vspace + 1in top margin = ~2in)
+\makeatletter
+\renewcommand*\@makechapterhead[1]{%
+  \vspace*{0.75in}%
+  {\parindent \z@ \raggedright \normalfont
+    \begin{center}
+    \ifnum \c@secnumdepth >\m@ne
+      \if@mainmatter
+        \huge\bfseries \thechapter.\space
+      \fi
+    \fi
+    \interlinepenalty\@M
+    \Huge \bfseries #1\par\nobreak
+    \vskip 40\p@
+    \end{center}
+}}
+\renewcommand*\@makeschapterhead[1]{%
+  \vspace*{0.75in}%
+  {\parindent \z@ \raggedright
+    \normalfont
+    \interlinepenalty\@M
+    \Huge \bfseries \begin{center}#1\end{center}\par\nobreak
+    \vskip 40\p@
+}}
+\makeatother
+
+\pagestyle{plain}
+
+\begin{document}
+
+%% ============================================================
+%% FRONT MATTER
+%% ============================================================
+\frontmatter
+
+%% --- Title Page (no page number) ---
+\thispagestyle{empty}
+\vbox to 1truein{}
+
+\begin{center}
+\begin{doublespace}
+\MakeUppercase{Testing Network Centrality for Economic Power Measurement: Structure and Boundaries in U.S. Interstate Trade}
+\end{doublespace}
+\end{center}
+
+\vskip 200pt
+
+\centerline{BY}
+\vskip 10pt
+\centerline{Shingai Thornton}
+\vskip 10pt
+% TODO: Add prior degrees (e.g., BA, University Name, Year)
+\centerline{[Prior Degree, Institution, Year]}
+\vskip 10pt
+
+\vskip 180pt
+
+\centerline{THESIS}
+\vskip 10pt
+\centerline{Submitted in partial fulfillment of the requirements for}
+\centerline{the degree of Master of Science in Systems Science}
+\centerline{in the Graduate School of}
+\centerline{Binghamton University}
+\centerline{State University of New York}
+\centerline{2026}
+
+%% --- Copyright Page (no page number) ---
+\newpage
+\thispagestyle{empty}
+\vbox to 9.0truein{}
+\centerline{\copyright\ Copyright by Shingai Thornton 2026}
+\centerline{All Rights Reserved}
+
+%% --- Committee Page (numbered iii) ---
+\newpage
+\setcounter{page}{3}
+
+{\baselineskip = 10pt
+
+\vbox to 2.0truein{}
+
+\vskip 270pt
+
+\centerline{Accepted in partial fulfillment of the requirements for}
+\centerline{the degree of Master of Science in Systems Science}
+\centerline{in the Graduate School of}
+\centerline{Binghamton University}
+\centerline{State University of New York}
+\centerline{2026}
+
+\
+
+% TODO: Confirm defense date
+\centerline{[Defense Date]}
+
+\
+
+% TODO: Confirm committee member names and roles
+\centerline{Clifford Joslyn, Ph.D., Chair and Advisor}
+\centerline{Department of Systems Science and Industrial Engineering, Binghamton University}
+
+\
+
+\centerline{Hiroki Sayama, Ph.D., Member}
+\centerline{Department of Systems Science and Industrial Engineering, Binghamton University}
+
+\
+
+\centerline{Carlos Gershenson, Ph.D., Outside Examiner}
+\centerline{Department of [TBD], [Institution TBD]}
+}
+
+%% --- Abstract ---
+\chapter*{\centering{Abstract}}
+\addcontentsline{toc}{chapter}{Abstract}
+\begin{doublespace}
+
+We test network centrality as an approach to measure structural power held by states in the context of the U.S. Federalist system. Using three centrality measures (betweenness, eigenvector, and out-degree) we analyze the 51-node domestic and 52-node international U.S. interstate commodity trade networks. All three measures demonstrate perfect rank stability under graph filtration, validating the framework for dense networks when proper weight semantics are applied. We find that $\sim$40\% of states diverge by five or more rank positions between GDP and network centrality, suggesting structural position captures dimensions of interstate importance that aggregate output measures miss. Additionally, we find that international boundary specification produces substantial effects: betweenness shows high sensitivity ($\rho = 0.816$) when international flows are added, while eigenvector ($\rho = 0.982$) and out-degree ($\rho = 0.994$) remain stable. We conclude with a discussion and the identification of promising future research opportunities for developing broader measures of structural state power based on the limitations of this research that was focused narrowly on commodity trade networks.
+
+\end{doublespace}
+
+%% --- Dedication (optional) ---
+\chapter*{\centering{Dedication}}
+\addcontentsline{toc}{chapter}{Dedication}
+\begin{doublespace}
+% TODO: Add dedication text (or remove this page)
+\centerline{[Dedication placeholder]}
+\end{doublespace}
+
+%% --- Acknowledgements ---
+\chapter*{\centering{Acknowledgements}}
+\addcontentsline{toc}{chapter}{Acknowledgements}
+\begin{doublespace}
+% TODO: Write acknowledgements
+[Acknowledgements placeholder --- thank advisor, committee, family, funding sources, etc.]
+\end{doublespace}
+
+%% --- AI Usage Statement (mandatory per Binghamton Graduate School) ---
+\chapter*{\centering{AI Usage Statement}}
+\addcontentsline{toc}{chapter}{AI Usage Statement}
+\begin{doublespace}
+% TODO: Write AI usage statement describing how AI tools were used in research/writing
+[AI Usage Statement placeholder --- describe use of Claude, ChatGPT, or other AI tools in research, analysis, and/or writing.]
+\end{doublespace}
+
+%% --- Table of Contents ---
+\tableofcontents
+
+%% --- List of Tables ---
+\clearpage
+\addcontentsline{toc}{chapter}{\listtablename}
+\listoftables
+
+%% --- List of Figures ---
+\clearpage
+\addcontentsline{toc}{chapter}{\listfigurename}
+\listoffigures
+
+%% ============================================================
+%% MAIN MATTER
+%% ============================================================
+\mainmatter
+\doublespacing
+
+\chapter{Introduction}
+
+Policymakers and the public usually evaluate a state's economic well-being using statistical aggregates: unemployment rates, inflation, stock indices, and above all, Gross Domestic Product (GDP). The Federal Reserve calls GDP ``central to our understanding of the economy \cite{wolla_gdp_nodate}'' and ``one of the most important economic data available \cite{fagan_what_nodate}.'' While statistical indicators like GDP have supported society's quantitative reasoning about economic phenomena, they provide an incomplete picture. GDP was developed by Simon Kuznets during the Great Depression to provide policymakers with a basic statistical measure of total economic output at a time when there were no broadly accessible and useful comprehensive data sets on national economic activity. But Kuznets, speaking to the U.S.\ Congress explicitly warned: ``The welfare of a nation can, therefore, scarcely be inferred from a measurement of national income \cite{kuznets_national_1934}.''
+
+The reason why national income measures like GDP cannot be used to infer the welfare of a nation was identified by Warren Weaver in his 1948 foundational essay on complexity science. Weaver explained that statistical aggregates cannot effectively describe the sort of ``organized complexity'' that characterizes systems where the structure of interactions between components determines behavior \cite{weaver_science_1948}. Friedrich Hayek echoed this in his 1974 Nobel Prize lecture, emphasizing that we cannot replace information about relations between components with statistical summaries \cite{hayek_pretense_1974}. 
+
+One important concept that is directly associated with a nation's welfare but cannot be measured by statistical aggregates like GDP is power, a concept that is inherently concerned with relations between components, but difficult to formally define in the context of the social sciences. Nobel Laureate Angus Deaton recently lamented the fact that professional economists have largely failed to analyze ``the importance of power in setting prices and wages, in choosing the direction of technical change, and in influencing politics to change the rules of the game.'' Deaton concludes that ``without an analysis of power, it is hard to understand inequality or much else in modern capitalism \cite{deaton_rethinking_2024}.'' This avoidance of direct power analysis by economists results in a significant methodological and measurement gap: when analyzing interstate competition (as in the competitive federalism literature), economists employ abstract game-theoretical models rather than measuring state power directly \cite{weingast_economic_1995}. 
+
+In this study, we operationalize ``power'' as \textit{structural position within commodity trade networks} measured through network centrality rather than resource endowments, aggregate production, or institutional capacity. This approach follows Jang \& Yang's network power framework, which argues that a state's influence derives from its position within relational networks rather than aggregate output measures alone \cite{jang_measuring_2023, jang_network_2020}. We model U.S. interstate commerce as a network where nodes represent the 50 U.S. states plus the District of Columbia, and edges represent commodity trade flows between them.\footnote{Throughout this paper, ``state'' refers to U.S. states as subnational political units within the federal system, not nation-states. Jang \& Yang measure nation-state power in international trade; we adapt their framework to measure U.S. state power in interstate commerce.} We analyze at the state level because the Commodity Flow Survey provides comprehensive interstate trade data at this granularity, and because states constitute the primary unit of analysis in the competitive federalism literature that we seek to inform. The CFS tracks physical commodity shipments classified by Standard Classification of Transported Goods (SCTG) codes, encompassing both raw materials and manufactured goods but excluding services; this scope reflects data availability, not a claim that commodity flows alone determine state power. 
+
+Graph theory and network science offer well-established tools and methods for performing the sort of systemic and relational analysis required to study state power. Specifically, by casting a system as a set of nodes and edges, in our case states as nodes and trade flows as edges, network centrality measures can directly quantify power through structural position and relational ties among components in a system. While network approaches have been applied successfully to economic data for decades, they have not yet been widely adopted by economists, and the insights of network science haven't been translated into broad and accessible metrics for policy makers and the general public. The Federal Reserve publicly tracks dozens of indicators, all statistical aggregates; none of them derived from network models or capturing relational structure. 
+
+This study explores whether network centrality measures can capture structural economic power in U.S. interstate trade, revealing patterns invisible to aggregates such as GDP. Comprehensive measures of state power will require the integration of datasets and measures in multiple economic, political, and social domains. Our analysis demonstrates the approach's validity in one important domain and establishes a framework for future cross-domain integration.
+
+\section*{Operationalizing State Power With Network Centrality Measures}
+
+Our analysis employs a three-level centrality framework adapted from Jang \& Yang \cite{jang_measuring_2023} that captures distinct forms of structural and relational power. These levels correspond to different scopes of network analysis: macro-level examines a node's role in the overall network structure, meso-level examines connections to important neighbors, and micro-level examines direct output capacity (Figure~\ref{fig:centrality_framework} illustrates this framework). 
+
+\textbf{Betweenness centrality} identifies which states occupy bridging positions at the macro-level of the network. It reveals \textbf{which states connect otherwise disconnected regions}, a form of structural importance that is independent of direct trade volume. 
+
+\textbf{Eigenvector centrality} measures meso-level influence by evaluating a node's connections to other important nodes. It assesses \textbf{network influence gained through high-value partnerships}, representing relational power derived from connectivity with economic powerhouses.
+
+\textbf{Weighted out-degree centrality} quantifies direct distribution capacity at the micro-level of individual nodes. It measures \textbf{total volumetric output from a state to all destinations}, representing aggregate flow capacity.
+
+A state can have power at one level while lacking power at another. For example, it may possess high betweenness (bridging disconnected regions) but low out-degree (limited distribution capacity). By measuring power across multiple structural dimensions, network analysis helps reveal how economic influence operates through position, not just size. This sort of multidimensional analysis helps avoid the reductionism of statistical indicators which aggregate over individual components and do not directly capture relational information.
+
+Our analysis addresses two core questions:
+
+\begin{enumerate}
+    \item[\textbf{RQ1:}] Can the three-level centrality framework developed by Jang \& Yang \cite{jang_network_2020, jang_measuring_2023} which measures bridging position (betweenness), influence through important connections (eigenvector), and direct distribution capacity (out-degree) reveal useful structural patterns when applied to U.S. interstate commodity trade networks?
+
+    \item[\textbf{RQ2:}] Do we obtain different results when we treat the U.S. economy as a closed and isolated system versus an open one dependent on international trade flows?
+\end{enumerate} 
+
+The remainder of this paper proceeds as follows. Section 2 reviews the relevant literature on network science in economics and interstate competition. Section 3 describes our data sources and network construction methodology, including the mathematical definitions of each centrality measure. Section 4 presents our results: network properties, filtration analysis for measure validation, domestic centrality rankings, and boundary sensitivity when international trade is included. Section 5 discusses implications and limitations. Section 6 identifies directions for future work. Section 7 concludes.
+
+Our core finding is that structural position captures dimensions of interstate importance that are invisible to aggregate output measures: 40\% of states diverge by five or more rank positions between GDP and network centrality rankings. Boundary specification also matters. Betweenness centrality shows high sensitivity ($\rho = 0.816$) when international flows are added, while eigenvector ($\rho = 0.982$) and out-degree ($\rho = 0.994$) remain stable. This suggests researchers must carefully consider how network boundaries are specified when measuring structural power. We also find that all three centrality measures remain stable under graph filtration when proper weight semantics are applied, validating the framework's reliability for dense trade networks. 
+
+
+
+
+\chapter{Literature Review}
+
+\section{Network Science and Economic Complexity}
+
+Heterodox economists have been advocating for relational approaches to analyzing complex economic phenomena since at least the 1930s. In 1937, Friedrich Hayek explicitly called for ``systematic attempts... to [analyze] social relations'' using ``mathematical technique of analysis situs (topology)`` to help address ``the complexity of the structures with which we have to deal \cite{von_hayek_economics_1937} .'' Decades later, in his 1974 Nobel lecture  \cite{hayek_pretense_1974}, he argued that for complex economic systems, we are often confined to ``mere pattern predictions—predictions of some of the general attributes of the structures that will form themselves, but not containing specific statements about the individual elements of which the structures will be made up.''
+
+Modern researchers pioneering the field of complexity economics have addressed the calls made by Hayek and Weaver. Abigail Devereaux describes how ``graph theoretic techniques'' can be used to model relationships between individuals, firms, and institutions \cite{devereaux_seven_2022}. Brian Arthur's work on economic networks emphasizes that ``the actions taken by individual elements are channeled via a network of connections among them'' and that ``the topology of a network matters \cite{arthur_foundations_2021}.'' Cesar Hidalgo illustrates how network-based methods reveal structure that aggregates hide and complexity measures derived from network structure predict future GDP growth better than current GDP alone \cite{hidalgo_economic_2021}. This work has established network science as essential for understanding economic complexity, but applications to measuring interstate power dynamics remain underdeveloped within the community of mainstream economists. This paper helps to address this gap. 
+
+\section{Competitive Federalism and Interstate Competition}
+
+The literature on competitive federalism shows that states compete for residents, businesses, and resources through policy choices and regulatory environments \cite{weingast_economic_1995, greve_state_nodate, lemke_interjurisdictional_2016}. However, this theoretical work lacks matching measurement frameworks. While economists theorize about interstate competition, they avoid explicit discussion of structural power \cite{deaton_rethinking_2024}. Similarly, political scientists studying interstate dynamics have not frequently drawn on network approaches to quantify these sorts of economic relationships, even as they have successfully adopted network science for other purposes \cite{ward_network_2011}. Network approaches address this gap by revealing how structural position, not just policy attractiveness, shapes competitive advantage. States well connected to economic powerhouses (high eigenvector centrality) or controlling distribution corridors (high out-degree) gain influence independent of tax rates or regulatory environments. 
+
+\section{Network Analysis of Interstate Commodity Flows}
+Network analysis allows us to examine the shape of commodity flows between states, providing formal tools for   measuring structural relations and influence in these economic systems. Emmert-Streib et al. \cite{emmert-streib_understanding_2018} survey network methods in economics, arguing economic behavior cannot be studied by examining individual components but only through ``the interplay between all relevant parts.'' Karako et al. \cite{karakoc_structural_2023} identified structural choke points in food flows using component-importance analysis. Goulias \& Shi \cite{goulias_complex_2024} applied community detection to identify critical freight hubs, finding  ``critical nodes making network vulnerable are often major metropolises endowed with transportation infrastructure.'' Miller \& Konar \cite{miller_us_2024} and Miller et al. \cite{miller_network_2025} developed county-level food flow models revealing geographic concentration in perishable food networks.
+
+While these studies demonstrate the practical utility of using network centrality measures to examine raw commodity flows, they share a few limitations, which leave important questions for U.S. domestic commerce network analysis unanswered.
+
+\begin{enumerate}
+    
+    \item \textbf{Power measurement}: While these studies identify critical hubs and choke points, none explicitly frame their findings in terms of comparative state economic power, or systematically rank states across multiple structural dimensions. 
+
+    \item \textbf{Boundary Specification}: Prior work on commodity flows between states within the United States has not assessed how the overall network structure responds to the specification of an international boundary. The work fails to account for the fact that a significant amount of trade occurs with other nations.        
+
+    \item \textbf{Robustness of Betweenness Centrality}  ($\geq$95\%): Segarra \& Ribeiro (2015) formally proved that betweenness centrality is mathematically unstable and discontinuous \cite{segarra_stability_2015}. Commodity trade network studies typically apply betweenness to identify hubs and intermediaries without examining whether the measure remains reliable at high network densities. This gap is particularly significant for domestic trade networks, which exhibit much higher density than international trade networks.
+
+  
+    
+\end{enumerate}
+
+Our analysis addresses all three gaps. We validate centrality measure robustness through systematic filtration and boundary sensitivity analysis, revealing that all measures remain stable under filtration when proper weight semantics are applied, while betweenness shows high sensitivity to boundary specification. We then apply this validated framework to comprehensively measure state economic power across macro, meso, and micro levels using Jang \& Yang's three-level centrality approach \cite{jang_network_2020, jang_measuring_2023}. Finally, we show how specifying the existence of a meaningful boundary through the addition of a 52nd "Rest of World" node significantly influences network structure.
+
+\chapter{Data and Methods}
+\label{sec:methods}
+
+
+\section{Data Sources}
+
+This analysis relies on two datasets provided by the U.S. Census Bureau from 2017. The Commodity Flow Survey (CFS) for domestic interstate flows, and the Freight Analysis Framework for international trade \cite{bureau_commodity_2025, united_states_department_of_transportation_office_of_the_secretary_of_transportation_freight_2017}.
+
+The primary dataset is the CFS 2017 Public use file. It contains 487,384 shipment records representing \$13 trillion in domestic trade flows. While it tracks several dimensions including commodity types, transportation mode, shipment weight, distance, and value, this analysis focuses solely on shipment values and origin-destination state pairs because these dimensions help directly capture the economic magnitude and directional structure of interstate trade relationships needed for network construction. All 43 Standard Classification of Transported Goods (SCTG) commodity categories (agriculture, mining, chemical, etc.) are aggregated into total trade flows between state pairs, capturing aggregate economic relationships rather than commodity-specific patterns. Intrastate flows were excluded because trade within a state does not contribute to network position relative to other states. The CFS uses statistical sampling: each recorded shipment represents many actual shipments in the economy. The expansion factor (WGT\_FACTOR) scales sample data to population-level estimates. We calculate each flow's value as $\text{SHIPMT\_VALUE} \times \text{WGT\_FACTOR}$.
+
+
+The secondary dataset is the Freight Analysis Framework (FAF5). It provides state-level international trade flows including imports and exports for 2017. It allows for aggregation of international flows into the Rest of World (RoW) node, enabling construction of the 52$\times$52 network. It is necessary to conduct a boundary sensitivity analysis by comparing how state centrality rankings change when international trade flows are included versus excluded. FAF5 uses the same commodity classification system (SCTG) codes which ensures consistent categorization across domestic and international flows. 
+
+Both datasets are based on mandatory reporting requirements and Census Bureau validation procedures, providing a reasonable degree of confidence that data quality meets a standard necessary for useful rigorous network analysis.
+
+\section{Network Construction}
+
+Figure~\ref{fig:network_construction} illustrates the network construction methodology for both boundary specifications.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/network_construction_spring.png}
+\caption{Network construction methodology showing actual network topology (top 10 states by out-degree centrality). Left panel: 51×51 domestic baseline network with interstate flows only. Right panel: 52×52 internationally-integrated network with Rest of World (RoW) aggregate node added. Gateway states (CA, TX, NY, FL) shown with enhanced international connections when RoW is included.}
+\label{fig:network_construction}
+\end{figure}
+
+We construct a weighted directed graph $G = (V, E, W)$ representing the U.S. system of interstate commodity trade flows, where:
+
+
+\begin{itemize}
+    \item $V$ is the set of 51 nodes (50 states + Washington D.C)
+    \item $E \subseteq V \times V$ is the set of directed edges representing trade flows between states
+    \item $W: E \to \mathbb{R}^{+}$ assigns each edge a positive weight equal to the survey-adjusted trade value
+\end{itemize}
+
+This structure is represented as a 51$\times$51 weighted adjacency matrix $\mathbf{A}$ where entry $A_{ij}$ represents the survey-weighted commodity flow value (in U.S. dollars) from state $i$ to state $j$. While standard binary adjacency matrices only capture the presence or absence of connections, this weighted matrix preserves the economic magnitude of each trade relationship, enabling centrality calculations where a \$50 billion flow carries more weight than a \$5 million flow.
+
+To account for international trade flows, we construct a 52$\times$52 variant by adding a  ``Rest of World'' (RoW) node representing the aggregate of each state's international exports and imports. This provides a means for boundary specification: comparing state rankings in the domestic only (51$\times$51) versus internationally integrated (52$\times$52) networks. Figure~\ref{fig:matrix_comparison} compares the adjacency matrix structure of both networks.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/matrix_comparison.png}
+\caption{Matrix structure comparison showing top 20 states by aggregate centrality score (sum of min-max normalized betweenness, eigenvector, and out-degree). States selected for visual clarity to show high-activity trading relationships. Left: 51×51 domestic network (interstate flows only). Right: 52×52 international-inclusive network with Rest of World (RoW) node. RoW highlighted with red border. Color scale (plasma) shows $\log_{10}$ of trade values in USD (e.g., 9 = \$1 billion, 10 = \$10 billion).}
+\label{fig:matrix_comparison}
+\end{figure}
+
+
+The network construction preserves flow directionality and survey weighting while aggregating over commodity types, shipment-level detail, and temporal variation. Edge weights represent survey-adjusted trade values (SHIPMT\_VALUE $\times$ WGT\_FACTOR) and edge direction captures flow orientation (origin state $\to$ destination state.) This lets us account for directional asymmetry (exports vs. imports) while ensuring economic magnitude informs centrality calculations.\footnote{A formal systems definition following Klir's framework \cite{klir_facets_2001} is provided in Appendix \ref{appendix:formal_system}.}
+
+ 
+
+\section{Network Centrality Measures}
+
+Three complementary centrality measures quantify structural power at macro, meso, and micro scales \cite{jang_measuring_2023} (Figure
+\ref{fig:centrality_framework}). All measures are computed on weighted directed graphs where edge weights represent survey-adjusted trade
+values.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/centrality_framework_v2.png}
+\caption{Three-level centrality framework adapted from Jang \& Yang (2023). Highlighted nodes indicate centrality levels: red (high centrality), green (high eigenvector), gray (low/baseline); edge thickness represents flow magnitude.}
+\label{fig:centrality_framework}
+\end{figure}
+
+\textbf{Betweenness Centrality} (macro-level bridging power) measures how often a state lies on shortest paths between other state pairs:
+
+\begin{equation}
+C_{B}(i)=\sum_{j \neq i \neq k} \frac{g_{jk(i)}}{g_{jk}}
+\end{equation}
+
+where $g_{jk}$ is the number of shortest paths between states $j$ and $k$, and $g_{jk(i)}$ is the number of those paths passing through state $i$ \cite{jang_measuring_2023}. For weighted shortest-path calculations, NetworkX treats edge weights as \textit{distances} rather than proximities. Since our adjacency matrix $\mathbf{A}$ encodes trade values where higher values indicate stronger connections, we invert weights before computing betweenness: $d_{ij} = w_{\max} / A_{ij}$. This transformation ensures shortest paths traverse high-volume trade corridors. Scores are normalized by dividing by the number of node pairs: $\frac{2}{(|V|-1)(|V|-2)}$ for directed graphs.
+
+
+\textbf{Eigenvector Centrality} (meso-level influence) measures importance based on connections to other important states:
+
+\begin{equation}
+C_{E}(i)=\frac{1}{\lambda} \sum_{j=1}^{n} W_{i j} \cdot C_E(j)
+\end{equation}
+
+where $\lambda$ is the largest eigenvalue of the weighted adjacency matrix $\mathbf{A}$, $W_{ij}$ is the matrix element representing trade flow value from state $j$ to state $i$, and $C_E(j)$ is the eigenvector centrality of state $j$ \cite{jang_measuring_2023}. Intuitively, a state with high eigenvector centrality trades heavily with other economically important states, it is influential because its trading partners are influential. 
+
+\textbf{Weighted Out-Degree} (micro-level distribution capacity) sums total outbound trade flows:
+
+\begin{equation}
+C_{D}(i)=\sum_{j=1}^{n} A_{ij}
+\end{equation}
+
+where $A_{ij}$ is the trade flow from state $i$ to state $j$. We focus on out-degree rather than in-degree because outbound flows capture a state's capacity to supply other states, a form of economic power through distribution. In-degree (imports) reflects dependency on other states rather than influence over them. This follows Jang \& Yang's emphasis on outward-directed measures of network power \cite{jang_measuring_2023}.
+
+\section{Graph Filtration Analysis}
+
+To validate centrality robustness in near-complete networks, we employ systematic edge removal (graph filtration). At 99.4\% density, the unfiltered 51$\times$51 network approaches a complete graph where nearly all state pairs trade directly. In such near-clique structures, betweenness centrality in particular may reflect path optimization artifacts rather than genuine structural bridging. When every node connects to nearly every other node, shortest paths become trivially short and bridging roles are obscured. Filtration reveals which centrality patterns persist when weak edges are removed, distinguishing robust structural features from density artifacts.
+
+Filtration proceeds by removing edges below a percentile threshold and recomputing centrality on the resulting sparser graph. We use binary search to identify the maximum filtration level that maintains a single strongly connected component, then analyze rank stability at that threshold. We track stability using Spearman correlation coefficients and measure how many states change positions. This analysis reveals whether high centrality derives from concentrated heavy flows (robust to filtration) or distributed weak connections (sensitive to filtration).
+
+\section{Boundary Sensitivity Analysis}
+
+To formally test whether state power rankings remain stable across boundary specifications we systematically compare centrality measures between the 51$\times$51 and 52$\times$52 networks. This analysis uses four methods to quantify boundary effects. 
+
+\begin{enumerate}
+    \item Network Validation. Both networks are validated for structural integrity before comparison. Validation confirms each network forms a single strongly connected component (all states reachable from all others via directed paths), with no isolated nodes and density exceeding 0.99
+
+    \item Rank Correlation. Spearman rank correlation coefficients ($\rho$) quantify the relationship between state rankings in the two networks for each centrality measure. Perfect stability yields $\rho = 1.0$; lower values indicate boundary sensitivity. Values above 0.95 indicate high stability; values below 0.90 suggest meaningful boundary effects.
+
+    \item Rank Change Analysis. For each state and measure, rank changes are computed as the difference between 51×51 and 52×52 positions. Summary statistics include mean absolute rank change, maximum rank change, and percentage of states that changed rank. Changes exceeding 2 positions are considered meaningful given the 51-state ranking scale.
+
+    \item Top-K Overlap. Jaccard similarity coefficients measure whether the same states occupy leadership positions (top-5, top-10, top-20) in both networks, calculated as $J_k = |\text{intersection}| / |\text{union}|$ of the top-$k$ sets. Perfect overlap yields $J_k = 1.0$; values below 0.6 indicate substantial leadership turnover due to boundary specification.
+
+\end{enumerate}
+
+\section{Limitations and Scope}
+
+This analysis only examines state economic centrality through commodity trade flows. This means there are several important constraints on interpretation and generalizability that must be acknowledged.
+
+First, the scope of power measurement. The analysis measures economic centrality in commodity trade networks, not comprehensive state power. It excludes various other economic, fiscal, political, social, and cultural dimensions that would be needed for a more comprehensive evaluation of power.
+
+Second, it's important to acknowledge the role of geographic and temporal boundaries. State-level aggregation masks within-state variation, for example California's ports versus the Central Valley which have different roles that this analysis cannot distinguish. The Rest of World node aggregates all international partners into a single entity which obscures the complex heterogeneity in international relationships. Additionally, it only focuses on a single year, 2017, which means that the kind of temporal dynamics highlighted in the Jang and Yang paper that looked at global trade network data from 1996 to 2020 are not accounted for. 
+
+Third, there are data constraints. The analysis focuses solely on commodity flows, excluding services trade, financial flows, and information exchange. It's important to consider that survey-based data may be subject to sampling error and reporting biases even though census validation procedures mitigate these concerns. All 43 SCTG commodity categories are aggregated into total trade flows between state pairs. The SCTG system classifies physical goods broadly, encompassing both raw materials (e.g., agricultural products, minerals) and manufactured items (e.g., machinery, electronics), but excludes services.
+
+Finally, the methodological choices represent a constraint. Betweenness centrality uses weighted edges where high trade value corresponds to short distances. Alternative edge weighting schemes might reveal different bridging patterns and merit future investigation. The 52$\times$52 specification provides just one of many potential boundary extensions; others (regional, modal, sectoral) were not explored.
+
+\chapter{Results}
+
+\section{Network Properties}
+
+The 51×51 domestic network contains 51 nodes (50 states plus DC) with 2,534 directed edges representing \$7.6 trillion in interstate commodity flows. The network is strongly connected with density 0.994 (2,534 of 2,550 possible edges) and diameter 2. Nearly all trade relationships are bidirectional: 99.4\% of edges are reciprocal, meaning states that export to a partner almost always import from that partner. The 16 missing edges (0.6\% of possible connections) follow a clear pattern: 15 are DC outflows to smaller states. Notably, WY-DC is the only state pair with no trade in either direction. A complete listing of bilateral trade flows is provided in Appendix~\ref{appendix:edge_list}.
+
+The 52 x 52 international inclusive network contains 52 nodes (adding Rest of World) with 2,636 edges representing  \$11.4 trillion in total flows. This network maintains similar structural properties: density 0.994, diameter 2, and reciprocity 99.4\%. RoW exhibits high centrality, ranking first for both eigenvector and out-degree centrality in the international network. 
+
+Both networks exhibit near-complete connectivity (99.4\% density) with minimal path lengths, indicating highly integrated commerce systems. Table~\ref{tab:network_properties} summarizes the structural properties of both networks.
+
+\begin{table}[ht]
+  \centering
+  \caption{Network Properties Comparison (51 $\times$ 51 Domestic vs. 52 $\times$ 52 International). The 52 $\times$ 52 network includes
+  international flows, adding \$3.8T in trade value while preserving structural properties.}
+  \label{tab:network_properties}
+  \begin{tabular}{lcc}
+  \hline
+  \textbf{Property} & \textbf{51×51 Domestic} & \textbf{52×52 International} \\
+  \hline
+  Nodes & 51 & 52 \\
+  Edges & 2,534 & 2,636 \\
+  Total Value & \$7.6T & \$11.4T \\
+  Density & 0.994 & 0.994 \\
+  Diameter & 2 & 2 \\
+  Reciprocity & 99.4\% & 99.4\% \\
+  Avg. Path Length & 1.01 & 1.01 \\
+  \hline
+  \end{tabular}
+\end{table}
+
+
+\section{Filtration Analysis: Validating Centrality Robustness}
+\label{sec:filtration}
+
+Before interpreting centrality rankings, we validate their robustness through systematic edge removal (graph filtration). At 99.4\% density, do these rankings reflect genuine structural patterns or artifacts of weak connections? This question is especially important for betweenness centrality, which Segarra \& Ribeiro (2015) proved mathematically unstable in dense networks. The 51$\times$51 domestic network's near-complete connectivity means almost every state can reach every other state in one or two steps, leaving little variation for path-based measures to capture genuine bridging roles.
+
+The network exhibits extreme flow concentration: median bilateral flow is \$773M, mean is \$3.0B, maximum exceeds \$78B. We apply 33\% filtration, removing edges below the 33rd percentile (\$298M threshold). This is the maximum threshold before fragmentation—the network breaks into multiple components at 34\% (\$323M). Table~\ref{tab:filtration_sensitivity} presents the results.
+
+\begin{table}[ht]
+\centering
+\caption{Centrality Rank Stability Under Graph Filtration (51 $\times$ 51 Network). With proper weight semantics (weight inversion applied), all centrality measures remain perfectly stable under 33\% filtration. This demonstrates that the three-level centrality framework captures genuine structural patterns robust to methodological choices about weak-edge treatment.}
+\label{tab:filtration_sensitivity}
+\begin{tabular}{lccc}
+\hline
+\textbf{Centrality} & \textbf{Spearman $\rho$} & \textbf{Top-5 Stability} & \textbf{States Changed} \\
+\textbf{Measure} & \textbf{(Full vs. 33rd \%ile)} & & \\
+\hline
+Betweenness   &  1.000  & 100\% &  0/51 (0\%) \\
+Eigenvector   &  1.000  & 100\% &  0/51 (0\%) \\
+Out-Degree    &  1.000  & 100\% &  0/51 (0\%) \\
+\hline
+\end{tabular}
+\end{table}
+
+All three centrality measures demonstrate perfect stability under filtration (Table~\ref{tab:filtration_sensitivity}): betweenness, eigenvector, and out-degree maintain $\rho = 1.000$ with no rank changes. This stability depends on proper weight semantics—treating high trade value as short path distance rather than long (see Section~\ref{sec:methods} for implementation details).
+
+This stability has methodological implications: libraries like NetworkX treat edge weights as traversal costs by default, requiring inversion for trade networks where high value indicates connection strength.
+
+Table~\ref{tab:filtration_properties} shows how filtration changes the network's structural properties. While node count remains constant (all 51 states remain in the network), removing the weakest third of edges reduces density from 0.994 to 0.666 and increases diameter from 2 to 3. The increase in average path length from 1.006 to 1.338 confirms that filtration reveals the backbone structure: states that were trivially reachable through weak connections now require intermediate hops through high-volume trade corridors.
+
+\begin{table}[ht]
+  \centering
+  \caption{Network Properties Before and After 33\% Graph Filtration (51$\times$51 Domestic Network). Filtration removes edges below the 33rd percentile (\$298M threshold), the maximum level before network fragmentation.}
+  \label{tab:filtration_properties}
+  \begin{tabular}{lcc}
+  \hline
+  \textbf{Property} & \textbf{Full Network} & \textbf{Filtered (33\%)} \\
+  \hline
+  Nodes & 51 & 51 \\
+  Edges & 2,534 & 1,698 \\
+  Density & 0.994 & 0.666 \\
+  Diameter & 2 & 3 \\
+  Avg.\ Path Length & 1.006 & 1.338 \\
+  Reciprocity & 0.994 & 0.898 \\
+  \hline
+  \end{tabular}
+\end{table}
+
+
+\section{Domestic Network: Structural Position vs. Economic Size}
+\label{sec:domestic}
+
+Does network centrality reveal structural patterns that GDP alone cannot? This question (RQ1) is central to justifying network analysis of trade systems. If centrality merely reflects economic size, standard GDP metrics would suffice. To test this, we compare centrality rankings to GDP rankings using rank divergence analysis.
+
+We first verify that GDP serves as an appropriate baseline for economic size: GDP and population correlate at $r = 0.98$ (Pearson), indicating that normalizing by GDP effectively controls for both economic output and population. We then define \textit{rank divergence} as:
+\[
+\Delta_i = \text{rank}_{\text{GDP}}(i) - \text{rank}_{\text{centrality}}(i)
+\]
+Positive divergence indicates a state is more central than its GDP predicts ("punches above its weight"); negative divergence indicates structural underperformance     relative to economic size.
+
+\subsection{The FL/NJ Paradox}
+
+Florida ranks 4th in GDP (\$984B) but has \textit{zero} betweenness centrality—the 4th largest state economy lies on no shortest paths in the trade network. New Jersey similarly ranks 8th in GDP (\$602B) with zero betweenness. In total, 31 states (61\%) have zero betweenness, including 5 of the top 25 economies. This concentration reflects the backbone structure created by weight inversion: trade routes through the top hubs (CA, TX, NY, PA, IL) rather than distributing across all states.
+
+Figure~\ref{fig:gdp_scatter} visualizes rank divergence for all 51 states. States above the diagonal achieve higher centrality than their GDP predicts; states below underperform structurally relative to economic size.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/gdp_vs_eigenvector_scatter.png}
+\caption{GDP rank versus eigenvector centrality rank (Spearman $\rho = 0.934$). States above diagonal rank higher in centrality than GDP predicts (structural overperformers). States below diagonal rank lower (structural underperformers). Labels show states with rank difference $\geq$ 8 positions. Additional scatter plots for all centrality--control combinations are in Appendix~\ref{appendix:scatters}.}
+\label{fig:gdp_scatter}
+\end{figure}
+
+\subsection{GDP-Centrality Correlations}
+
+The three centrality measures correlate differently with GDP (Spearman $\rho$):
+\begin{itemize}
+    \item Eigenvector: $\rho = 0.934$ (strong)
+    \item Out-degree: $\rho = 0.904$ (strong)
+    \item Betweenness: $\rho = 0.763$ (moderate)
+\end{itemize}
+Population shows a similar pattern: eigenvector ($\rho = 0.961$), out-degree ($\rho = 0.915$), and betweenness ($\rho = 0.739$). The high GDP--population correlation ($r = 0.98$) means both controls produce consistent rankings. All six centrality--control scatter plots are presented in Appendix~\ref{appendix:scatters}.
+
+Eigenvector and out-degree track economic size closely; betweenness captures something distinct from GDP: structural brokerage position rather than connection quality or trade volume.
+
+\subsection{States Punching Above Their Weight}
+
+By eigenvector divergence, the top overperformers are KY (+14), MS (+10), MT (+8), LA (+7), SC (+7), TN (+6), MI (+6), and IN (+6). These states share a common profile: manufacturing, energy, or agricultural production—the "physical economy." Their network importance exceeds what GDP alone predicts.
+
+Figure~\ref{fig:gdp_normalized} shows GDP-normalized eigenvector centrality for the top 15 states. Mississippi achieves the highest centrality per billion dollars GDP (0.000672), followed by Kentucky (0.000658) and Indiana (0.000551). No state larger than Texas appears in the top 10 normalized rankings.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/gdp_normalized_centrality_bar.png}
+\caption{Top 15 states by GDP-normalized eigenvector centrality. Bars show centrality per billion 2017 GDP. Colors indicate rank divergence: red (strong overperformer, $\Delta > 5$), orange (mild overperformer), gray (neutral), blue (underperformer, $\Delta < -5$).}
+\label{fig:gdp_normalized}
+\end{figure}
+
+\subsection{States Punching Below Their Weight}
+
+The largest underperformers are DC (-15), MA (-11), MN (-9), CO (-9), and WA (-8). These states have service-oriented or technology-focused economies; their GDP overstates their structural position in the \textit{commodity} trade network.
+
+\subsection{Geographic Distribution}
+
+Figure~\ref{fig:physical_economy} maps rank divergence geographically. The pattern reveals a clear divide: physical economy states (manufacturing, energy, agriculture) cluster as overperformers, while service economy states cluster as underperformers. Thirty-nine percent of states show rank divergence of 5 or more positions—GDP provides incomplete information about structural importance in the domestic commodity trade network.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/marimo-physical-economy-divergence.png}
+\caption{Geographic distribution of GDP-centrality divergence. Green states achieve higher network centrality than their economic size predicts (e.g., KY +14, IN +6, TN +6). Purple states show lower centrality relative to GDP (e.g., WA -8, CO -9, MA -11). The pattern distinguishes physical economy states (manufacturing, energy, agriculture) from service economy states.}
+\label{fig:physical_economy}
+\end{figure}
+
+Table~\ref{tab:divergence} summarizes states with extreme divergence between economic size and network position.
+
+\begin{table}[ht]
+\centering
+\footnotesize
+\caption{States with Extreme Divergence Between Economic Size and Network Position. Positive $\Delta$ indicates structural overperformance relative to GDP; negative indicates underperformance. Norm.\ Rank shows position when centrality is divided by GDP.}
+\label{tab:divergence}
+\begin{tabular}{lcccc}
+\hline
+\textbf{State} & \textbf{GDP Rank} & \textbf{Eig.\ Rank} & \textbf{Rank $\Delta$} & \textbf{Norm.\ Rank} \\
+\hline
+\multicolumn{5}{l}{\textit{Structural Overperformers (Physical Economy)}} \\
+KY & 28 & 14 & +14 & 2 \\
+MS & 37 & 27 & +10 & 1 \\
+MT & 49 & 41 & +8 & 6 \\
+LA & 24 & 17 & +7 & 10 \\
+SC & 26 & 19 & +7 & 4 \\
+TN & 18 & 12 & +6 & 8 \\
+MI & 14 & 8 & +6 & 13 \\
+IN & 16 & 10 & +6 & 3 \\
+\hline
+\multicolumn{5}{l}{\textit{Structural Underperformers (Service Economy)}} \\
+DC & 34 & 49 & -15 & 48 \\
+MA & 11 & 22 & -11 & 44 \\
+MN & 17 & 26 & -9 & 38 \\
+CO & 19 & 28 & -9 & 33 \\
+WA & 13 & 21 & -8 & 41 \\
+\hline
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:top10} presents raw centrality rankings for reference.
+
+\begin{table}[ht]
+  \centering
+  \caption{Top 10 States by Centrality Measure (51 $\times$ 51 Domestic Network). Rankings computed with weight inversion applied (see Section~\ref{sec:methods}).}
+  \label{tab:top10}
+  \begin{tabular}{lll}
+  \hline
+  \textbf{Betweenness} & \textbf{Eigenvector} & \textbf{Out-Degree} \\
+  \hline    
+  1. CA & 1. TX & 1. CA \\
+  2. TX & 2. CA & 2. TX \\
+  3. NY & 3. NY & 3. IL \\
+  4. PA & 4. OH & 4. PA \\
+  5. IL & 5. FL & 5. OH \\
+  6. MA & 6. IL & 6. NJ \\
+  7. OH & 7. PA & 7. NY \\
+  8. WA & 8. MI & 8. IN \\
+  9. MN & 9. NJ & 9. TN \\
+  10. GA & 10. IN & 10. GA \\
+  \hline
+  \end{tabular}
+\end{table}
+
+\section{International Integration Effects}
+\label{sec:international}
+
+How does boundary specification affect centrality rankings? This question (RQ2) tests whether our domestic findings are artifacts of excluding international trade or robust structural features. We add international flows through a Rest of World (RoW) node and measure ranking stability.
+
+Table~\ref{tab:boundary_effects} summarizes differential boundary effects across measures.
+
+\begin{table}[ht]
+\centering
+\caption{Boundary Sensitivity: Centrality Rank Changes (51$\times$51 vs 52$\times$52). The 52$\times$52 network adds international flows through a Rest of World node. Comparison excludes the RoW node (51 US states only).}
+\label{tab:boundary_effects}
+\begin{tabular}{lccccc}
+\hline
+\textbf{Measure} & \textbf{Spearman $\rho$} & \textbf{States} & \textbf{Top-5} & \textbf{Mean} & \textbf{Max} \\
+                 &                          & \textbf{Changed} & \textbf{Overlap} & \textbf{$|\Delta|$} & \textbf{$|\Delta|$} \\
+\hline
+Betweenness   & 0.816 & 49/51 (96\%) & 60\%  & 6.0 & 8 \\
+Eigenvector   & 0.982 & 43/51 (84\%) & 60\%  & 2.2 & 8 \\
+Out-Degree    & 0.994 & 28/51 (55\%) & 100\% & 1.0 & 5 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Betweenness: High Sensitivity}
+
+Betweenness shows the highest sensitivity to boundary specification ($\rho = 0.816$), with 96\% of states changing rank. The Rest of World node creates new shortest paths through gateway states, altering bridging roles. Interior states declined: Ohio dropped 6 ranks (7 to 13), Pennsylvania 4 ranks (4 to 8), New York 3 ranks (3 to 6). Coastal states improved: Washington gained 3 ranks (8 to 5).
+
+\subsection{Eigenvector: Moderate Sensitivity}
+
+Eigenvector maintains high rank correlation ($\rho = 0.982$) but 84\% of states changed position. Top-5 overlap dropped to 60\% as gateway states improved. Washington gained 7 ranks (21 to 14), Hawaii 8 ranks (45 to 37), New Jersey 3 ranks (9 to 6). Ohio dropped 4 ranks (4 to 8).
+
+\subsection{Out-Degree: High Stability}
+
+Out-degree shows the highest stability ($\rho = 0.994$) with only 55\% of states changing rank. Top-5 producers (CA, TX, IL, PA, OH) maintained positions. The high correlation reflects small, proportional rank adjustments rather than dramatic reshuffling.
+
+Figures~\ref{fig:rank_betweenness}--\ref{fig:rank_outdegree} show rank changes across all three measures.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/rank_scatter_betweenness.png}
+\caption{Betweenness centrality rank stability ($\rho = 0.816$, 96\% of states changed rank). Points on diagonal indicate no rank change. Green: rank improved when international flows added; red: rank declined. Betweenness shows the highest boundary sensitivity, consistent with its path-dependent computation.}
+\label{fig:rank_betweenness}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/rank_scatter_eigenvector.png}
+\caption{Eigenvector centrality rank stability ($\rho = 0.982$, 84\% changed). Gateway states (CA, TX, NY) show moderate rank shifts as RoW connections redistribute influence through the network.}
+\label{fig:rank_eigenvector}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/rank_scatter_out_degree.png}
+\caption{Weighted out-degree rank stability ($\rho = 0.994$, 55\% changed). Highest stability among all measures---top producers maintained positions, with only proportional rank adjustments.}
+\label{fig:rank_outdegree}
+\end{figure}
+
+Figure~\ref{fig:rank_change_summary} summarizes sensitivity differences across the three measure types, and Figure~\ref{fig:boundary_choropleth} maps the geographic distribution of eigenvector rank changes.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/boundary_sensitivity_summary.png}
+\caption{Boundary sensitivity varies by measure type. Betweenness (path-based) shows highest sensitivity; out-degree (connection-based) shows highest stability.}
+\label{fig:rank_change_summary}
+\end{figure}
+
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/marimo-boundary-effect.png}
+\caption{Geographic distribution of eigenvector rank changes when international flows
+are added. Green: gateway states that improved (WA +7, HI +8, NJ +3). Purple: interior
+states that declined (MO -6, OH -4). The pattern reveals how boundary specification
+redistributes network influence from interior bridges to international gateways.}
+\label{fig:boundary_choropleth}
+\end{figure}
+
+\FloatBarrier
+\chapter{Discussion}
+
+\section{Network Position Does Not Equal Economic Size}
+
+Our core finding is that nearly 40\% of states diverge by more than five ranks between GDP and eigenvector centrality. This provides a clear answer to \textbf{RQ1}: network analysis reveals structural information not captured by GDP alone.
+
+The most striking pattern is that states with manufacturing, energy, and agricultural economies achieve network positions far exceeding their GDP rankings. Kentucky ranks 28th in GDP but 14th in eigenvector centrality. Mississippi ranks 37th in GDP but 27th in centrality. Indiana, Louisiana, Michigan, and Tennessee show similar patterns. These states are the backbone of the physical economy, structurally central to domestic commodity flows. Yet this importance is invisible in GDP-based economic discourse. GDP systematically undervalues states whose primary role is enabling production elsewhere.
+
+Service-dominated economies show the mirror pattern. Massachusetts, Colorado, and Washington D.C. rank lower in the commodity network than their GDP predicts. This is expected. GDP captures value creation from software, financial services, and professional consulting that does not flow through physical goods. Their underperformance confirms we are measuring what we intend to measure: the structure of commodity trade, not total economic output.
+
+Industry composition data from the Bureau of Economic Analysis (2024) supports both patterns. Overperforming states have manufacturing as their largest or second-largest sector, while underperforming states are dominated by finance, professional services, and technology.
+
+The case of Florida and New Jersey reveals what GDP obscures. Both states rank high in GDP (4th and 8th respectively) but have zero betweenness centrality. They produce a great deal, but they are not trade corridors. No shortest path in the network runs through them. GDP cannot tell us this.
+
+Each centrality measure correlates differently with GDP, and these differences matter. Eigenvector centrality correlates strongly ($\rho = 0.934$), tracking economic size. Out-degree correlates similarly, tracking output capacity. Betweenness correlates only moderately ($\rho = 0.763$), capturing something distinct: structural brokerage position. By measuring which states lie on paths between other states, betweenness reveals a dimension of structural importance that aggregate output measures miss entirely. Our analysis focuses on eigenvector centrality for GDP normalization because betweenness is too concentrated to normalize meaningfully. Thirty-one states (61\%) have zero betweenness, reflecting the backbone structure of commodity flows through a small number of hub states.
+
+\section{The Domestic Network is Not the International Network}
+
+Our second finding directly answers \textbf{RQ2}: adding the Rest of World node, transforming the network from closed domestic to open with international flows, significantly alters network structure. The three centrality measures respond differently to this boundary change. Betweenness is highly sensitive ($\rho = 0.816$ between specifications), because path-based measures depend on network topology, which changes when the RoW node creates new shortest paths. Eigenvector is moderately sensitive ($\rho = 0.982$), as gateway states gain prestige through their RoW connection. Out-degree demonstrates high stability ($\rho = 0.994$), as total outbound capacity changes proportionally, preserving relative rankings. This differential sensitivity reveals what these measures actually capture: betweenness is topology-dependent, eigenvector is prestige-dependent, and out-degree is capacity-dependent.
+
+Adding international flows causes network influence to shift from interior bridges to international gateways. Gateway states gain: Washington (+7 eigenvector ranks), Hawaii (+8), New Jersey (+3). These states connect geographically to Rest of World, gaining importance as international trade intermediaries. Interior states lose: Ohio (-4 eigenvector), Missouri (-6). These states served as domestic bridges but are bypassed when gateways connect directly to international markets. Ohio's betweenness dropped 6 ranks as international routes circumvented the Midwest corridor.
+
+These findings have methodological implications. Researchers should explicitly specify network boundaries when measuring structural power, as betweenness rankings depend critically on whether international trade is included.
+
+
+\section{Betweenness Stability Under Filtration}
+
+Segarra \& Ribeiro (2015) demonstrated that betweenness centrality is mathematically discontinuous, leading some researchers to avoid it in dense networks. Our filtration analysis challenges this concern. All three centrality measures show perfect rank stability ($\rho = 1.000$) under 33\% edge removal. This suggests betweenness instability is an artifact of improper weight semantics, not an inherent limitation. With correct weight inversion, betweenness reliably identifies bridging positions even at 99.4\% network density.
+
+\section{Broader Implications}
+
+The Federal Reserve tracks dozens of economic indicators. All are statistical aggregates; none are derived from network models. This reflects a broader pattern: network science has proven powerful for economic analysis, but it has not been translated into accessible metrics for policymakers.
+
+GDP dominates economic discourse because it is simple and intuitive. But simplicity obscures structural importance. Kentucky ranks 28th in GDP but 14th in eigenvector centrality. Its imports comprise 32.3\% of state GDP, the highest in the nation. The state's economy depends on and enables integrated supply chains, yet GDP metrics position it as a minor economic player. This pattern repeats across manufacturing states: structurally important but economically invisible.
+
+We call this pattern Structural undervaluation. GDP ranks states by final output. Eigenvector centrality reveals their role in enabling output elsewhere. The disconnect between structural importance and economic recognition is real and quantifiable. Whether this contributes to political grievance is beyond our scope, but the measurement gap exists.
+
+Supply chain resilience depends on structural position, not just economic size. A disruption to a high-betweenness state affects paths between other states. A disruption to a high-eigenvector state affects well-connected partners. Our boundary sensitivity analysis adds nuance: states identified as critical domestic bridges may be less essential when international supply chains are considered. Ohio ranks 7th in domestic betweenness but drops to 13th when international flows are included. Its bridging role is partially redundant with international gateways.
+
+Policy targeting supply chain resilience should match boundary specification to threat model. Domestic disruptions (natural disasters, infrastructure failure) require domestic-only analysis. Trade policy disruptions require internationally-integrated analysis.
+
+
+\section{Limitations}
+
+This analysis measures economic centrality through commodity trade flows only. Several constraints limit interpretation.
+
+First, commodity flows exclude services, financial flows, and information exchange. A state's structural importance encompasses dimensions beyond physical goods trade. Second, our 2017 snapshot cannot capture dynamics. Supply chain restructuring, trade policy changes, and economic shocks alter network structure over time. Third, state-level analysis masks within-state variation. California's ports and Central Valley play different structural roles; our analysis cannot distinguish them. Fourth, our Rest of World node treats all international partners as equivalent, obscuring heterogeneous relationships with different trading partners.
+
+
+\FloatBarrier
+\chapter{Future Work}
+\label{sec:future_work}
+
+This analysis establishes network centrality as a valid approach for measuring structural economic power in commodity trade. Several extensions would strengthen and broaden the framework:
+
+\begin{itemize}
+
+  \item \textbf{Alternative normalization}: Current analysis uses rank comparison against GDP. Null-model normalization and correlation-based alternatives would test whether the 40\% divergence pattern is a structural feature or a comparison artifact.
+
+  \item \textbf{Geographic centrality}: A state's position in the national geography may predict its network centrality independent of output size. Testing coastal access, interior waterway proximity, and spatial position as predictors could separate structural role from location.
+
+  \item \textbf{Detailed filtration analysis}: This analysis tested a single 33\% filtration threshold. Sweeping filtration in 5\% increments would map stability across the full density range and identify where centrality rankings first destabilize.
+
+  \item \textbf{Commodity-level disaggregation}: Aggregating all SCTG categories obscures which goods classes drive centrality patterns. Commodity-level analysis could reveal whether structural undervaluation concentrates in specific industries or spans all goods.
+
+  \item \textbf{Temporal dynamics}: The 2017 CFS captures one snapshot. Applying this framework to the 2012 survey would reveal whether structural positions shifted over five years of supply chain evolution. Jang \& Yang's longitudinal approach provides a template \cite{jang_measuring_2023}.
+
+  \item \textbf{Multi-domain integration}: Commodity trade is one dimension of structural power. Services, financial flows, and political influence each operate through different relational structures. Cross-domain integration would move toward a comprehensive structural power index for U.S. states.
+
+  \item \textbf{Conserved vs.\ non-conserved flows}: Electrical network analysis applies Kirchhoff's laws because current is conserved at nodes. Money is not conserved the same way. Testing whether commodity flows satisfy conservation constraints---and what violations reveal about state-level absorption---could sharpen the theoretical grounding of this framework.
+
+  \item \textbf{Public replication}: The full analysis pipeline will be released at \texttt{github.com/rsthornton/cfs-network-analysis}, including CFS preprocessing, the centrality pipeline, and figure generation scripts.
+
+  \item \textbf{Interactive planning tool}: The interstate-trade visualization is a partial prototype. A full tool would let analysts query structural positions, test boundary specifications, and explore filtration effects. [citation to be added]
+
+\end{itemize}
+
+\FloatBarrier
+\chapter{Conclusion}
+
+\emph{[Outline --- prose to follow]}
+
+\begin{enumerate}
+
+  \item \textbf{RQ1}: Network centrality reveals structural importance GDP misses. Manufacturing, energy, and agricultural states are the backbone of domestic commodity flows and rank far above their GDP position --- their structural importance exceeds what GDP captures. Service states show the opposite pattern. The divergence tracks industry composition.
+
+  \item \textbf{RQ2}: Boundary specification has measure-dependent effects. Betweenness is highly sensitive to international inclusion ($\rho = 0.816$); eigenvector and out-degree are stable. Domestic-boundary analysis is appropriate for domestic threats. International-inclusive analysis is appropriate for trade policy questions.
+
+  \item \textbf{Methodological contribution}: Betweenness is stable under filtration when weight semantics are applied correctly. The instability concern raised by Segarra \& Ribeiro does not apply here. This extends the usable toolkit for dense economic networks.
+
+  \item \textbf{Structural undervaluation}: GDP ranks states by final output. Eigenvector centrality reveals their role in enabling output elsewhere. The measurement gap is real and quantifiable across 40\% of states. Whether it contributes to political grievance is beyond our scope; the gap itself is not.
+
+  \item \textbf{Closing}: Network-derived metrics can complement aggregate measures for policy. Structure matters, not just size. This analysis demonstrates the framework's validity in one domain. Multi-domain integration is the next step.
+
+\end{enumerate}
+
+
+
+% Configure URL breaking
+\Urlmuskip=0mu plus 1mu
+
+\FloatBarrier
+\appendix
+
+\chapter{Formal System Definition}
+\label{appendix:formal_system}
+
+Following Klir's systems formalism \cite{klir_facets_2001}, we can define the U.S. interstate commerce network as a structured system $S = (T,
+R)$ where $T$ represents thinghood (the measurable dimensions we track) and $R$ represents systemhood (the relations between those dimensions).
+
+The thinghood $T$ consists of:
+\begin{itemize}
+  \item $V$ -- The set of nodes: 51 U.S. states plus DC for the domestic network, or 52 nodes including Rest of World for the international-inclusive network
+  \item $E \subseteq V \times V$ -- Directed edges representing commodity flows between states
+  \item $W: E \to \mathbb{R}^+$ -- Weight function mapping each flow to its survey-adjusted trade value
+  \item $C$ -- Commodity types following SCTG classifications (aggregated in this analysis)
+  \item $B \in \{\text{domestic}, \text{international}\}$ -- Boundary specification choice
+\end{itemize}
+
+The systemhood $R$ defines how these dimensions relate:
+\begin{itemize}
+  \item $R_{\text{flow}}: V \times V \to \mathbb{R}^+ \cup \{0\}$ -- Trade flow relation where $R_{\text{flow}}(s_i, s_j)$ equals the weight of edge $(s_i, s_j)$ if it exists, zero otherwise
+  \item $R_{\text{boundary}}: B \times V \to \{0, 1\}$ -- Function determining which nodes are included based on boundary choice (e.g., $R_{\text{boundary}}(\text{domestic}, \text{RoW}) = 0$, $R_{\text{boundary}}(\text{international}, \text{RoW}) = 1$)
+  \item $R_{\text{centrality}}: V \to \mathbb{R}^3$ -- Mapping from nodes to their betweenness, eigenvector, and out-degree centrality scores
+\end{itemize}
+
+Together, $(V, E, W)$ defines a weighted directed graph where edge directionality captures trade flow orientation and edge weights preserve economic magnitude. The $|V| \times |V|$ adjacency matrix representation has 51$\times$51 entries for the domestic network ($|V|=51$) and 52$\times$52 entries for the international-inclusive network ($|V|=52$). This formalism lets us frame these networks as different projections of the same underlying system, distinguished only by boundary specification $B$. Our comparative analysis then becomes a study of how centrality rankings respond to this projection choice.
+
+
+
+\chapter{Top Bilateral Trade Flows}
+\label{appendix:edge_list}
+
+Table~\ref{tab:top_edges} presents the 50 largest bilateral commodity flows in the 51$\times$51 domestic network. The complete edge list (2,534 flows) is available in supplementary materials.
+
+\begin{table}[ht]
+\centering
+\footnotesize
+\caption{Top 50 Bilateral Trade Flows by Value (51$\times$51 Domestic Network)}
+\label{tab:top_edges}
+\begin{tabular}{llr}
+\hline
+\textbf{Origin} & \textbf{Dest} & \textbf{Value (\$B)} \\
+\hline
+NJ & NY & 78.0 \\
+CA & TX & 69.7 \\
+PA & NY & 65.2 \\
+PA & NJ & 58.4 \\
+GA & FL & 57.2 \\
+IL & IN & 55.4 \\
+NY & NJ & 50.6 \\
+IL & WI & 48.0 \\
+NJ & PA & 47.5 \\
+TX & CA & 46.2 \\
+OH & MI & 41.4 \\
+TX & LA & 38.6 \\
+CA & FL & 38.5 \\
+TX & OK & 37.8 \\
+CT & NY & 37.7 \\
+CA & AZ & 37.1 \\
+WI & IL & 37.0 \\
+IN & OH & 36.1 \\
+LA & TX & 35.3 \\
+IL & MI & 34.9 \\
+IN & MI & 34.8 \\
+PA & OH & 34.6 \\
+OH & IN & 34.1 \\
+TN & GA & 33.5 \\
+CA & WA & 32.9 \\
+IN & IL & 32.6 \\
+CA & OH & 32.2 \\
+NY & PA & 32.1 \\
+MI & OH & 31.3 \\
+CA & NV & 31.3 \\
+OH & PA & 30.5 \\
+NC & SC & 30.2 \\
+OR & WA & 29.5 \\
+AL & GA & 29.0 \\
+IL & TX & 29.0 \\
+AZ & CA & 28.8 \\
+MA & NY & 28.5 \\
+WA & OR & 28.2 \\
+MI & TX & 27.5 \\
+OH & IL & 27.2 \\
+MI & IL & 26.6 \\
+SC & GA & 26.0 \\
+IL & OH & 25.8 \\
+OK & TX & 25.5 \\
+CA & NY & 24.8 \\
+IL & CA & 24.3 \\
+GA & NC & 24.2 \\
+GA & TN & 23.7 \\
+CA & OR & 23.6 \\
+NY & CA & 23.3 \\
+\hline
+\end{tabular}
+\end{table}
+
+\FloatBarrier
+
+\chapter{Centrality vs.\ Control Variable Scatter Plots}
+\label{appendix:scatters}
+
+Figures~\ref{fig:gdp_betweenness_scatter}--\ref{fig:pop_outdegree_scatter} present scatter plots for all centrality--control combinations not shown in the main text. Each plot compares a control variable rank (GDP or population) against a centrality measure rank, with Spearman $\rho$ annotated. Together with Figure~\ref{fig:gdp_scatter} in the main text, these six plots provide a complete picture of how economic size and population relate to structural position across all three centrality levels.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/gdp_vs_betweenness_scatter.png}
+\caption{GDP rank vs.\ betweenness centrality rank ($\rho = 0.763$). The moderate correlation reflects betweenness measuring structural brokerage rather than economic size. Thirty-one states share zero betweenness (tied ranks at right).}
+\label{fig:gdp_betweenness_scatter}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/gdp_vs_out_degree_scatter.png}
+\caption{GDP rank vs.\ weighted out-degree centrality rank ($\rho = 0.904$). Strong correlation indicates total outbound trade volume tracks economic size closely.}
+\label{fig:gdp_outdegree_scatter}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/pop_vs_eigenvector_scatter.png}
+\caption{Population rank vs.\ eigenvector centrality rank ($\rho = 0.961$). Population shows an even stronger correlation with eigenvector centrality than GDP, consistent with the GDP--population correlation ($r = 0.98$).}
+\label{fig:pop_eigenvector_scatter}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/pop_vs_betweenness_scatter.png}
+\caption{Population rank vs.\ betweenness centrality rank ($\rho = 0.739$). Betweenness correlates only moderately with population, confirming that bridging position reflects network topology rather than size.}
+\label{fig:pop_betweenness_scatter}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/pop_vs_out_degree_scatter.png}
+\caption{Population rank vs.\ weighted out-degree centrality rank ($\rho = 0.915$). Distribution capacity tracks population similarly to GDP.}
+\label{fig:pop_outdegree_scatter}
+\end{figure}
+
+\FloatBarrier
+
+\chapter{Node Distribution}
+\label{appendix:node_distribution}
+
+Table~\ref{tab:node_distribution} provides the complete centrality data for all 51 domestic nodes, sorted by eigenvector centrality rank. This table enables readers to look up any state's structural position across all three centrality measures alongside its economic size (GDP) and population.
+
+\begin{singlespace}
+\begin{footnotesize}
+\begin{longtable}{l r r r r r r r r}
+\caption{Node Distribution: All 51 Domestic States Sorted by Eigenvector Centrality Rank. Pop.\ in millions (2017 ACS), GDP in billions (2017 Q4). Centrality values are normalized scores; Rk = rank (1 = highest).} \label{tab:node_distribution} \\
+\hline
+\textbf{State} & \textbf{Pop (M)} & \textbf{GDP (\$B)} & \textbf{Betw.} & \textbf{Rk} & \textbf{Eig.} & \textbf{Rk} & \textbf{Out-D.} & \textbf{Rk} \\
+\hline
+\endfirsthead
+\hline
+\textbf{State} & \textbf{Pop (M)} & \textbf{GDP (\$B)} & \textbf{Betw.} & \textbf{Rk} & \textbf{Eig.} & \textbf{Rk} & \textbf{Out-D.} & \textbf{Rk} \\
+\hline
+\endhead
+\hline
+\endfoot
+TX & 28.30 & 1747.2 & 0.2629 & 2 & 0.3714 & 1 & 0.7520 & 2 \\
+CA & 39.54 & 2802.3 & 0.5061 & 1 & 0.3091 & 2 & 1.0000 & 1 \\
+NY & 19.85 & 1564.3 & 0.2033 & 3 & 0.2902 & 3 & 0.5068 & 7 \\
+OH & 11.66 & 661.1 & 0.1008 & 7 & 0.2676 & 4 & 0.5922 & 5 \\
+FL & 20.98 & 984.1 & 0 & 21 & 0.2637 & 5 & 0.2570 & 19 \\
+IL & 12.80 & 835.6 & 0.1449 & 5 & 0.2523 & 6 & 0.7508 & 3 \\
+PA & 12.81 & 767.6 & 0.1678 & 4 & 0.2413 & 7 & 0.6794 & 4 \\
+MI & 9.96 & 512.8 & 0.0041 & 19 & 0.2167 & 8 & 0.4559 & 11 \\
+NJ & 9.01 & 601.9 & 0 & 21 & 0.2119 & 9 & 0.5223 & 6 \\
+IN & 6.67 & 364.6 & 0.0029 & 20 & 0.2007 & 10 & 0.4843 & 8 \\
+GA & 10.43 & 563.8 & 0.0473 & 10 & 0.1977 & 11 & 0.4700 & 10 \\
+TN & 6.72 & 352.0 & 0.0106 & 17 & 0.1648 & 12 & 0.4811 & 9 \\
+NC & 10.27 & 547.2 & 0.0351 & 12 & 0.1502 & 13 & 0.4369 & 12 \\
+KY & 4.45 & 205.9 & 0 & 21 & 0.1355 & 14 & 0.2909 & 15 \\
+VA & 8.47 & 517.5 & 0.0249 & 14 & 0.1281 & 15 & 0.2372 & 20 \\
+WI & 5.80 & 330.8 & 0 & 21 & 0.1278 & 16 & 0.3407 & 13 \\
+LA & 4.68 & 251.1 & 0.0155 & 16 & 0.1114 & 17 & 0.1922 & 25 \\
+MO & 6.11 & 309.2 & 0.0057 & 18 & 0.1111 & 18 & 0.3097 & 14 \\
+SC & 5.02 & 222.2 & 0 & 21 & 0.1106 & 19 & 0.2319 & 21 \\
+MD & 6.05 & 400.6 & 0.0200 & 15 & 0.1046 & 20 & 0.1649 & 28 \\
+WA & 7.41 & 517.2 & 0.0980 & 8 & 0.1025 & 21 & 0.2655 & 18 \\
+MA & 6.86 & 537.1 & 0.1131 & 6 & 0.0974 & 22 & 0.2766 & 17 \\
+AZ & 7.02 & 327.9 & 0 & 21 & 0.0972 & 23 & 0.1539 & 29 \\
+OK & 3.93 & 192.3 & 0 & 21 & 0.0937 & 24 & 0.1214 & 33 \\
+AL & 4.87 & 213.9 & 0 & 21 & 0.0920 & 25 & 0.2299 & 23 \\
+MN & 5.58 & 353.3 & 0.0600 & 9 & 0.0843 & 26 & 0.2827 & 16 \\
+MS & 2.98 & 113.4 & 0 & 21 & 0.0762 & 27 & 0.1739 & 27 \\
+CO & 5.61 & 351.7 & 0.0400 & 11 & 0.0697 & 28 & 0.1357 & 31 \\
+CT & 3.59 & 265.9 & 0 & 21 & 0.0666 & 29 & 0.2072 & 24 \\
+OR & 4.14 & 240.7 & 0 & 21 & 0.0664 & 30 & 0.1448 & 30 \\
+IA & 3.15 & 191.1 & 0.0257 & 13 & 0.0647 & 31 & 0.2306 & 22 \\
+NV & 3.00 & 160.1 & 0 & 21 & 0.0635 & 32 & 0.0645 & 37 \\
+UT & 3.10 & 169.1 & 0 & 21 & 0.0608 & 33 & 0.1324 & 32 \\
+KS & 2.91 & 160.4 & 0 & 21 & 0.0593 & 34 & 0.1849 & 26 \\
+AR & 3.00 & 126.3 & 0 & 21 & 0.0547 & 35 & 0.1170 & 34 \\
+WV & 1.82 & 78.8 & 0 & 21 & 0.0378 & 36 & 0.0625 & 39 \\
+NE & 1.92 & 123.1 & 0 & 21 & 0.0319 & 37 & 0.1044 & 35 \\
+NM & 2.09 & 99.1 & 0 & 21 & 0.0316 & 38 & 0.0238 & 46 \\
+NH & 1.34 & 82.0 & 0 & 21 & 0.0273 & 39 & 0.0633 & 38 \\
+ND & 0.76 & 55.9 & 0 & 21 & 0.0258 & 40 & 0.0423 & 42 \\
+MT & 1.05 & 48.6 & 0 & 21 & 0.0237 & 41 & 0.0171 & 48 \\
+DE & 0.96 & 75.0 & 0 & 21 & 0.0199 & 42 & 0.0651 & 36 \\
+ID & 1.72 & 73.3 & 0 & 21 & 0.0190 & 43 & 0.0465 & 41 \\
+ME & 1.34 & 62.5 & 0 & 21 & 0.0190 & 44 & 0.0340 & 44 \\
+HI & 1.43 & 89.3 & 0 & 21 & 0.0168 & 45 & 0.0015 & 51 \\
+RI & 1.06 & 60.7 & 0 & 21 & 0.0120 & 46 & 0.0602 & 40 \\
+SD & 0.87 & 50.3 & 0 & 21 & 0.0119 & 47 & 0.0373 & 43 \\
+VT & 0.62 & 32.6 & 0 & 21 & 0.0119 & 48 & 0.0302 & 45 \\
+DC & 0.69 & 134.0 & 0 & 21 & 0.0112 & 49 & 0.0018 & 50 \\
+WY & 0.58 & 41.4 & 0 & 21 & 0.0094 & 50 & 0.0191 & 47 \\
+AK & 0.74 & 54.4 & 0 & 21 & 0.0093 & 51 & 0.0058 & 49 \\
+\end{longtable}
+\end{footnotesize}
+\end{singlespace}
+
+
+%% ============================================================
+%% BIBLIOGRAPHY
+%% ============================================================
+\backmatter
+\addcontentsline{toc}{chapter}{Bibliography}
+\begin{singlespace}
+\setlength{\bibsep}{12pt}
+\bibliographystyle{unsrtnat}
+\bibliography{references}
+\end{singlespace}
+
+\end{document}

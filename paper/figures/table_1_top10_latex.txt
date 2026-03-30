@@ -1,0 +1,21 @@
+\begin{table}[H]
+\centering
+\caption{Top 10 States by Centrality Measure (51×51 Domestic Network). With proper weight semantics (weight inversion applied), betweenness identifies major economic hubs as genuine bridges.}
+\label{tab:top10_centrality}
+\begin{tabular}{lll}
+\hline
+\textbf{Betweenness} & \textbf{Eigenvector} & \textbf{Out-Degree} \\
+\hline
+1. CA & 1. TX & 1. CA \\
+2. TX & 2. CA & 2. TX \\
+3. NY & 3. NY & 3. IL \\
+4. PA & 4. OH & 4. PA \\
+5. IL & 5. FL & 5. OH \\
+6. MA & 6. IL & 6. NJ \\
+7. OH & 7. PA & 7. NY \\
+8. WA & 8. MI & 8. IN \\
+9. MN & 9. NJ & 9. TN \\
+10. GA & 10. IN & 10. GA \\
+\hline
+\end{tabular}
+\end{table}

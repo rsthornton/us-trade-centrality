@@ -1,0 +1,15 @@
+# Core dependencies
+networkx>=3.0
+pandas>=2.0
+numpy>=1.24
+scipy>=1.10
+pyyaml>=6.0
+
+# Visualization
+matplotlib>=3.7
+seaborn>=0.12
+plotly>=5.14
+
+# Optional: Interactive notebooks
+# jupyter>=1.0
+# ipywidgets>=8.0

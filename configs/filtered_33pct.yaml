@@ -1,0 +1,37 @@
+# Pipeline Configuration - 33% Filtered Analysis
+# ==============================================
+# Runs pipeline on edge-weight filtered network
+# Removes bottom 33% of edges by weight (~$298M threshold)
+# This is the MAXIMUM filtration maintaining single strongly connected component
+#
+# Rationale (advisor meeting 2025-11-29):
+# - At 99.4% density, betweenness measures path artifacts not structure
+# - 33% filtration reveals structural backbone while maintaining connectivity
+# - Breaking point is 34% ($323M) - 33% is the safe maximum
+
+data:
+  source: "cfs"
+  source_file: "data/cfs_2017_puf.csv"
+  faf_path: "data/FAF5.7.1_State.csv"
+  sample_size: null                   # Full dataset
+  year: 2017
+
+network:
+  interstate_only: true
+  include_international: false        # Start with domestic 51x51
+  weight_column: "weighted_value"
+  # Edge weight filtration settings
+  filtration:
+    enabled: true
+    percentile: 33                    # Remove bottom 33% of edges (safe maximum)
+    verify_connectivity: true         # Fail if network fragments
+
+centrality:
+  measures: ["betweenness", "eigenvector", "out_degree"]
+
+output:
+  results_dir: "results"
+  verbose: true
+
+# Note: For full artifacts, run with --full flag
+# For visualizations, use: python -m cfs_toolkit.figures results/run_dir/

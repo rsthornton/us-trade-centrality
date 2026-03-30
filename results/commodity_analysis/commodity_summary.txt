@@ -1,0 +1,18 @@
+================================================================================
+COMMODITY-LEVEL NETWORK ANALYSIS - SUMMARY REPORT
+================================================================================
+
+Analysis Date: 2025-12-22 13:10:47
+Dataset: data/cfs_2017_puf.csv
+Commodities Analyzed: 51
+Specialist Threshold: eigenvector ≥ 0.8
+
+--------------------------------------------------------------------------------
+OVERVIEW STATISTICS
+--------------------------------------------------------------------------------
+
+Total state-commodity pairs: 2,564
+States analyzed: 51
+Commodities with results: 51
+Commodity specialists found: 0
+
