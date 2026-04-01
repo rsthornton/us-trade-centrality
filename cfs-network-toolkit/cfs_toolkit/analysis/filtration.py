@@ -97,8 +97,8 @@ def count_components_at_filtration(G, percentile, weight_attr='weight'):
 
 def find_connectivity_breaking_point(G, weight_attr='weight', start=1, end=99, verbose=True):
     """
-    Binary search to find the exact filtration percentile where network
-    loses strong connectivity.
+    Systematic percentile sweep to find the exact filtration percentile
+    where network loses strong connectivity.
 
     Args:
         G (nx.DiGraph): Original graph
