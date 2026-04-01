@@ -5,9 +5,16 @@ Usage:
     cfs <command> [args]
 
 Commands:
-    top     Show top N states by centrality measure
-    show    Deep dive on a specific state
-    ls      List available runs
+    top          Show top N states by centrality measure
+    show         Deep dive on a specific state
+    ls           List available runs
+    figures      Generate publication figures from a run
+    compare      Compare two runs (e.g., 51x51 vs 52x52)
+    gdp          GDP vs centrality comparison analysis
+    verify       Validate pipeline outputs and data integrity
+    filtration   Run filtration sweep or apply threshold
+    network      Network structure analysis (components, SCCs, bounds)
+    vizall       Generate all visualizations for a run
 
 Examples:
     cfs top                    Top 10 by eigenvector

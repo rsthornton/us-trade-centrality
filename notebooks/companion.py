@@ -7,6 +7,7 @@
 #     "matplotlib==3.10.5",
 #     "altair==5.5.0",
 #     "plotly==5.24.1",
+#     "scipy==1.16.1",
 # ]
 # [tool.marimo.display]
 # theme = "system"

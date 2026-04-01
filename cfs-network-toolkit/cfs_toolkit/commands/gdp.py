@@ -8,32 +8,9 @@ Usage:
     cfs gdp --table                  Print comparison table
 """
 
-import pandas as pd
 from pathlib import Path
 
-# Canonical run path (Nov 29, 2025 - with betweenness fix)
-CANONICAL_DOMESTIC = Path('results/51x51_domestic')
-
-
-def find_latest_domestic(results_dir):
-    """Find latest domestic run."""
-    results_path = Path(results_dir)
-
-    domestic_runs = sorted(
-        [d for d in results_path.glob('51x51_domestic_*') if d.is_dir()],
-        key=lambda x: x.stat().st_mtime,
-        reverse=True
-    )
-
-    return domestic_runs[0] if domestic_runs else None
-
-
-def load_centralities(run_dir):
-    """Load centralities from a run directory."""
-    csv_files = list(Path(run_dir).glob('centralities_*.csv'))
-    if not csv_files:
-        return None
-    return pd.read_csv(csv_files[0])
+from cfs_toolkit.commands._utils import CANONICAL_DOMESTIC, find_latest_domestic, load_centralities
 
 
 def gdp_command(args):

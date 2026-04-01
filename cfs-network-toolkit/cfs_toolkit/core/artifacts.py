@@ -44,13 +44,11 @@ def save_core_artifacts(config, G, centralities_df):
 
     artifact_files = []
 
-    # 1. Network graph (.gpickle)
     graph_file = run_dir / f"network_{network_type}.gpickle"
     with open(graph_file, 'wb') as f:
         pickle.dump(G, f, pickle.HIGHEST_PROTOCOL)
     artifact_files.append(graph_file)
 
-    # 2. Centralities (CSV)
     centralities_file = run_dir / f"centralities_{network_type}.csv"
     ranked_df = centralities_df.copy()
     ranked_df['rank_betweenness'] = ranked_df['betweenness'].rank(ascending=False, method='min').astype(int)
@@ -60,7 +58,6 @@ def save_core_artifacts(config, G, centralities_df):
     ranked_df.to_csv(centralities_file, index=False, float_format='%.6f')
     artifact_files.append(centralities_file)
 
-    # 3. Run configuration (YAML)
     config_file = run_dir / "run_config.yaml"
     with open(config_file, 'w') as f:
         yaml.safe_dump(config, f, sort_keys=False)
@@ -107,7 +104,6 @@ def save_pipeline_artifacts(config, G, centralities_df, edges, comparative_resul
 
     artifact_files = []
 
-    # 1. Centrality Rankings (CSV)
     centralities_file = run_dir / f"centralities_{network_type}.csv"
     
     # Add rankings to centralities
@@ -122,7 +118,6 @@ def save_pipeline_artifacts(config, G, centralities_df, edges, comparative_resul
     ranked_df.to_csv(centralities_file, index=False, float_format='%.6f')
     artifact_files.append(centralities_file)
     
-    # 2. Network Summary Stats (JSON)
     total_value = edges['SHIPMT_VALUE'].sum()
     top_betweenness = ranked_df.nsmallest(3, 'rank_betweenness')['label'].tolist()
     
@@ -159,7 +154,6 @@ def save_pipeline_artifacts(config, G, centralities_df, edges, comparative_resul
         json.dump(network_summary, f, indent=2)
     artifact_files.append(summary_file)
     
-    # 3. Top Trade Flows (CSV)
     top_flows = edges.nlargest(100, 'SHIPMT_VALUE').copy()
     
     # Add state labels for readability
@@ -176,7 +170,6 @@ def save_pipeline_artifacts(config, G, centralities_df, edges, comparative_resul
     top_flows.to_csv(flows_file, index=False)
     artifact_files.append(flows_file)
     
-    # 4. Critical Bridge Connections (edges involving top betweenness states)
     top_betweenness_ids = ranked_df.nsmallest(5, 'rank_betweenness')['state_id'].tolist()
     
     bridge_edges = edges[
@@ -196,7 +189,6 @@ def save_pipeline_artifacts(config, G, centralities_df, edges, comparative_resul
     bridge_edges.to_csv(bridges_file, index=False)
     artifact_files.append(bridges_file)
     
-    # 5. NetworkX Graph Object (complete network for flexible analysis)
     graph_file = run_dir / f"network_{network_type}.gpickle"
     
     import pickle
@@ -206,22 +198,16 @@ def save_pipeline_artifacts(config, G, centralities_df, edges, comparative_resul
     artifact_files.append(graph_file)
     print(f"   Saved complete network graph ({G.number_of_nodes()} nodes, {G.number_of_edges()} edges)")
     
-    # 6. Run Configuration (exact config used)
     import yaml
     config_file = run_dir / "run_config.yaml"
     with open(config_file, 'w') as dest:
         yaml.safe_dump(config, dest, sort_keys=False)
     artifact_files.append(config_file)
     
-    # 7. Key Findings Report (Markdown) - Dynamic based on actual results
-    
     # Extract actual top states for dynamic insights
     top_betweenness_states = ranked_df.nsmallest(3, 'rank_betweenness')
     top_eigenvector_states = ranked_df.nsmallest(3, 'rank_eigenvector') 
     top_outdegree_states = ranked_df.nsmallest(3, 'rank_out_degree')
-    
-    # Generate geographic insight based on actual top betweenness states
-    geographic_insight = _generate_geographic_insight(top_betweenness_states['label'].tolist())
     
     # Generate sample size warning if applicable
     sample_warning = ""
@@ -256,7 +242,7 @@ Full dataset recommended for publication-quality results.
 ## Key Insights
 
 ### Network Bridge Analysis
-{geographic_insight}
+**Top betweenness centrality states** ({', '.join(top_betweenness_states['label'].tolist()[:3])}) serve as critical bridges in the trade network, occupying positions where disruption would significantly impact overall connectivity.
 
 ### Economic Influence Patterns
 **Top eigenvector centrality states** ({', '.join(top_eigenvector_states['label'].tolist()[:3])}) represent economic influence hubs - states whose trading partners are themselves highly connected, amplifying their network importance.
@@ -294,7 +280,6 @@ Full dataset recommended for publication-quality results.
         f.write(findings_content)
     artifact_files.append(findings_file)
     
-    # 8. Artifacts Manifest (what was generated)
     manifest = {
         "run_info": {
             "timestamp": timestamp,
@@ -320,14 +305,7 @@ Full dataset recommended for publication-quality results.
         json.dump(manifest, f, indent=2)
     artifact_files.append(manifest_file)
     
-    # 9. Legacy comparative analysis - DEPRECATED
-    # Note: Comparative analysis now handled in main.py via comparison_utils module
-    # This entire section can be removed in future cleanup
-    comparative_analysis = None
-    # Old code attempted to import deleted comparative_analysis.py module
-    # Now comparison happens in main.py Step 8 using comparison_utils
-
-    # 10. Save comparative statistics (if provided)
+    # Save comparative statistics (if provided)
     has_comparative = False
     if comparative_results is not None:
         try:
@@ -404,157 +382,16 @@ Full dataset recommended for publication-quality results.
         "total_size_mb": total_size_mb,
         "network_type": network_type,
         "timestamp": timestamp,
-        "comparative_analysis": comparative_analysis is not None,
         "comparative_stats": has_comparative
     }
 
 
 def _format_top_states(df, rank_col, value_col, n=5):
-    """Format top N states for markdown report."""
     top = df.nsmallest(n, rank_col)
     lines = []
     for _, row in top.iterrows():
         lines.append(f"{int(row[rank_col])}. **{row['label']}**: {row[value_col]:.4f}")
     return "\n".join(lines)
-
-
-def _generate_geographic_insight(top_betweenness_states):
-    """Generate geographic insight based on actual top betweenness centrality states."""
-    
-    # Geographic isolation patterns - known geographic bottlenecks
-    geographic_isolates = {'DC', 'HI', 'AK', 'DE', 'VT', 'NH', 'RI', 'WV', 'MT', 'WY', 'ND', 'SD'}
-    
-    # Border/coastal states that can act as bridges
-    border_coastal = {'WA', 'CA', 'TX', 'FL', 'NY', 'ME', 'LA', 'WV', 'ND', 'MT'}
-    
-    # Resource/commodity states
-    resource_states = {'AK', 'WV', 'WY', 'ND', 'TX', 'LA', 'OK', 'KS'}
-    
-    # Administrative/financial centers
-    admin_centers = {'DC', 'NY', 'IL', 'CA'}
-    
-    # Analyze the actual top states
-    insights = []
-    
-    for state in top_betweenness_states[:3]:  # Top 3 only
-        
-        explanations = []
-        
-        if state in geographic_isolates:
-            if state == 'DC':
-                explanations.append("administrative hub with specialized federal/regulatory flows")
-            elif state in ['HI', 'AK']:
-                explanations.append("geographic isolation creates trade bottlenecks")
-            elif state in ['WV', 'VT', 'NH']:
-                explanations.append("mountainous geography creates natural trade corridors")
-            elif state in ['DE', 'RI']:
-                explanations.append("small size concentrates flows through limited routes")
-            else:
-                explanations.append("geographic constraints create bottleneck effects")
-        
-        if state in resource_states:
-            if state in ['AK', 'WY']:
-                explanations.append("energy/mineral resource flows")
-            elif state == 'WV':
-                explanations.append("coal and energy distribution hub")
-            elif state in ['ND', 'TX']:
-                explanations.append("oil and agricultural commodity flows")
-            elif state == 'LA':
-                explanations.append("Gulf Coast energy and petrochemical hub")
-            else:
-                explanations.append("resource-based trade specialization")
-        
-        if state in border_coastal:
-            explanations.append("strategic border/coastal position")
-        
-        if state in admin_centers:
-            explanations.append("major economic/administrative center")
-        
-        # Default explanation if no specific pattern matches
-        if not explanations:
-            explanations.append("acts as critical intermediary in interstate trade network")
-        
-        # Format the explanation
-        explanation = " and ".join(explanations)
-        insights.append(f"- **{state}**: {explanation.capitalize()}")
-    
-    # Create the insight section
-    result = f"""**Top betweenness centrality states** ({', '.join(top_betweenness_states[:3])}) serve as critical bridges in the trade network:
-
-{chr(10).join(insights)}
-
-These states occupy strategic positions where disruption would significantly impact overall network connectivity."""
-    
-    return result
-
-
-def _create_comparison_summary(analysis, output_file):
-    """Create markdown summary of the comparison analysis."""
-    
-    metadata = analysis['analysis_metadata']
-    centrality = analysis['centrality_measures']
-    
-    summary = f"""# US State Centrality Comparison: Domestic vs International Networks
-
-**Research Question**: {metadata['research_question']}
-
-**Methodology**: {metadata['methodology']}
-
-## Executive Summary
-
-Comparing centrality patterns among {metadata['n_states']} US jurisdictions between domestic-only (51×51) and international-inclusive (52×52) networks.
-
-## Key Findings by Centrality Measure
-
-"""
-    
-    for measure, results in centrality.items():
-        summary += f"### {measure.title()} Centrality\n\n"
-        summary += f"- **States with ranking changes**: {results['states_changed']}/51\n"
-        summary += f"- **Network correlation**: {results['correlation']:.3f}\n\n"
-        
-        if results['top_gainers']:
-            summary += "**Top Gainers** (better ranking with international):\n"
-            for gainer in results['top_gainers']:
-                summary += f"- {gainer['state']}: #{gainer['old_rank']} → #{gainer['new_rank']} (+{gainer['positions_gained']} positions)\n"
-            summary += "\n"
-        
-        if results['top_losers']:
-            summary += "**Top Losers** (worse ranking with international):\n"
-            for loser in results['top_losers']:
-                summary += f"- {loser['state']}: #{loser['old_rank']} → #{loser['new_rank']} (-{loser['positions_lost']} positions)\n"
-            summary += "\n"
-        
-        summary += "**Top 5 Rankings Comparison**:\n\n"
-        summary += "| Rank | Domestic Only | With International |\n"
-        summary += "|------|---------------|--------------------|\n"
-        
-        for i in range(5):
-            dom = results['top_5_domestic'][i]
-            intl = results['top_5_international'][i]
-            summary += f"| {i+1} | {dom['state']} ({dom['value']:.3f}) | {intl['state']} ({intl['value']:.3f}) |\n"
-        
-        summary += "\n"
-    
-    summary += """## Research Implications
-
-This corrected analysis addresses the meaningful research question: how does international integration change the economic geography of US interstate commerce? 
-
-By treating Rest of World as network infrastructure rather than a competing jurisdiction, we can identify which US states gain or lose centrality when international flows are considered.
-
-## Methodology Notes
-
-- RoW (Rest of World) excluded from centrality rankings 
-- Analysis focuses on relative position changes among US jurisdictions
-- Both networks use identical centrality calculation methods
-- Survey-weighted trade flows (WGT_FACTOR × SHIPMT_VALUE)
-
----
-*Generated by consolidated thesis pipeline comparative analysis module*
-"""
-    
-    with open(output_file, 'w') as f:
-        f.write(summary)
 
 
 def _create_comparative_summary(comparative_results, output_file):
@@ -634,7 +471,6 @@ def _create_comparative_summary(comparative_results, output_file):
 
 
 def _get_file_description(file_path):
-    """Get description for each file type."""
     name = file_path.name.lower()
 
     if "centralities" in name:

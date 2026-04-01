@@ -16,21 +16,11 @@ def load_gdp_data(gdp_csv_path):
     """
     Load GDP data from cleaned CSV file.
 
-    Parameters
-    ----------
-    gdp_csv_path : str or Path
-        Path to state_gdp_2017.csv
+    Args:
+        gdp_csv_path: Path to state_gdp_2017.csv
 
-    Returns
-    -------
-    dict
+    Returns:
         Dictionary mapping state_abbrev to gdp_2017_q4_millions
-
-    Example
-    -------
-    >>> gdp_dict = load_gdp_data("data/state_gdp_2017.csv")
-    >>> gdp_dict['CA']
-    2802289
     """
     df = pd.read_csv(gdp_csv_path)
     return dict(zip(df['state_abbrev'], df['gdp_2017_q4_millions']))
@@ -40,38 +30,15 @@ def compute_gdp_vs_centrality_comparison(centralities_df, gdp_dict):
     """
     Merge centrality rankings with GDP rankings and compute differences.
 
-    Parameters
-    ----------
-    centralities_df : pd.DataFrame
-        Centrality data with columns: state_id, label, eigenvector, rank_eigenvector
-    gdp_dict : dict
-        State abbreviation to GDP value mapping
+    Args:
+        centralities_df: Centrality data with columns: state_id, label,
+            eigenvector, rank_eigenvector
+        gdp_dict: State abbreviation to GDP value mapping
 
-    Returns
-    -------
-    pd.DataFrame
-        Enriched dataframe with columns:
-        - state_abbrev: 2-letter state code
-        - eigenvector_rank: Network centrality rank (1 = most central)
-        - gdp_value: GDP in millions
-        - gdp_rank: Economic size rank (1 = largest economy)
-        - rank_diff: gdp_rank - eigenvector_rank
-          - Positive = structural overperformer (more central than GDP predicts)
-          - Negative = structural underperformer (less central than GDP predicts)
-        - eigenvector_score: Raw eigenvector centrality value
-        - normalized_centrality: Eigenvector score per billion dollars of GDP
-        - normalized_rank: Rank by GDP-normalized centrality (1 = highest per-GDP centrality)
-
-    Notes
-    -----
-    Rank differences indicate structural position relative to economic size:
-    - KY: +14 (logistics bridge connecting manufacturing regions)
-    - MA: -11 (knowledge economy, structurally peripheral)
-    - DC: -15 (administrative center, minimal commodity flows)
-
-    Normalized centrality shows network importance per economic dollar:
-    - High normalized centrality: Small economies with strategic network positions
-    - Low normalized centrality: Large economies with limited network integration
+    Returns:
+        Enriched DataFrame with state_abbrev, eigenvector_rank, gdp_value,
+        gdp_rank, rank_diff (positive = overperformer), eigenvector_score,
+        normalized_centrality, and normalized_rank columns.
     """
     # Add GDP values to centralities dataframe
     df = centralities_df.copy()
@@ -120,24 +87,13 @@ def identify_outliers(comparison_df, threshold=5):
     """
     Identify states with |rank_diff| >= threshold.
 
-    Parameters
-    ----------
-    comparison_df : pd.DataFrame
-        Output from compute_gdp_vs_centrality_comparison()
-    threshold : int, default=5
-        Minimum absolute rank difference to be considered an outlier
+    Args:
+        comparison_df: Output from compute_gdp_vs_centrality_comparison()
+        threshold: Minimum absolute rank difference to flag as outlier
 
-    Returns
-    -------
-    tuple of (list, list)
-        (overperformers, underperformers)
-        Each list contains tuples: (state, rank_diff, gdp_rank, eig_rank, narrative)
-
-    Example
-    -------
-    >>> over, under = identify_outliers(comparison_df, threshold=5)
-    >>> over[0]
-    ('KY', 14, 28, 14, 'Logistics bridge connecting Midwest-Southeast manufacturing')
+    Returns:
+        Tuple of (overperformers, underperformers). Each list contains
+        tuples of (state, rank_diff, gdp_rank, eig_rank, narrative).
     """
     outliers = comparison_df[comparison_df['rank_diff'].abs() >= threshold].copy()
 
@@ -185,26 +141,12 @@ def identify_outliers(comparison_df, threshold=5):
 
 def generate_gdp_centrality_scatter(comparison_df, output_path, label_threshold=8):
     """
-    Create publication-quality scatter plot comparing GDP rank to eigenvector rank.
+    Create scatter plot comparing GDP rank to eigenvector centrality rank.
 
-    Parameters
-    ----------
-    comparison_df : pd.DataFrame
-        Output from compute_gdp_vs_centrality_comparison()
-    output_path : str or Path
-        Path for output PNG file (will also create PDF version)
-    label_threshold : int, default=8
-        Label states with |rank_diff| >= this value
-
-    Notes
-    -----
-    Figure specifications:
-    - Size: 8" × 6" (fits LaTeX 2-column or full-width)
-    - Diagonal line: perfect correspondence (GDP rank = centrality rank)
-    - Points above diagonal: structural overperformers (red)
-    - Points below diagonal: structural underperformers (blue)
-    - Labels for |rank_diff| >= label_threshold
-    - Axes: "GDP Rank (2017 Q4)" vs "Eigenvector Centrality Rank (51×51)"
+    Args:
+        comparison_df: Output from compute_gdp_vs_centrality_comparison()
+        output_path: Path for output PNG (PDF also saved alongside)
+        label_threshold: Label states with |rank_diff| >= this value
     """
     # Set publication style
     sns.set_style("whitegrid")
@@ -294,21 +236,12 @@ def generate_gdp_centrality_scatter(comparison_df, output_path, label_threshold=
 
 def generate_normalized_centrality_bar(comparison_df, output_path, top_n=15):
     """
-    Create bar chart showing GDP-normalized centrality (centrality per billion GDP).
+    Create bar chart of GDP-normalized centrality (centrality per billion GDP).
 
-    Parameters
-    ----------
-    comparison_df : pd.DataFrame
-        Output from compute_gdp_vs_centrality_comparison()
-    output_path : str or Path
-        Path for output PNG file (will also create PDF version)
-    top_n : int, default=15
-        Number of top states to show
-
-    Notes
-    -----
-    Shows which states have highest network centrality relative to their economic size.
-    High normalized centrality = strategic network position despite small economy.
+    Args:
+        comparison_df: Output from compute_gdp_vs_centrality_comparison()
+        output_path: Path for output PNG (PDF also saved alongside)
+        top_n: Number of top states to display
     """
     # Set publication style
     sns.set_style("whitegrid")

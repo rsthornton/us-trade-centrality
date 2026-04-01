@@ -102,7 +102,7 @@ def load_faf5_international_edges(
     total_export_rows = 0
     
     try:
-        # Stream through file in chunks
+        # FAF5 is ~500MB, stream in chunks to avoid memory issues
         iterator = pd.read_csv(
             filepath,
             usecols=usecols,

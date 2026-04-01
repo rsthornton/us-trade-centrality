@@ -11,7 +11,7 @@ Usage:
     python main.py --config configs/X.yaml   # Custom configuration
 
 Core Outputs (default):
-    results/run_YYYYMMDD_HHMMSS/
+    results/51x51_domestic_YYYYMMDD_HHMMSS/
     ├── network_*.gpickle      # The graph
     ├── centralities_*.csv     # The scores
     └── run_config.yaml        # What was run

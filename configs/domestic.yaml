@@ -13,7 +13,7 @@ data:
 
 filters:                              # Optional (applies to FAF5)
   modes: [1,2,3,4,5]
-  sctg2: ["15","16","17"]
+  sctg2: ["15","16","17"]             # Ignored when source=cfs; only used for FAF runs
 
 network:
   interstate_only: true               # drop intrastate flows

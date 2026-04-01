@@ -11,17 +11,7 @@ log = logging.getLogger(__name__)
 
 
 def calculate_rank_changes(full_df, threshold_df, centrality_measure):
-    """
-    Calculate rank changes between full network and filtered network.
-
-    Args:
-        full_df (pd.DataFrame): Centralities from full network
-        threshold_df (pd.DataFrame): Centralities from filtered network
-        centrality_measure (str): Which centrality to compare ('betweenness', 'eigenvector', 'out_degree')
-
-    Returns:
-        pd.DataFrame: Columns [state_id, label, full_rank, threshold_rank, rank_change, sensitivity]
-    """
+    """Compare centrality rankings between full and filtered networks."""
     # Rank states in both networks
     full_df = full_df.copy()
     threshold_df = threshold_df.copy()
@@ -121,6 +111,7 @@ def find_connectivity_breaking_point(G, weight_attr='weight', start=1, end=99, v
         >>> print(f"Network breaks at {result['breaking_pct']}%")
         >>> print(f"Safe to filter up to {result['max_connected_pct']}%")
     """
+    # 34% fragments the network -- found during advisor meeting 2025-11
     if verbose:
         log.info("Searching for connectivity breaking point...")
         print(f"{'%':>4} | {'Threshold':>12} | {'Edges':>6} | {'SCCs':>4} | Status")

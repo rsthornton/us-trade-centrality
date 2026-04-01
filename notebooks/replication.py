@@ -5,7 +5,7 @@
 #     "pandas==2.3.1",
 #     "numpy==2.3.2",
 #     "altair==5.5.0",
-#     "scipy==1.15.3",
+#     "scipy==1.16.1",
 # ]
 # [tool.marimo.display]
 # theme = "system"
@@ -64,9 +64,9 @@ with app.setup(hide_code=True):
 @app.cell(hide_code=True)
 def _():
     # REPLICATION NOTE: Domestic network produced by:
-    #   python main.py --config configs/51x51_domestic.yaml
+    #   python main.py --config configs/domestic.yaml
     # International network produced by:
-    #   python main.py --config configs/52x52_intl.yaml
+    #   python main.py --config configs/international.yaml
     # Both runs dated 2025-11-29 with weight inversion fix applied.
 
     REPO_ROOT = Path(__file__).parent.parent

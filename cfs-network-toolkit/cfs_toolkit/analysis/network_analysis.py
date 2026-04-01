@@ -11,14 +11,16 @@ import numpy as np
 from typing import Dict, List, Tuple, Any, Optional
 import warnings
 
+# TODO: temporal analysis when 2022 CFS is released
+
 
 def analyze_component_sizes(G: nx.Graph) -> Dict[str, Any]:
     """
     Analyze connected component size distribution for network validation.
-    
-    Research Question: Is our network properly connected?
-    Expected Result: Single component containing all states (sanity check)
-    
+
+    Checks whether the network forms a single connected component (expected
+    for a complete interstate trade network).
+
     Args:
         G: NetworkX graph (will be converted to undirected for component analysis)
         
@@ -69,10 +71,10 @@ def analyze_component_sizes(G: nx.Graph) -> Dict[str, Any]:
 def analyze_strongly_connected_components(G: nx.DiGraph) -> Dict[str, Any]:
     """
     Analyze strongly connected components and hierarchical structure.
-    
-    Research Question: What are the hierarchical trade cycle structures?
-    Research Insight: Reveals economic feedback loops and trade dependency hierarchies
-    
+
+    Identifies trade cycle structures and dependency hierarchies via
+    SCC decomposition and DAG condensation.
+
     Args:
         G: NetworkX directed graph
         
@@ -125,7 +127,7 @@ def analyze_strongly_connected_components(G: nx.DiGraph) -> Dict[str, Any]:
         # Try to get node labels if available
         try:
             labels = [G.nodes[node].get('label', str(node)) for node in nodes]
-        except:
+        except Exception:
             labels = [str(node) for node in nodes]
             
         scc_details.append({
@@ -155,10 +157,10 @@ def analyze_strongly_connected_components(G: nx.DiGraph) -> Dict[str, Any]:
 def analyze_centrality_bounds(centralities_df: pd.DataFrame) -> Dict[str, Any]:
     """
     Analyze centrality measure bounds and normalization implications.
-    
-    Research Question: How to properly normalize bounded vs unbounded centrality measures?
-    Methodological Insight: Informs combined influence scoring methodology
-    
+
+    Determines theoretical and observed bounds for each centrality measure
+    to inform normalization strategy when combining scores.
+
     Args:
         centralities_df: DataFrame with centrality measures (must have columns:
                         'betweenness', 'eigenvector', 'out_degree')

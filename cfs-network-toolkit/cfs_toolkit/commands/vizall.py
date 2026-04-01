@@ -16,9 +16,7 @@ import numpy as np
 from pathlib import Path
 import sys
 
-# Canonical run paths (Nov 29, 2025 - with betweenness fix)
-CANONICAL_DOMESTIC = Path('results/51x51_domestic')
-CANONICAL_INTL = Path('results/52x52_international')
+from cfs_toolkit.commands._utils import CANONICAL_DOMESTIC, CANONICAL_INTL
 
 
 def list_available_visualizations():
@@ -356,28 +354,6 @@ def generate_figure_visualizations(output_dir, G_51=None, G_52=None):
     return generated
 
 
-def generate_geographic_visualizations(centralities_df, output_dir):
-    """Generate geographic/choropleth visualizations."""
-    from cfs_toolkit.visualizations.geographic import create_all_centrality_choropleths
-
-    generated = []
-    geo_dir = output_dir / 'geographic'
-    geo_dir.mkdir(exist_ok=True)
-
-    print("\n  GEOGRAPHIC VISUALIZATIONS")
-    print("  " + "-" * 40)
-
-    try:
-        print("  Generating choropleth maps...")
-        files = create_all_centrality_choropleths(centralities_df, geo_dir)
-        generated.extend(files)
-    except Exception as e:
-        print(f"    ERROR: {e}")
-
-    print(f"  Generated {len(generated)} geographic visualizations")
-    return generated
-
-
 def generate_gdp_visualizations(centralities_df, output_dir):
     """Generate GDP comparison visualizations."""
     from cfs_toolkit.analysis.gdp_comparison import (
@@ -498,10 +474,6 @@ def vizall_command(args):
         generated = generate_figure_visualizations(output_dir, G_51, G_52)
         all_generated.extend(generated)
 
-    if category in ['all', 'geographic']:
-        generated = generate_geographic_visualizations(centralities_51, output_dir)
-        all_generated.extend(generated)
-
     if category in ['all', 'gdp']:
         generated = generate_gdp_visualizations(centralities_51, output_dir)
         all_generated.extend(generated)
@@ -540,7 +512,7 @@ def add_vizall_parser(subparsers):
     )
     parser.add_argument(
         '--category',
-        choices=['all', 'base', 'committee', 'matrices', 'figures', 'geographic', 'gdp'],
+        choices=['all', 'base', 'committee', 'matrices', 'figures', 'gdp'],
         default='all',
         help='Generate only specific category (default: all)'
     )

@@ -11,31 +11,9 @@ Usage:
 import sys
 from pathlib import Path
 
-# Canonical run paths (Nov 29, 2025 - with betweenness fix)
-CANONICAL_DOMESTIC = Path('results/51x51_domestic')
-CANONICAL_INTL = Path('results/52x52_international')
-
-
-def find_latest_runs(results_dir):
-    """Find latest domestic and international runs."""
-    results_path = Path(results_dir)
-
-    domestic_runs = sorted(
-        [d for d in results_path.glob('51x51_domestic_*') if d.is_dir()],
-        key=lambda x: x.stat().st_mtime,
-        reverse=True
-    )
-
-    intl_runs = sorted(
-        [d for d in results_path.glob('52x52_intl_*') if d.is_dir()],
-        key=lambda x: x.stat().st_mtime,
-        reverse=True
-    )
-
-    domestic = domestic_runs[0] if domestic_runs else None
-    intl = intl_runs[0] if intl_runs else None
-
-    return domestic, intl
+from cfs_toolkit.commands._utils import (
+    CANONICAL_DOMESTIC, CANONICAL_INTL, find_latest_runs,
+)
 
 
 def figures_command(args):

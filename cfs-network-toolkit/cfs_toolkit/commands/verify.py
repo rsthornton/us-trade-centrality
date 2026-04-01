@@ -6,53 +6,14 @@ Usage:
     cfs verify --run X               Compare specific run
 """
 
-import pandas as pd
 import numpy as np
 from pathlib import Path
 
-# Canonical run paths (Nov 29, 2025 - with betweenness fix)
-CANONICAL_DOMESTIC = Path('results/51x51_domestic')
-CANONICAL_INTL = Path('results/52x52_international')
-
-
-def find_latest_runs(results_dir):
-    """Find latest domestic and international runs."""
-    results_path = Path(results_dir)
-
-    domestic_runs = sorted(
-        [d for d in results_path.glob('51x51_domestic_*') if d.is_dir()],
-        key=lambda x: x.stat().st_mtime,
-        reverse=True
-    )
-
-    intl_runs = sorted(
-        [d for d in results_path.glob('52x52_intl_*') if d.is_dir()],
-        key=lambda x: x.stat().st_mtime,
-        reverse=True
-    )
-
-    # Skip canonical runs when finding "latest"
-    domestic = None
-    for run in domestic_runs:
-        if run != CANONICAL_DOMESTIC:
-            domestic = run
-            break
-
-    intl = None
-    for run in intl_runs:
-        if run != CANONICAL_INTL:
-            intl = run
-            break
-
-    return domestic, intl
-
-
-def load_centralities(run_dir):
-    """Load centralities from a run directory."""
-    csv_files = list(Path(run_dir).glob('centralities_*.csv'))
-    if not csv_files:
-        return None
-    return pd.read_csv(csv_files[0])
+from cfs_toolkit.commands._utils import (
+    CANONICAL_DOMESTIC, CANONICAL_INTL,
+    find_latest_runs_excluding_canonical as find_latest_runs,
+    load_centralities,
+)
 
 
 def verify_command(args):

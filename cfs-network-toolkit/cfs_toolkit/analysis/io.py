@@ -44,15 +44,7 @@ def load_network_graph(result_dir):
 
 
 def extract_edge_weights(G):
-    """
-    Extract all edge weights from graph.
-
-    Args:
-        G (nx.DiGraph): Trade network
-
-    Returns:
-        np.array: Array of edge weights
-    """
+    """Extract all edge weights from graph as a numpy array."""
     weights = np.array([data['weight'] for _, _, data in G.edges(data=True)])
     log.info(f"  Extracted {len(weights):,} edge weights")
     return weights

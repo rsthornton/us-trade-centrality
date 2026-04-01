@@ -7,51 +7,10 @@ Usage:
     cfs show --run results/X   From specific run
 """
 
-import pandas as pd
 from pathlib import Path
 
 from cfs_toolkit.analysis import load_network_graph
-
-
-# State abbreviation to full name mapping
-STATE_NAMES = {
-    'AL': 'Alabama', 'AK': 'Alaska', 'AZ': 'Arizona', 'AR': 'Arkansas',
-    'CA': 'California', 'CO': 'Colorado', 'CT': 'Connecticut', 'DE': 'Delaware',
-    'FL': 'Florida', 'GA': 'Georgia', 'HI': 'Hawaii', 'ID': 'Idaho',
-    'IL': 'Illinois', 'IN': 'Indiana', 'IA': 'Iowa', 'KS': 'Kansas',
-    'KY': 'Kentucky', 'LA': 'Louisiana', 'ME': 'Maine', 'MD': 'Maryland',
-    'MA': 'Massachusetts', 'MI': 'Michigan', 'MN': 'Minnesota', 'MS': 'Mississippi',
-    'MO': 'Missouri', 'MT': 'Montana', 'NE': 'Nebraska', 'NV': 'Nevada',
-    'NH': 'New Hampshire', 'NJ': 'New Jersey', 'NM': 'New Mexico', 'NY': 'New York',
-    'NC': 'North Carolina', 'ND': 'North Dakota', 'OH': 'Ohio', 'OK': 'Oklahoma',
-    'OR': 'Oregon', 'PA': 'Pennsylvania', 'RI': 'Rhode Island', 'SC': 'South Carolina',
-    'SD': 'South Dakota', 'TN': 'Tennessee', 'TX': 'Texas', 'UT': 'Utah',
-    'VT': 'Vermont', 'VA': 'Virginia', 'WA': 'Washington', 'WV': 'West Virginia',
-    'WI': 'Wisconsin', 'WY': 'Wyoming', 'DC': 'District of Columbia',
-    'RoW': 'Rest of World'
-}
-
-
-def find_latest_run(results_dir):
-    """Find the most recent run directory."""
-    results_path = Path(results_dir)
-    if not results_path.exists():
-        return None
-
-    runs = [d for d in results_path.iterdir() if d.is_dir() and not d.name.startswith('.')]
-    if not runs:
-        return None
-
-    return max(runs, key=lambda x: x.stat().st_mtime)
-
-
-def load_centralities(run_dir):
-    """Load centralities CSV from a run directory."""
-    run_path = Path(run_dir)
-    csv_files = list(run_path.glob('centralities_*.csv'))
-    if not csv_files:
-        return None
-    return pd.read_csv(csv_files[0])
+from cfs_toolkit.commands._utils import STATE_NAMES, find_latest_run, load_centralities
 
 
 def format_dollars(value):

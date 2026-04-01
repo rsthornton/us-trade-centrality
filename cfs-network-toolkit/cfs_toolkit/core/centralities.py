@@ -46,8 +46,8 @@ def compute_all_centralities(G, invert_betweenness_weights=True):
     # Eigenvector centrality with PageRank fallback
     try:
         eigenvector = nx.eigenvector_centrality_numpy(G, weight='weight')
-    except:
-        log.warning("Eigenvector centrality failed, using PageRank")
+    except Exception:
+        log.warning("eigenvector failed to converge, falling back to PageRank")
         eigenvector = nx.pagerank(G, weight='weight')
     
     # Weighted out-degree (normalized [0,1])

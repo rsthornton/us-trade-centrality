@@ -32,15 +32,13 @@ def preprocess_cfs_data(df, interstate_only=True, sctg2_filter=None):
     
     df = df.copy()
     
-    # Step 1: Create weighted value for proper survey representation
-    # Cast to float64 before multiplication to avoid float32 accumulation errors
+    # float64 avoids accumulation errors on 5.9M rows
     df['SHIPMT_VALUE'] = df['SHIPMT_VALUE'].astype('float64')
     df['WGT_FACTOR'] = df['WGT_FACTOR'].astype('float64')
     df['weighted_value'] = df['SHIPMT_VALUE'] * df['WGT_FACTOR']
     
     log.info(f"CFS preprocessing started: {len(df):,} raw records")
     
-    # Step 2: Optional commodity filtering
     if sctg2_filter:
         # Extract and normalize SCTG codes to 2-digit format, handling nulls
         sctg_series = (df['SCTG'].astype('string')
@@ -50,12 +48,10 @@ def preprocess_cfs_data(df, interstate_only=True, sctg2_filter=None):
         df = df[sctg_series.isin(sctg2_set)]
         log.info(f"After commodity filter: {len(df):,} records")
     
-    # Step 3: Interstate filtering
     if interstate_only:
         df = df[df['ORIG_STATE'] != df['DEST_STATE']]
         log.info(f"After interstate filter: {len(df):,} records")
     
-    # Step 4: Data quality validation
     # Remove records with missing or invalid state codes
     df = df[
         (df['ORIG_STATE'].between(1, 56)) & 
@@ -88,14 +84,12 @@ def aggregate_cfs_to_edges(df):
     
     log.info(f"Aggregating {len(df):,} CFS records to edge list")
     
-    # Group by state pairs and sum weighted values
     edges = (
         df.groupby(['ORIG_STATE', 'DEST_STATE'], as_index=False)
         .agg({'weighted_value': 'sum'})
         .rename(columns={'weighted_value': 'SHIPMT_VALUE'})
     )
     
-    # Ensure consistent data types (match FAF5 output schema)
     edges['ORIG_STATE'] = edges['ORIG_STATE'].astype('int16')
     edges['DEST_STATE'] = edges['DEST_STATE'].astype('int16')  
     edges['SHIPMT_VALUE'] = edges['SHIPMT_VALUE'].astype('float64')

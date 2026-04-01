@@ -9,16 +9,7 @@ log = logging.getLogger(__name__)
 
 
 def calculate_distribution_stats(weights, network_label):
-    """
-    Calculate comprehensive distribution statistics.
-
-    Args:
-        weights (np.array): Edge weights
-        network_label (str): Network identifier (e.g., "51x51", "52x52")
-
-    Returns:
-        dict: Distribution statistics
-    """
+    """Calculate distribution statistics (percentiles, IQR, outlier bounds) for edge weights."""
     percentiles = [10, 25, 50, 75, 90, 95, 99]
     percentile_values = np.percentile(weights, percentiles)
 

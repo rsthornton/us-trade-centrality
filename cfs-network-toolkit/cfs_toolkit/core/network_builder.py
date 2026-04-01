@@ -49,21 +49,18 @@ def build_trade_network(edges_df, node_labels=True, validate_edges=True):
     
     log.info(f"Building NetworkX graph from {len(edges_df):,} edges")
     
-    # Create directed graph
     G = nx.DiGraph()
     
-    # Add all unique nodes (ensures isolated nodes are included)
+    # include isolated nodes
     all_nodes = set(edges_df['ORIG_STATE'].unique()) | set(edges_df['DEST_STATE'].unique())
     G.add_nodes_from(all_nodes)
     
-    # Add edges with weights (faster than iterrows)
     G.add_weighted_edges_from(
         ((r.ORIG_STATE, r.DEST_STATE, r.SHIPMT_VALUE) 
          for r in edges_df.itertuples(index=False)),
         weight='weight'
     )
     
-    # Add node labels if requested
     if node_labels:
         node_labels_dict = {}
         for node in G.nodes():
@@ -74,7 +71,6 @@ def build_trade_network(edges_df, node_labels=True, validate_edges=True):
         
         nx.set_node_attributes(G, node_labels_dict, 'label')
     
-    # Add graph metadata
     total_trade_value = edges_df['SHIPMT_VALUE'].sum()
     has_international = (edges_df['ORIG_STATE'] == 52).any() or (edges_df['DEST_STATE'] == 52).any()
     network_size = f"{len(G.nodes())}×{len(G.nodes())}"
@@ -161,15 +157,7 @@ def add_node_attributes(G, attribute_data, attribute_name):
 
 
 def _validate_edge_schema(edges_df):
-    """
-    Internal validation for edge list schema.
-    
-    Args:
-        edges_df (pd.DataFrame): Edge list to validate
-        
-    Raises:
-        ValueError: If schema is invalid
-    """
+    """Check edge list has required columns and valid values."""
     
     required_cols = ['ORIG_STATE', 'DEST_STATE', 'SHIPMT_VALUE']
     missing_cols = set(required_cols) - set(edges_df.columns)

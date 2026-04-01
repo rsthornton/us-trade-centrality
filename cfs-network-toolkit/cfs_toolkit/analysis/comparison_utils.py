@@ -7,11 +7,15 @@ Helper functions for loading and preparing comparison data between
 Used to enable creative visualizations that require comparison data.
 """
 
+import logging
+
 import pandas as pd
 import numpy as np
 from pathlib import Path
 from typing import Dict, Optional, List
 from scipy.stats import spearmanr, kendalltau
+
+log = logging.getLogger(__name__)
 
 
 def load_comparison_data_from_results(
@@ -37,15 +41,13 @@ def load_comparison_data_from_results(
         file_52 = international_dir / "centralities_52x52_intl.csv"
         
         if not file_51.exists() or not file_52.exists():
-            print(f"   ⚠️ Centrality files not found:")
-            print(f"      51×51: {file_51} ({'exists' if file_51.exists() else 'missing'})")
-            print(f"      52×52: {file_52} ({'exists' if file_52.exists() else 'missing'})")
+            log.warning(f"Centrality files not found: 51x51={file_51.exists()}, 52x52={file_52.exists()}")
             return None
         
         df_51_full = pd.read_csv(file_51)
         df_52_full = pd.read_csv(file_52)
         
-        print(f"   ✓ Loaded centrality data: 51×51 ({len(df_51_full)} states), 52×52 ({len(df_52_full)} states)")
+        log.info(f"Loaded centrality data: 51x51 ({len(df_51_full)} states), 52x52 ({len(df_52_full)} states)")
         
         # Extract each measure
         for measure in ['betweenness', 'eigenvector', 'out_degree']:
@@ -65,11 +67,11 @@ def load_comparison_data_from_results(
                 df_52['rank'] = range(1, len(df_52) + 1)
                 comparison_data[f'{measure}_52'] = df_52
         
-        print(f"   ✓ Prepared {len(comparison_data)} comparison datasets")
+        log.info(f"Prepared {len(comparison_data)} comparison datasets")
         return comparison_data
         
     except Exception as e:
-        print(f"   ⚠️ Error loading comparison data: {e}")
+        log.warning(f"Error loading comparison data: {e}")
         return None
 
 
@@ -115,20 +117,16 @@ def prepare_comparison_data_for_pipeline(results_dir: Path) -> Optional[Dict]:
         Comparison data dictionary or None if unavailable
     """
     
-    print("   Searching for comparison data from recent pipeline runs...")
+    log.info("Searching for comparison data from recent pipeline runs")
     
     # Find recent results
     domestic_dir, international_dir = find_recent_results(results_dir)
     
     if domestic_dir is None or international_dir is None:
-        print("   ⚠️ Could not find both domestic and international results")
-        print(f"      Domestic: {'found' if domestic_dir else 'missing'}")
-        print(f"      International: {'found' if international_dir else 'missing'}")
+        log.warning(f"Could not find both result sets: domestic={'found' if domestic_dir else 'missing'}, international={'found' if international_dir else 'missing'}")
         return None
     
-    print(f"   Using results from:")
-    print(f"      51×51: {domestic_dir.name}")
-    print(f"      52×52: {international_dir.name}")
+    log.info(f"Using results: 51x51={domestic_dir.name}, 52x52={international_dir.name}")
     
     # Load comparison data
     return load_comparison_data_from_results(domestic_dir, international_dir)

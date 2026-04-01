@@ -30,6 +30,8 @@ import networkx as nx
 from typing import Dict, List, Tuple, Optional
 import warnings
 
+# TODO: per-commodity network analysis deferred to future work
+
 
 # ============================================================================
 # COMMODITY NETWORK CONSTRUCTION
@@ -220,101 +222,6 @@ def identify_commodity_specialists(commodity_centralities: pd.DataFrame,
     )
 
     return specialists
-
-
-def compute_commodity_leadership_matrix(commodity_centralities: pd.DataFrame,
-                                        measure: str = 'eigenvector',
-                                        top_n: int = 10) -> pd.DataFrame:
-    """
-    Create matrix showing which states lead in which commodities.
-
-    Args:
-        commodity_centralities: Output from analyze_commodity_centralities()
-        measure: Centrality measure to use
-        top_n: Number of top states to include per commodity
-
-    Returns:
-        Wide-format DataFrame with states as rows, commodities as columns,
-        containing ranks (1 = highest centrality in that commodity)
-
-    Example:
-        >>> matrix = compute_commodity_leadership_matrix(results, top_n=10)
-        >>> print(matrix.head())  # Shows top 10 states across all commodities
-    """
-    # TODO: Implement pivot table of ranks
-    # For each commodity, show state ranks
-    # This creates a "leadership matrix" visualization
-    pass
-
-
-def analyze_commodity_diversification(commodity_centralities: pd.DataFrame,
-                                     measure: str = 'eigenvector',
-                                     threshold: float = 0.5) -> pd.DataFrame:
-    """
-    Analyze state diversification across commodity sectors.
-
-    Identifies whether states are:
-    - Specialists (high centrality in 1-2 commodities)
-    - Diversified (moderate centrality across many commodities)
-    - Generalists (low centrality across all commodities)
-
-    Args:
-        commodity_centralities: Output from analyze_commodity_centralities()
-        measure: Centrality measure to use
-        threshold: Minimum centrality to count as "participation"
-
-    Returns:
-        DataFrame with state-level diversification metrics:
-            - state_id, label
-            - num_commodities_active (centrality > threshold)
-            - avg_centrality (across active commodities)
-            - max_centrality (best commodity)
-            - diversification_score (coefficient of variation)
-
-    Example:
-        >>> div = analyze_commodity_diversification(results, threshold=0.5)
-        >>> specialists = div[div['num_commodities_active'] <= 2]
-        >>> generalists = div[div['num_commodities_active'] >= 10]
-    """
-    # TODO: Implement diversification metrics
-    # Group by state, compute:
-    # - Count of commodities above threshold
-    # - Average centrality
-    # - Coefficient of variation (diversity measure)
-    pass
-
-
-# ============================================================================
-# COMPARATIVE COMMODITY ANALYSIS
-# ============================================================================
-
-def compare_commodity_structures(networks: Dict[str, nx.DiGraph]) -> pd.DataFrame:
-    """
-    Compare network structure across commodity sectors.
-
-    Args:
-        networks: Dictionary of commodity code -> NetworkX graph
-
-    Returns:
-        DataFrame with commodity-level network statistics:
-            - commodity_code, commodity_name
-            - num_nodes, num_edges
-            - density, avg_clustering
-            - avg_in_degree, avg_out_degree
-            - network_diameter (if connected)
-
-    Example:
-        >>> networks = build_all_commodity_networks(df, ['01', '06', '07'])
-        >>> comparison = compare_commodity_structures(networks)
-        >>> print(comparison.sort_values('density', ascending=False))
-    """
-    # TODO: Implement network structure comparison
-    # For each commodity:
-    # - Basic stats (nodes, edges, density)
-    # - Clustering coefficient
-    # - Degree distribution
-    # - Connectivity metrics
-    pass
 
 
 # ============================================================================
