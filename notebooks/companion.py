@@ -1078,7 +1078,7 @@ def _(gdp_centrality_df, mo):
 
     mo.vstack([
         mo.md("---"),
-        mo.md("## The Thesis Finding: Structure ≠ Size"),
+        mo.md("## Structural Undervaluation: Structure ≠ Size"),
         _fig,
         mo.hstack([
             mo.callout(mo.md(f"**Overperformers** (green)\n\n{_over_str}\n\n*Manufacturing, energy, agriculture*"), kind='success'),
@@ -1086,6 +1086,8 @@ def _(gdp_centrality_df, mo):
         ], justify='center', gap=1),
         mo.md("""
     *Divergence = GDP Rank − Eigenvector Rank. Green states are more central in the trade network than their economic output predicts. These "physical economy" states—manufacturing, energy, agriculture—punch above their weight because network centrality captures logistics infrastructure and trade relationships that GDP (which includes services) doesn't reflect.*
+
+    *Convergent evidence: 7 of 8 structurally undervalued states are now attracting major AI data center investment—collectively over $170B announced since 2024. The same factors that generate high network centrality (cheap energy, water, grid capacity, logistics corridors) drive infrastructure siting decisions.*
         """),
     ])
     return
@@ -1202,7 +1204,7 @@ def _(G_domestic, domestic_df, filtration_slider, mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md("""
-    ### Why Filtration Doesn't Matter
+    ### Filtration Validates the Backbone
 
     Remember the **weight inversion fix**? High trade value = short path distance. This creates *effective sparsity*:
 
@@ -1338,14 +1340,13 @@ def _(G_domestic, master_state_df, mo):
         """),
         mo.callout(
             mo.md("""
-    **Methodological Finding: Betweenness Remains Unreliable**
+    **Methodological Finding: Betweenness Stability Under Filtration**
 
-    - **Unfiltered**: Compressed distribution — bottom 5 GDP states all tied at same betweenness rank (noise)
-    - **Filtered**: Ranks differentiate, but top performers are still peripheral states (ID, ME, RI), not geographic crossroads (KY, TN, IL)
+    - **Unfiltered and filtered rankings are identical** (ρ=1.000 for all three measures at 33% filtration)
+    - The compressed distribution (31 states at zero betweenness) reflects genuine network structure: trade routes through 5 hubs (CA, TX, NY, PA, IL)
+    - Betweenness instability reported by Segarra & Ribeiro (2015) is an artifact of improper weight semantics, not an inherent limitation
 
-    **Conclusion**: Filtering fixes the *compression* problem but doesn't make betweenness *interpretable*. The dense network structure + weight inversion creates a regime where shortest-path bridging doesn't capture meaningful trade intermediation.
-
-    **Recommendation**: For GDP-normalized analysis, rely on **eigenvector** (connection quality) and **out-degree** (export volume). Betweenness should be reported with caveats or excluded from size-adjusted comparisons.
+    **Conclusion**: With correct weight inversion, betweenness reliably identifies bridging positions even at 99.4% density. The backbone carries the signal.
             """),
             kind="warn"
         ),
@@ -1501,7 +1502,7 @@ def _(domestic_df, intl_df, mo):
             mo.callout(mo.md(f"**Missouri loses 7 ranks** (purple)\n\nA domestic bridge—bypassed when gateways connect directly to international markets.\n\nAlso: {_fall_str}"), kind='warn'),
         ], justify='center', gap=1),
         mo.md("""
-    *Why does eigenvector reshuffle while betweenness stays stable? Eigenvector measures prestige (connection to important nodes)—and RoW is very important. Betweenness measures structural brokerage, which depends on topology, not node importance. The divergence under boundary change reveals what these measures actually capture in trade networks. This is the methodological contribution: boundary specification isn't neutral.*
+    *Betweenness is most sensitive to boundary specification (ρ=0.816) because it depends on shortest paths, which change when RoW creates new routes through gateway states. Eigenvector is more stable (ρ=0.982) because prestige spreads through the full network, not just shortest paths. Out-degree barely moves (ρ=0.994) because raw output capacity doesn't depend on network routing. The more a measure depends on global network structure, the more boundary specification matters.*
         """),
     ])
     return
