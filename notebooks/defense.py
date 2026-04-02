@@ -102,7 +102,7 @@ with app.setup(hide_code=True):
 
 
 # ============================================================
-# CELL 1: State Profile — "What about [state]?"
+# CELL 1a: State Profile — Selector
 # ============================================================
 @app.cell(hide_code=True)
 def _(master, mo):
@@ -111,7 +111,15 @@ def _(master, mo):
         master['state_abbrev']
     ))
     state_selector = mo.ui.dropdown(options=_options, value='Florida (FL)', label='Select a state')
+    mo.vstack([mo.md("# State Profile"), state_selector])
+    return (state_selector,)
 
+
+# ============================================================
+# CELL 1b: State Profile — Display
+# ============================================================
+@app.cell(hide_code=True)
+def _(master, mo, state_selector):
     _s = master[master['state_abbrev'] == state_selector.value].iloc[0]
     _gdp_rank = int(_s['rank_gdp'])
     _eig_rank = int(_s['rank_eigenvector'])
@@ -125,10 +133,7 @@ def _(master, mo):
     else:
         _status = "Proportional"
 
-    mo.vstack([
-        mo.md("# State Profile"),
-        state_selector,
-        mo.md(f"""
+    mo.md(f"""
 | | Value | Rank |
 |--|-------|------|
 | **GDP** | ${_s['gdp_billions']:.1f}B | #{_gdp_rank} |
@@ -137,9 +142,8 @@ def _(master, mo):
 | **Out-Degree** | ${_s['out_degree']/1e9:.1f}B | #{int(_s['rank_out_degree'])} |
 
 **{_status}**
-        """)
-    ])
-    return (state_selector,)
+    """)
+    return
 
 
 # ============================================================
@@ -284,14 +288,26 @@ def _(domestic_df, intl_df, mo):
 
 
 # ============================================================
-# CELL 5: Filtration Validation — "Is this robust?"
+# CELL 5a: Filtration Validation — Slider
 # ============================================================
 @app.cell(hide_code=True)
-def _(G_domestic, domestic_df, mo):
+def _(mo):
     filtration_slider = mo.ui.slider(start=0, stop=50, value=0, step=5, label="Filtration %", show_value=True)
+    mo.vstack([
+        mo.md("# Filtration Validation"),
+        mo.md("At 99.4% density, are centrality results artifacts? Remove weak edges and watch. Network stays connected up to 33%. Rankings: ρ=1.000 at 33% for all three measures."),
+        filtration_slider,
+    ])
+    return (filtration_slider,)
 
+
+# ============================================================
+# CELL 5b: Filtration Validation — Results
+# ============================================================
+@app.cell(hide_code=True)
+def _(G_domestic, domestic_df, filtration_slider, mo):
     if filtration_slider.value == 0:
-        _result = mo.md("**Baseline**: All 2,534 edges. Move the slider to remove weak edges.")
+        mo.md("**Baseline**: All 2,534 edges. Move the slider to remove weak edges.")
     else:
         _pct = filtration_slider.value
         _comp = count_components_at_filtration(G_domestic, _pct)
@@ -308,21 +324,14 @@ def _(G_domestic, domestic_df, mo):
                 _rho, _ = spearmanr(_b.loc[_c], _f.loc[_c])
                 _rows.append(f"| {_m} | ρ = {_rho:.4f} | {'Stable' if _rho > 0.95 else 'Changed'} |")
 
-            _result = mo.md(f"""**Filtration at {_pct}%** — Connected ({_comp['edges_remaining']} edges)
+            mo.md(f"""**Filtration at {_pct}%** — Connected ({_comp['edges_remaining']} edges)
 
 | Measure | Spearman ρ | Status |
 |---------|-----------|--------|
 {chr(10).join(_rows)}""")
         else:
-            _result = mo.md(f"**Filtration at {_pct}%** — Fragmented ({_comp['n_strongly_connected']} components). Rankings no longer comparable.")
-
-    mo.vstack([
-        mo.md("# Filtration Validation"),
-        mo.md("At 99.4% density, are centrality results artifacts? Remove weak edges and watch. Network stays connected up to 33%. Rankings: ρ=1.000 at 33% for all three measures."),
-        filtration_slider,
-        _result,
-    ])
-    return (filtration_slider,)
+            mo.md(f"**Filtration at {_pct}%** — Fragmented ({_comp['n_strongly_connected']} components). Rankings no longer comparable.")
+    return
 
 
 # ============================================================
