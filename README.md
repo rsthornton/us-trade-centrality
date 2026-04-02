@@ -110,4 +110,4 @@ Thesis citation and DOI will be added upon publication.
 
 ## License
 
-License information will be added prior to public release.
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.

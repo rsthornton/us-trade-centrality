@@ -9,7 +9,4 @@ pyyaml>=6.0
 matplotlib>=3.7
 seaborn>=0.12
 plotly>=5.14
-
-# Optional: Interactive notebooks
-# jupyter>=1.0
-# ipywidgets>=8.0
+altair>=5.0

@@ -151,9 +151,6 @@ def add_node_attributes(G, attribute_data, attribute_name):
     return G
 
 
-# Note: validate_network_structure has been moved to validators.py
-# Import it when needed:
-# from validators import validate_network_structure
 
 
 def _validate_edge_schema(edges_df):

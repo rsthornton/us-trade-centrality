@@ -15,7 +15,7 @@ Marimo notebook for exploring analysis results interactively. Structured in 5 ac
 Features interactive state selector with profile cards, Altair visualizations (choropleth maps, scatter plots), master state dataframe (GDP + centralities + flows), and filtration slider.
 
 ```bash
-cd /path/to/cfs-network-analysis
+cd /path/to/us-trade-centrality
 source venv/bin/activate
 marimo edit notebooks/companion.py
 ```
