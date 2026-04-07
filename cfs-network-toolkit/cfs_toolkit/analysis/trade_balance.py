@@ -66,6 +66,14 @@ def compute_trade_balance_table(
     df['row_in_share'] = df['row_in'] / total_row_in if total_row_in > 0 else 0
     df['row_out_share'] = df['row_out'] / total_row_out if total_row_out > 0 else 0
 
+    # Cliff's alternative interpretation: domestic-to-international ratios per state
+    df['dom_in_over_row_in'] = df.apply(
+        lambda r: r['net_in_dollars'] / r['row_in'] if r['row_in'] > 0 else np.inf, axis=1
+    )
+    df['dom_out_over_row_out'] = df.apply(
+        lambda r: r['net_out_dollars'] / r['row_out'] if r['row_out'] > 0 else np.inf, axis=1
+    )
+
     # Merge GDP and population
     gdp_data = load_gdp_data(gdp_csv_path)
     gdp_data = {k.strip(): v for k, v in gdp_data.items()}
@@ -84,7 +92,9 @@ def compute_trade_balance_table(
     # Select final columns
     df = df[[
         'state_abbrev', 'net_in_dollars', 'net_out_dollars', 'ratio',
-        'row_in_share', 'row_out_share', 'gdp_billions', 'pop_millions'
+        'row_in_share', 'row_out_share',
+        'dom_in_over_row_in', 'dom_out_over_row_out',
+        'gdp_billions', 'pop_millions'
     ]]
 
     return df
@@ -95,7 +105,7 @@ def generate_trade_balance_latex(df):
     lines = []
     lines.append(r'\begin{footnotesize}')
     lines.append(r'\begin{singlespace}')
-    lines.append(r'\begin{longtable}{l r r r r r r r}')
+    lines.append(r'\begin{longtable}{l r r r r r r r r r}')
 
     caption = (
         r'\caption{Trade Flow Metrics by State (51$\times$51 Domestic Network, 2017 CFS). '
@@ -103,6 +113,8 @@ def generate_trade_balance_latex(df):
         r'Ratio = Net In / Net Out (values $>$1 indicate net importer). '
         r'RoW In Share and RoW Out Share are each state\textquotesingle s fraction of total '
         r'cross-border flows with the Rest of World node (52$\times$52 network). '
+        r'Dom In/RoW In and Dom Out/RoW Out are ratios of domestic to international '
+        r'flows per state (higher = more domestically oriented). '
         r'GDP in billions (2017 Q4 BEA). Pop in millions (2017 ACS). '
         r'States sorted by total outbound trade.}'
     )
@@ -114,6 +126,7 @@ def generate_trade_balance_latex(df):
         '\n'
         r'\textbf{State} & \textbf{Net In (\$B)} & \textbf{Net Out (\$B)} & '
         r'\textbf{Ratio} & \textbf{RoW In} & \textbf{RoW Out} & '
+        r'\textbf{Dom In/RoW In} & \textbf{Dom Out/RoW Out} & '
         r'\textbf{GDP (\$B)} & \textbf{Pop (M)} \\'
         '\n'
         r'\hline'
@@ -125,6 +138,7 @@ def generate_trade_balance_latex(df):
     lines.append(
         r'\textbf{State} & \textbf{Net In (\$B)} & \textbf{Net Out (\$B)} & '
         r'\textbf{Ratio} & \textbf{RoW In} & \textbf{RoW Out} & '
+        r'\textbf{Dom In/RoW In} & \textbf{Dom Out/RoW Out} & '
         r'\textbf{GDP (\$B)} & \textbf{Pop (M)} \\'
     )
     lines.append(r'\hline')
@@ -138,6 +152,10 @@ def generate_trade_balance_latex(df):
         ratio = row['ratio']
         row_in_pct = row['row_in_share'] * 100
         row_out_pct = row['row_out_share'] * 100
+        di_ri = row['dom_in_over_row_in']
+        do_ro = row['dom_out_over_row_out']
+        di_ri_s = f"{di_ri:.1f}" if np.isfinite(di_ri) else "---"
+        do_ro_s = f"{do_ro:.1f}" if np.isfinite(do_ro) else "---"
         gdp = row['gdp_billions']
         pop = row['pop_millions']
 
@@ -146,6 +164,7 @@ def generate_trade_balance_latex(df):
             f"{net_in_b:.1f} & {net_out_b:.1f} & "
             f"{ratio:.3f} & "
             f"{row_in_pct:.1f}\\% & {row_out_pct:.1f}\\% & "
+            f"{di_ri_s} & {do_ro_s} & "
             f"{gdp:.1f} & {pop:.2f} \\\\"
         )
         lines.append(line)
