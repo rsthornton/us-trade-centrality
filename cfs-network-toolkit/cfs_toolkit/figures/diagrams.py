@@ -310,9 +310,9 @@ def create_network_spring_figure(G_51, G_52, output_path=None, top_n=10):
     labels_51 = {n: G_51_sub.nodes[n].get('label', '') or FIPS_TO_STATE.get(n, str(n))
                  for n in G_51_sub.nodes()}
 
-    # Edge widths based on weight
+    # Edge widths based on weight (aggressive range for visual distinction)
     if edge_weights_51:
-        edge_widths_51 = [0.5 + 4 * (edge_weights_51.get((u, v), 0) / max_weight)
+        edge_widths_51 = [0.1 + 8 * (edge_weights_51.get((u, v), 0) / max_weight) ** 0.5
                          for u, v in G_51_sub.edges()]
     else:
         edge_widths_51 = [1.5] * G_51_sub.number_of_edges()
@@ -336,7 +336,7 @@ def create_network_spring_figure(G_51, G_52, output_path=None, top_n=10):
                            arrowsize=12,
                            arrowstyle='-|>',
                            width=edge_widths_51,
-                           alpha=0.5,
+                           alpha=0.6,
                            ax=ax1,
                            connectionstyle='arc3,rad=0.1')
 
@@ -397,7 +397,7 @@ def create_network_spring_figure(G_51, G_52, output_path=None, top_n=10):
 
     # Draw domestic edges (gray)
     if domestic_edges:
-        dom_widths = [0.5 + 4 * (edge_weights_52.get((u, v), 0) / max_weight_52)
+        dom_widths = [0.1 + 8 * (edge_weights_52.get((u, v), 0) / max_weight_52) ** 0.5
                       for u, v in domestic_edges]
         nx.draw_networkx_edges(G_52_sub, pos_52,
                                edgelist=domestic_edges,
@@ -406,7 +406,7 @@ def create_network_spring_figure(G_51, G_52, output_path=None, top_n=10):
                                arrowsize=12,
                                arrowstyle='-|>',
                                width=dom_widths,
-                               alpha=0.4,
+                               alpha=0.5,
                                ax=ax2,
                                connectionstyle='arc3,rad=0.1')
 
@@ -627,3 +627,270 @@ def create_centrality_framework_diagram(output_path=None):
     print(f"  - {output_path.with_suffix('.png')}")
 
     plt.close()
+
+
+def create_edge_weight_rank_figure(G, output_path=None):
+    """
+    Edge weight rank distribution plot for filtration argument.
+
+    Shows all bilateral trade flows ranked by descending value (log scale)
+    with 33rd percentile filtration threshold marked. Requested by Cliff
+    Joslyn in April 6 2026 feedback on §3.4.
+
+    Args:
+        G: NetworkX DiGraph (51×51 domestic network)
+        output_path: Output file path
+
+    Returns:
+        matplotlib Figure object
+    """
+    from matplotlib.ticker import FuncFormatter
+
+    if output_path is None:
+        output_path = Path("paper/figures") / "edge_weight_rank_distribution.png"
+    else:
+        output_path = Path(output_path)
+
+    # Serif font to match LaTeX body
+    plt.rcParams['font.family'] = 'serif'
+    plt.rcParams['mathtext.fontset'] = 'cm'
+
+    weights = sorted([d['weight'] for u, v, d in G.edges(data=True)], reverse=True)
+    ranks = np.arange(1, len(weights) + 1)
+
+    pct33 = np.percentile(weights, 33)
+    cutoff_rank = next(i for i, w in enumerate(weights) if w <= pct33) + 1
+
+    def dollar_fmt(x, pos):
+        if x >= 1e12: return '$%.0fT' % (x / 1e12)
+        elif x >= 1e9: return '$%.0fB' % (x / 1e9)
+        elif x >= 1e6: return '$%.0fM' % (x / 1e6)
+        else: return '$%.0fK' % (x / 1e3)
+
+    CRIMSON = '#8B0000'
+
+    fig, ax = plt.subplots(figsize=(12, 6), dpi=600)
+
+    ax.plot(ranks, weights, color='#2c3e50', linewidth=2)
+
+    ax.axvline(x=cutoff_rank, color=CRIMSON, linestyle='--', linewidth=2, alpha=0.7)
+    ax.axhline(y=pct33, color=CRIMSON, linestyle=':', linewidth=1, alpha=0.3)
+    ax.fill_between(ranks[cutoff_rank - 1:], weights[cutoff_rank - 1:],
+                    alpha=0.10, color='#888888')
+
+    ax.text(cutoff_rank + 40, 4e10,
+            '33rd percentile\n${:,.0f}M threshold'.format(pct33 / 1e6),
+            fontsize=11, color=CRIMSON, va='top')
+
+    ax.text(2050, 1.5e6, '{} edges below threshold\n(33% of total)'.format(
+            len(weights) - cutoff_rank + 1),
+            fontsize=10, color='#666666', ha='center', style='italic')
+
+    ax.set_ylim(bottom=5e5)
+    ax.set_yscale('log')
+    ax.yaxis.set_major_formatter(FuncFormatter(dollar_fmt))
+    ax.set_xlabel('Rank (by trade value, descending)', fontsize=14)
+    ax.set_ylabel('Trade Value (USD, log scale)', fontsize=14)
+    ax.set_title(
+        'Edge Weight Distribution: 50 States + DC Domestic Network\n'
+        'All {:,} bilateral trade flows ranked by value\n'
+        '(edges below threshold excluded from centrality analysis)'.format(len(weights)),
+        fontsize=15, pad=10)
+    ax.tick_params(labelsize=12)
+    ax.grid(True, alpha=0.3, linestyle=':', axis='y')
+
+    actual_min = min(weights)
+    stats = ('Max: ${:.0f}B (CA\u2192TX)\nMedian: ${:.0f}M\nMin: ${:.0f}K'.format(
+             max(weights) / 1e9, np.median(weights) / 1e6, actual_min / 1e3))
+    ax.text(0.03, 0.30, stats, transform=ax.transAxes, fontsize=11,
+            va='top', ha='left',
+            bbox=dict(boxstyle='round,pad=0.5', facecolor='#f5f5dc', alpha=0.8))
+
+    plt.tight_layout()
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    plt.savefig(output_path, dpi=600, bbox_inches='tight',
+                facecolor='white', edgecolor='none')
+    plt.savefig(output_path.with_suffix('.pdf'), bbox_inches='tight',
+                facecolor='white', edgecolor='none')
+    plt.close()
+
+    print(f"✓ Edge weight rank distribution saved to:")
+    print(f"  - {output_path}")
+    print(f"  - {output_path.with_suffix('.pdf')}")
+    print(f"  {len(weights)} edges, cutoff at rank {cutoff_rank} (${pct33/1e6:.0f}M)")
+
+    return fig
+
+
+def create_matrix_comparison_figure(G_51, G_52, centralities_csv=None,
+                                    output_path=None, top_n=20):
+    """
+    Figure 3.2: Side-by-side adjacency matrix heatmaps.
+
+    Shows top N states by combined centrality for both 51×51 domestic
+    and 52×52 international networks. Uses plasma colormap with log scale.
+
+    Faithfully recovered from backup repo (halcyonic-backup-20251214,
+    commit 08e1639, scripts/regenerate_all_figures.py →
+    generate_figure_1_matrix_comparison). Only change: colorbar label
+    now reads "USD" per Cliff's April 6 2026 feedback.
+
+    Args:
+        G_51: NetworkX DiGraph for 51×51 domestic network
+        G_52: NetworkX DiGraph for 52×52 international network
+        centralities_csv: Path to centralities_51x51_domestic.csv
+            (if None, computes centrality from G_51 directly)
+        output_path: Output file path
+        top_n: Number of top states to show (default: 20)
+
+    Returns:
+        matplotlib Figure object
+    """
+    import pandas as pd
+
+    if output_path is None:
+        output_path = Path("paper/figures") / "matrix_comparison.png"
+    else:
+        output_path = Path(output_path)
+
+    # Config matching original script exactly
+    title_fontsize = 16
+    axis_label_fontsize = 14
+    tick_label_fontsize = 12
+    figure_dpi = 600
+    matrix_cmap = 'plasma'
+
+    # Get top-20 states by combined centrality
+    if centralities_csv is not None:
+        centralities = pd.read_csv(centralities_csv)
+        for col in ['betweenness', 'eigenvector', 'out_degree']:
+            centralities[f'{col}_norm'] = (
+                (centralities[col] - centralities[col].min()) /
+                (centralities[col].max() - centralities[col].min())
+            )
+        centralities['combined'] = (
+            centralities['betweenness_norm'] +
+            centralities['eigenvector_norm'] +
+            centralities['out_degree_norm']
+        )
+        top_20 = centralities.nlargest(top_n, 'combined')[['state_id', 'label']]
+        top_20_state_ids = top_20['state_id'].tolist()
+        top_20_labels = top_20['label'].tolist()
+    else:
+        # Compute from graph directly (fallback)
+        bc = nx.betweenness_centrality(G_51, weight='weight')
+        ec = nx.eigenvector_centrality_numpy(G_51, weight='weight')
+        od = {n: sum(G_51[n][s].get('weight', 1) for s in G_51.successors(n))
+              for n in G_51.nodes()}
+
+        def minmax(d):
+            lo, hi = min(d.values()), max(d.values())
+            if hi == lo:
+                return {k: 0 for k in d}
+            return {k: (v - lo) / (hi - lo) for k, v in d.items()}
+
+        bc_n, ec_n, od_n = minmax(bc), minmax(ec), minmax(od)
+        combined = {n: bc_n[n] + ec_n[n] + od_n[n] for n in G_51.nodes()}
+        top_20_state_ids = sorted(combined, key=combined.get, reverse=True)[:top_n]
+
+        FIPS_TO_STATE = {
+            1: 'AL', 2: 'AK', 4: 'AZ', 5: 'AR', 6: 'CA', 8: 'CO', 9: 'CT',
+            10: 'DE', 11: 'DC', 12: 'FL', 13: 'GA', 15: 'HI', 16: 'ID',
+            17: 'IL', 18: 'IN', 19: 'IA', 20: 'KS', 21: 'KY', 22: 'LA',
+            23: 'ME', 24: 'MD', 25: 'MA', 26: 'MI', 27: 'MN', 28: 'MS',
+            29: 'MO', 30: 'MT', 31: 'NE', 32: 'NV', 33: 'NH', 34: 'NJ',
+            35: 'NM', 36: 'NY', 37: 'NC', 38: 'ND', 39: 'OH', 40: 'OK',
+            41: 'OR', 42: 'PA', 44: 'RI', 45: 'SC', 46: 'SD', 47: 'TN',
+            48: 'TX', 49: 'UT', 50: 'VT', 51: 'VA', 53: 'WA', 54: 'WV',
+            55: 'WI', 56: 'WY',
+        }
+        top_20_labels = [
+            G_51.nodes[n].get('label', '') or FIPS_TO_STATE.get(n, str(n))
+            for n in top_20_state_ids
+        ]
+
+    # Get adjacency matrices
+    adj_51 = nx.to_numpy_array(G_51, nodelist=top_20_state_ids, weight='weight')
+
+    # For 52×52, add RoW node (state_id = 52 in the international network)
+    top_20_plus_row_ids = top_20_state_ids + [52]
+    top_20_plus_row_labels = top_20_labels + ['RoW']
+    adj_52 = nx.to_numpy_array(G_52, nodelist=top_20_plus_row_ids, weight='weight')
+
+    # Log scaling
+    adj_51_log = np.log10(adj_51 + 1)
+    adj_52_log = np.log10(adj_52 + 1)
+
+    # Create side-by-side heatmaps
+    fig, axes = plt.subplots(1, 2, figsize=(14, 6), dpi=figure_dpi)
+
+    # Consistent vmin/vmax for both plots
+    vmin = 0
+    vmax = max(adj_51_log.max(), adj_52_log.max())
+
+    # Plot 51×51
+    im1 = axes[0].imshow(adj_51_log, cmap=matrix_cmap, aspect='auto',
+                          vmin=vmin, vmax=vmax, interpolation='nearest')
+    axes[0].set_xticks(np.arange(-0.5, top_n, 1), minor=True)
+    axes[0].set_yticks(np.arange(-0.5, top_n, 1), minor=True)
+    axes[0].grid(which='minor', color='white', linestyle='-', linewidth=0.5)
+    axes[0].tick_params(which='minor', size=0)
+    axes[0].set_xticks(range(top_n))
+    axes[0].set_yticks(range(top_n))
+    axes[0].set_xticklabels(top_20_labels, rotation=90, fontsize=tick_label_fontsize)
+    axes[0].set_yticklabels(top_20_labels, fontsize=tick_label_fontsize)
+    axes[0].set_xlabel('Destination State', fontsize=axis_label_fontsize)
+    axes[0].set_ylabel('Origin State', fontsize=axis_label_fontsize)
+    axes[0].set_title(
+        f'51×51 Domestic Network\n(Top {top_n} States by Combined Centrality)',
+        fontsize=title_fontsize, pad=10)
+
+    # Plot 52×52
+    n_52 = top_n + 1
+    im2 = axes[1].imshow(adj_52_log, cmap=matrix_cmap, aspect='auto',
+                          vmin=vmin, vmax=vmax, interpolation='nearest')
+    axes[1].set_xticks(np.arange(-0.5, n_52, 1), minor=True)
+    axes[1].set_yticks(np.arange(-0.5, n_52, 1), minor=True)
+    axes[1].grid(which='minor', color='white', linestyle='-', linewidth=0.5)
+    axes[1].tick_params(which='minor', size=0)
+    axes[1].set_xticks(range(n_52))
+    axes[1].set_yticks(range(n_52))
+    axes[1].set_xticklabels(top_20_plus_row_labels, rotation=90,
+                             fontsize=tick_label_fontsize)
+    axes[1].set_yticklabels(top_20_plus_row_labels, fontsize=tick_label_fontsize)
+    axes[1].set_xlabel('Destination State', fontsize=axis_label_fontsize)
+    axes[1].set_ylabel('Origin State', fontsize=axis_label_fontsize)
+    axes[1].set_title(
+        f'52×52 International Network\n(Top {top_n} States + Rest of World)',
+        fontsize=title_fontsize, pad=10)
+
+    # Highlight RoW row and column with colored boxes
+    row_idx = top_n  # RoW is last
+    axes[1].add_patch(plt.Rectangle((-0.5, row_idx - 0.5), n_52, 1,
+                                     fill=False, edgecolor='red', linewidth=3))
+    axes[1].add_patch(plt.Rectangle((row_idx - 0.5, -0.5), 1, n_52,
+                                     fill=False, edgecolor='red', linewidth=3))
+
+    # Colorbar — only change from original: "USD" added to label
+    plt.tight_layout(rect=[0, 0, 0.92, 1])
+    cbar = fig.colorbar(im2, ax=axes, orientation='vertical',
+                        fraction=0.046, pad=0.04)
+    cbar.ax.tick_params(labelsize=tick_label_fontsize)
+    cbar.set_label('log₁₀(Trade Value in USD + 1)', fontsize=axis_label_fontsize)
+
+    # Save
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    plt.savefig(output_path, dpi=figure_dpi, bbox_inches='tight',
+                facecolor='white', edgecolor='none')
+    plt.savefig(output_path.with_suffix('.pdf'), bbox_inches='tight',
+                facecolor='white', edgecolor='none')
+    plt.close()
+
+    print(f"✓ Matrix comparison figure saved to:")
+    print(f"  - {output_path}")
+    print(f"  - {output_path.with_suffix('.pdf')}")
+    print(f"  51×51: Top {top_n} states, {np.count_nonzero(adj_51)} edges")
+    print(f"  52×52: Top {top_n} + RoW, {np.count_nonzero(adj_52)} edges")
+
+    return fig

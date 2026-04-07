@@ -13,6 +13,8 @@ from .diagrams import (
     create_network_construction_figure,
     create_network_spring_figure,
     create_centrality_framework_diagram,
+    create_edge_weight_rank_figure,
+    create_matrix_comparison_figure,
 )
 from .choropleths import (
     generate_physical_economy_divergence,
@@ -26,6 +28,8 @@ __all__ = [
     'create_network_construction_figure',
     'create_network_spring_figure',
     'create_centrality_framework_diagram',
+    'create_edge_weight_rank_figure',
+    'create_matrix_comparison_figure',
     'generate_physical_economy_divergence',
     'generate_boundary_effect_choropleth',
 ]

@@ -14,6 +14,7 @@ from .network_builder import build_trade_network
 from .preprocessor import preprocess_cfs_data
 from .validators import validate_network_structure
 from .artifacts import save_pipeline_artifacts, save_core_artifacts
+from .normalizations import gdp_sender, gdp_geometric
 
 __all__ = [
     'compute_all_centralities',
@@ -28,4 +29,6 @@ __all__ = [
     'validate_network_structure',
     'save_pipeline_artifacts',
     'save_core_artifacts',
+    'gdp_sender',
+    'gdp_geometric',
 ]

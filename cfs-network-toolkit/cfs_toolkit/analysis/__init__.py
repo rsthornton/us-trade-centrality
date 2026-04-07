@@ -38,6 +38,12 @@ from .gdp_comparison import (
 from .control_scatter import (
     load_population_data,
     generate_control_scatter,
+    generate_control_vs_control_scatter,
+    generate_rho_table_latex,
+)
+from .trade_balance import (
+    compute_trade_balance_table,
+    generate_trade_balance_latex,
 )
 from .network_analysis import (
     analyze_component_sizes,
@@ -88,6 +94,11 @@ __all__ = [
     # Control scatter
     'load_population_data',
     'generate_control_scatter',
+    'generate_control_vs_control_scatter',
+    'generate_rho_table_latex',
+    # Trade balance
+    'compute_trade_balance_table',
+    'generate_trade_balance_latex',
     # Network structure analysis
     'analyze_component_sizes',
     'analyze_strongly_connected_components',

@@ -1,0 +1,4 @@
+normalization,rho_betweenness,mean_delta_betweenness,rho_eigenvector,mean_delta_eigenvector,rho_out_degree,mean_delta_out_degree
+Row-Stochastic,0.759,9.8,0.988,1.8,0.075,21.5
+Log Transform,0.371,12.4,0.968,2.9,0.991,1.5
+GDP-Geometric,0.736,10.4,0.886,5.8,0.931,3.9

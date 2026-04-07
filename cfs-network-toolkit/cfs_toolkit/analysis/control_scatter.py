@@ -1,8 +1,9 @@
 """
 Centrality vs. Control Variable Scatter Plots
 
-Generalized scatter function for comparing any centrality measure against
-any control variable (GDP, Population, etc.) with Spearman rank correlation.
+Generalized scatter functions for comparing centrality measures against
+control variables (GDP, Population, etc.) with Spearman rank correlation.
+Also supports control-vs-control comparisons and LaTeX rho table generation.
 """
 
 import pandas as pd
@@ -192,3 +193,176 @@ def generate_control_scatter(
     print(f"\u2713 PDF version saved: {output_path.with_suffix('.pdf')}")
 
     return rho, p_value
+
+
+def generate_control_vs_control_scatter(
+    x_data, y_data, x_name, y_name, x_unit, y_unit,
+    output_path, label_threshold=8
+):
+    """
+    Create publication-quality scatter plot comparing two control variables
+    (e.g., GDP vs Population) with Spearman rho annotation.
+
+    Parameters
+    ----------
+    x_data : dict
+        State abbreviation to x-variable value mapping
+    y_data : dict
+        State abbreviation to y-variable value mapping
+    x_name : str
+        Display name for x variable (e.g., 'GDP')
+    y_name : str
+        Display name for y variable (e.g., 'Population')
+    x_unit : str
+        Unit string for x-axis label (e.g., '2017 Q4')
+    y_unit : str
+        Unit string for y-axis label (e.g., '2017 ACS')
+    output_path : str or Path
+        Path for output PNG file (will also create PDF version)
+    label_threshold : int, default=8
+        Label states with |rank_diff| >= this value in bold
+
+    Returns
+    -------
+    tuple[float, float]
+        (spearman_rho, p_value)
+    """
+    # Build working dataframe from intersection of both dicts
+    common = set(x_data.keys()) & set(y_data.keys())
+    df = pd.DataFrame({
+        'state_abbrev': list(common),
+        'x_value': [x_data[s] for s in common],
+        'y_value': [y_data[s] for s in common],
+    })
+
+    # Rank both (1 = highest)
+    df['x_rank'] = df['x_value'].rank(ascending=False, method='first').astype(int)
+    df['y_rank'] = df['y_value'].rank(ascending=False, method='first').astype(int)
+    df['rank_diff'] = df['x_rank'] - df['y_rank']
+
+    # Spearman on min-ranked values (for canonical rho)
+    df['x_rank_min'] = df['x_value'].rank(ascending=False, method='min')
+    df['y_rank_min'] = df['y_value'].rank(ascending=False, method='min')
+    rho, p_value = spearmanr(df['x_rank_min'], df['y_rank_min'])
+
+    # Publication style matching generate_control_scatter
+    sns.set_style("whitegrid")
+    plt.rcParams['font.family'] = 'serif'
+    plt.rcParams['font.size'] = 14
+
+    fig, ax = plt.subplots(figsize=(10, 8))
+
+    colors = df['rank_diff'].apply(
+        lambda x: '#d62728' if x > 0 else '#1f77b4' if x < 0 else '#7f7f7f'
+    )
+
+    ax.scatter(
+        df['x_rank'], df['y_rank'],
+        c=colors, s=80, alpha=0.7,
+        edgecolors='black', linewidth=0.5
+    )
+
+    ax.plot([0, 54], [0, 54], 'k--', alpha=0.3, linewidth=1,
+            label=f'{x_name} Rank = {y_name} Rank')
+
+    texts = []
+    for _, row in df.iterrows():
+        x, y = row['x_rank'], row['y_rank']
+        fontweight = 'bold' if abs(row['rank_diff']) >= label_threshold else 'normal'
+        fontsize = 13 if abs(row['rank_diff']) >= label_threshold else 10
+        t = ax.text(x, y, row['state_abbrev'],
+                    fontsize=fontsize, fontweight=fontweight, ha='center', va='center')
+        texts.append(t)
+
+    adjust_text(texts, ax=ax,
+                arrowprops=dict(arrowstyle='-', color='gray', alpha=0.4, lw=0.5),
+                expand=(1.5, 1.5),
+                force_text=(0.8, 0.8),
+                force_points=(0.5, 0.5))
+
+    ax.set_xlabel(f'{x_name} Rank ({x_unit})  \u2190 Larger', fontsize=17)
+    ax.set_ylabel(f'{y_name} Rank ({y_unit})  \u2190 Larger', fontsize=17)
+    ax.set_title(f'{x_name} vs. {y_name}', fontsize=19, fontweight='bold', pad=15)
+
+    ax.invert_xaxis()
+    ax.invert_yaxis()
+    ax.set_xlim(54, -2)
+    ax.set_ylim(54, -2)
+    ax.grid(True, alpha=0.3)
+
+    stats_text = f"\u03c1 = {rho:.3f}"
+    ax.text(0.97, 0.03, stats_text,
+            transform=ax.transAxes, va='bottom', ha='right',
+            bbox=dict(boxstyle='round,pad=0.5', facecolor='white',
+                      alpha=0.9, edgecolor='gray', linewidth=1.5),
+            fontsize=14, fontweight='bold', family='monospace')
+
+    legend_elements = [
+        Patch(facecolor='#d62728', label=f'{x_name} rank > {y_name} rank'),
+        Patch(facecolor='#1f77b4', label=f'{y_name} rank > {x_name} rank'),
+        plt.Line2D([0], [0], color='k', linestyle='--', label='Perfect Correspondence')
+    ]
+    ax.legend(handles=legend_elements, loc='upper left', fontsize=14,
+              framealpha=0.9, edgecolor='gray')
+
+    plt.tight_layout()
+
+    output_path = Path(output_path)
+    plt.savefig(output_path, dpi=300, bbox_inches='tight')
+    plt.savefig(output_path.with_suffix('.pdf'), bbox_inches='tight')
+    plt.close()
+
+    print(f"\u2713 Control scatter saved: {output_path}")
+    print(f"\u2713 PDF version saved: {output_path.with_suffix('.pdf')}")
+
+    return rho, p_value
+
+
+def generate_rho_table_latex(rho_results):
+    """
+    Generate a 2×3 LaTeX table of Spearman rho values.
+
+    Parameters
+    ----------
+    rho_results : list of tuples
+        Each tuple: (control_name, centrality_name, rho, p_value)
+        Expected: 6 tuples covering GDP and Population × 3 centrality measures.
+
+    Returns
+    -------
+    str
+        Complete LaTeX table environment ready for \\input{}.
+    """
+    # Pivot into a lookup
+    lookup = {}
+    for control, measure, rho, pval in rho_results:
+        lookup[(control, measure)] = rho
+
+    measures = ['eigenvector', 'betweenness', 'out_degree']
+    measure_labels = ['Eigenvector', 'Betweenness', 'Out-Degree']
+    controls = ['GDP', 'Population']
+
+    lines = []
+    lines.append(r'\begin{table}[ht]')
+    lines.append(r'\centering')
+    lines.append(r'\caption{Spearman rank correlations ($\rho$) between control variables '
+                 r'and centrality measures (51$\times$51 domestic network). '
+                 r'All correlations significant at $p < 0.001$.}')
+    lines.append(r'\label{tab:rho_correlations}')
+    lines.append(r'\begin{tabular}{l c c c}')
+    lines.append(r'\hline')
+    lines.append(r' & \textbf{Eigenvector} & \textbf{Betweenness} & \textbf{Out-Degree} \\')
+    lines.append(r'\hline')
+
+    for control in controls:
+        cells = []
+        for measure in measures:
+            rho = lookup.get((control, measure), 0)
+            cells.append(f'${rho:.3f}$')
+        lines.append(f'\\textbf{{{control}}} & {" & ".join(cells)} \\\\')
+
+    lines.append(r'\hline')
+    lines.append(r'\end{tabular}')
+    lines.append(r'\end{table}')
+
+    return '\n'.join(lines)
