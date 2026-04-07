@@ -279,7 +279,7 @@ def comprehensive_network_structure_analysis(
     """
     Run all three network structure analyses in sequence.
     
-    Comprehensive analysis following Advisor's feedback priorities.
+    Runs connectivity, path length, and degree distribution analyses.
     
     Args:
         G: NetworkX graph from pipeline

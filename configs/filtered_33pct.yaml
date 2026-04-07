@@ -4,7 +4,7 @@
 # Removes bottom 33% of edges by weight (~$298M threshold)
 # This is the MAXIMUM filtration maintaining single strongly connected component
 #
-# Rationale (advisor meeting 2025-11-29):
+# Rationale:
 # - At 99.4% density, betweenness measures path artifacts not structure
 # - 33% filtration reveals structural backbone while maintaining connectivity
 # - Breaking point is 34% ($323M) - 33% is the safe maximum

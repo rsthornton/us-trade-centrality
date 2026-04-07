@@ -634,8 +634,7 @@ def create_edge_weight_rank_figure(G, output_path=None):
     Edge weight rank distribution plot for filtration argument.
 
     Shows all bilateral trade flows ranked by descending value (log scale)
-    with 33rd percentile filtration threshold marked. Requested by Cliff
-    Joslyn in April 6 2026 feedback on §3.4.
+    with 33rd percentile filtration threshold marked.
 
     Args:
         G: NetworkX DiGraph (51×51 domestic network)
@@ -731,10 +730,7 @@ def create_matrix_comparison_figure(G_51, G_52, centralities_csv=None,
     Shows top N states by combined centrality for both 51×51 domestic
     and 52×52 international networks. Uses plasma colormap with log scale.
 
-    Faithfully recovered from backup repo (halcyonic-backup-20251214,
-    commit 08e1639, scripts/regenerate_all_figures.py →
-    generate_figure_1_matrix_comparison). Only change: colorbar label
-    now reads "USD" per Cliff's April 6 2026 feedback.
+    Colorbar label reads "log₁₀(Trade Value in USD + 1)".
 
     Args:
         G_51: NetworkX DiGraph for 51×51 domestic network

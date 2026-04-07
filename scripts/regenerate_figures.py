@@ -1,13 +1,8 @@
 """
-Regenerate figures for Cliff's April 6 feedback.
-
-Changes:
-  - Fig 3.1: Wider edge width range + higher alpha for weight visibility
-  - Fig 3.2: Colorbar now reads "log₁₀(Trade Value in USD + 1)"
-  - Fig 3.X: New edge weight rank distribution plot for §3.4 filtration argument
+Regenerate thesis figures: network spring layout, matrix comparison, edge weight distribution.
 
 Usage:
-    python scripts/regenerate_cliff_figures.py
+    python scripts/regenerate_figures.py
 """
 import pickle
 from pathlib import Path

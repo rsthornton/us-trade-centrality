@@ -154,7 +154,7 @@ def _():
 @app.cell(hide_code=True)
 def _(G_domestic, REPO_ROOT, domestic_df):
     # === MASTER STATE DATAFRAME ===
-    # Consolidates all state-level data for EDA (per Advisor's feedback)
+    # Consolidates all state-level data for exploratory analysis
     # Schema: 20 columns covering identifiers, economic size, trade flows, centralities
 
     # --- Helper: State names mapping ---
@@ -240,7 +240,7 @@ def _(G_domestic, REPO_ROOT, domestic_df):
     _master['net_flow'] = _master['total_outflow'] - _master['total_inflow']
     _master['inout_ratio'] = _master['total_inflow'] / _master['total_outflow']
 
-    # Normalized flow metrics (Advisor's EDA request)
+    # Normalized flow metrics
     _master['outflow_per_gdp'] = _master['total_outflow'] / (_master['gdp_billions'] * 1e9)
     _master['outflow_per_capita'] = _master['total_outflow'] / _master['pop_2017_acs']
 
@@ -360,7 +360,7 @@ def _(edge_list_df, mo):
 @app.cell(hide_code=True)
 def _(master_state_df, mo):
     # === GDP vs POPULATION: VERIFICATION STEP ===
-    # Per Advisor's feedback: Before using GDP for normalization, verify it correlates with population
+    # Before using GDP for normalization, verify it correlates with population
     from scipy.stats import pearsonr
 
     _df = master_state_df.copy()

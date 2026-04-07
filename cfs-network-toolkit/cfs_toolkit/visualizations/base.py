@@ -266,7 +266,7 @@ def create_pairwise_scatter_plots(
 ):
     """
     Create pairwise scatter plots for all centrality measure combinations.
-    Addresses Advisor's concern about vector space visualization.
+    Visualizes pairwise relationships between centrality measures.
 
     Args:
         centralities_df: Pipeline output with columns [label, betweenness, eigenvector, out_degree]

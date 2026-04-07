@@ -66,7 +66,7 @@ def compute_trade_balance_table(
     df['row_in_share'] = df['row_in'] / total_row_in if total_row_in > 0 else 0
     df['row_out_share'] = df['row_out'] / total_row_out if total_row_out > 0 else 0
 
-    # Cliff's alternative interpretation: domestic-to-international ratios per state
+    # Domestic-to-international flow ratios per state
     df['dom_in_over_row_in'] = df.apply(
         lambda r: r['net_in_dollars'] / r['row_in'] if r['row_in'] > 0 else np.inf, axis=1
     )

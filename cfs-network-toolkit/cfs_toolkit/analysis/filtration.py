@@ -111,7 +111,7 @@ def find_connectivity_breaking_point(G, weight_attr='weight', start=1, end=99, v
         >>> print(f"Network breaks at {result['breaking_pct']}%")
         >>> print(f"Safe to filter up to {result['max_connected_pct']}%")
     """
-    # 34% fragments the network -- found during advisor meeting 2025-11
+    # 34% fragments the network into multiple components
     if verbose:
         log.info("Searching for connectivity breaking point...")
         print(f"{'%':>4} | {'Threshold':>12} | {'Edges':>6} | {'SCCs':>4} | Status")

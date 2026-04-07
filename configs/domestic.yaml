@@ -1,7 +1,6 @@
 # Pipeline Configuration (Authoritative Schema)
 # ==============================================
 # Central configuration for unified pipeline orchestration
-# Aligns with pipeline_consolidation_plan.md schema
 # CLI flags can override these values at runtime
 
 data:
@@ -41,7 +40,7 @@ visualizations:
   generate: true                          # Generate publication-ready figures
   formats: ["png","html"]                 # Figure formats to save
   commodity_name: ""                      # Optional commodity name for titles
-  include_structure_analysis: true        # Include Advisor's network structure analyses
+  include_structure_analysis: true        # Include network structure analyses
   include_sectoral_analysis: true         # Include network power advantage analysis
   run_full_sectoral_analysis: false       # Run comprehensive all-sector analysis (slow)
 

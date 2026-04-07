@@ -125,14 +125,12 @@ def main():
     print(f"Pipeline: {network_type} network analysis")
     print(f"{'='*50}")
 
-    # Step 1: Load Data
     print("\n[1/5] Loading data...")
     from cfs_toolkit.core.data_loader import load_data
 
     df_raw = load_data(config)
     print(f"      Loaded {len(df_raw):,} records")
 
-    # Step 2: Preprocess
     print("\n[2/5] Preprocessing...")
     from cfs_toolkit.core.preprocessor import (
         preprocess_cfs_data, aggregate_cfs_to_edges,
@@ -161,7 +159,6 @@ def main():
         edges = combine_domestic_international_edges(edges, faf_edges)
         print(f"      + international → {len(edges):,} total edges")
 
-    # Step 3: Build Network
     print("\n[3/5] Building network...")
     from cfs_toolkit.core.network_builder import build_trade_network
     from cfs_toolkit.core.validators import validate_network_structure
@@ -174,7 +171,6 @@ def main():
 
     print(f"      {G.number_of_nodes()} nodes, {G.number_of_edges():,} edges")
 
-    # Step 4: Optional Filtration
     filtration_config = config['network'].get('filtration', {})
     if filtration_config.get('enabled', False):
         print("\n[3.5] Applying filtration...")
@@ -199,7 +195,6 @@ def main():
                 raise ValueError(f"Filtration broke connectivity: {n_scc} SCCs. Lower percentile.")
             print(f"      ✓ Single SCC maintained")
 
-    # Step 5: Compute Centralities
     print("\n[4/5] Computing centralities...")
     from cfs_toolkit.core.centralities import compute_all_centralities
 
@@ -212,7 +207,6 @@ def main():
         for _, row in top.iterrows():
             print(f"        {row['label']}: bet={row['betweenness']:.3f}, eig={row['eigenvector']:.3f}")
 
-    # Step 6: Save Artifacts
     print("\n[5/5] Saving artifacts...")
 
     if args.full:
@@ -238,32 +232,9 @@ def main():
         )
         print(f"      Core artifacts: {artifacts_info['artifact_count']} files")
 
-    # Enhanced Summary Output
     network_label = "INTERNATIONAL" if config['network']['include_international'] else "DOMESTIC"
-    print(f"\n{'='*50}")
-    print(f"  {network_type} {network_label} | {G.number_of_nodes()} nodes, {G.number_of_edges():,} edges")
-    print(f"{'='*50}")
-
-    # Top 5 by betweenness and eigenvector (side by side)
-    top_bet = centralities_df.nlargest(5, 'betweenness')[['label', 'betweenness']].values
-    top_eig = centralities_df.nlargest(5, 'eigenvector')[['label', 'eigenvector']].values
-
-    print()
-    print("  TOP 5 BETWEENNESS          TOP 5 EIGENVECTOR")
-    print("  ─────────────────          ─────────────────")
-    for i in range(5):
-        bet_label, bet_val = top_bet[i]
-        eig_label, eig_val = top_eig[i]
-        print(f"  #{i+1:<2} {bet_label:<3} {bet_val:.3f}              #{i+1:<2} {eig_label:<3} {eig_val:.3f}")
-
-    print()
-    print(f"  Output: {artifacts_info['run_dir']}")
-    print()
-    print("  EXPLORE:")
-    print("    cfs top 10 eigenvector    Show top 10 by eigenvector")
-    print("    cfs show CA               Deep dive on California")
-    print("    cfs ls                    List all runs")
-    print(f"{'='*50}")
+    print(f"\nDone: {network_type} {network_label} | {G.number_of_nodes()} nodes, {G.number_of_edges():,} edges")
+    print(f"Output: {artifacts_info['run_dir']}")
 
     return config, G, centralities_df
 

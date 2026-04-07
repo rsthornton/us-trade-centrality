@@ -1,14 +1,14 @@
 """
-Session C: Generate all Appendix C and D outputs for Cliff's April 6 revisions.
+Generate Appendix C and D outputs: scatter plots, correlation table, trade balance table.
 
 Outputs
 -------
-paper/figures/gdp_vs_population_scatter.png  (+ .pdf)
+paper/figures/gdp_vs_population_scatter.png
 paper/figures/table_rho_correlations.tex
 paper/figures/table_trade_balance.tex
 
 Usage:
-    python scripts/generate_session_c.py
+    python scripts/generate_appendix_figures.py
 """
 import sys
 from pathlib import Path
