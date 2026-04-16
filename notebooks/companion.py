@@ -15,8 +15,12 @@
 
 import marimo
 
-__generated_with = "0.19.11"
-app = marimo.App(width="full", auto_download=["html"])
+__generated_with = "0.23.1"
+app = marimo.App(
+    width="full",
+    layout_file="layouts/companion.slides.json",
+    auto_download=["html"],
+)
 
 with app.setup(hide_code=True):
     # Initialization code that runs before all other cells

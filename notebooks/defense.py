@@ -38,7 +38,7 @@ with app.setup(hide_code=True):
         filter_graph_by_percentile,
         load_gdp_data,
     )
-    from cfs_toolkit.core import compute_all_centralities
+    from cfs_toolkit.core import compute_all_centralities, gdp_sender
     import networkx as nx
 
     FIPS_TO_STATE = {
@@ -139,7 +139,7 @@ def _(master, mo, state_selector):
 | **GDP** | ${_s['gdp_billions']:.1f}B | #{_gdp_rank} |
 | **Eigenvector** | {_s['eigenvector']:.4f} | #{_eig_rank} |
 | **Betweenness** | {_s['betweenness']:.4f} | #{_btw_rank} |
-| **Out-Degree** | ${_s['out_degree']/1e9:.1f}B | #{int(_s['rank_out_degree'])} |
+| **Out-Degree** | {_s['out_degree']:.4f} | #{int(_s['rank_out_degree'])} |
 
 **{_status}**
     """)
@@ -193,26 +193,23 @@ def _(domestic_df, mo):
     _measures = ['betweenness', 'eigenvector', 'out_degree']
     _labels = {'betweenness': 'Betweenness (Bridge)', 'eigenvector': 'Eigenvector (Prestige)', 'out_degree': 'Out-Degree (Capacity)'}
 
-    _viz_data = []
+    _colors = {'betweenness': '#1f77b4', 'eigenvector': '#2ca02c', 'out_degree': '#ff7f0e'}
+    _charts = []
     for _m in _measures:
         _top10 = domestic_df.nsmallest(10, f'rank_{_m}')[['label', _m, f'rank_{_m}']].copy()
-        _top10['measure'] = _labels[_m]
         _top10['score'] = _top10[_m]
         _top10['rank'] = _top10[f'rank_{_m}'].astype(int)
-        _viz_data.append(_top10[['label', 'measure', 'score', 'rank']])
+        _sort_order = _top10.sort_values('score', ascending=False)['label'].tolist()
 
-    _viz_df = pd.concat(_viz_data, ignore_index=True)
+        _c = alt.Chart(_top10).mark_bar(color=_colors[_m]).encode(
+            x=alt.X('score:Q', title='Centrality Score'),
+            y=alt.Y('label:N', sort=_sort_order, title=None),
+            tooltip=['label', alt.Tooltip('rank:Q', title='Rank'), alt.Tooltip('score:Q', format='.4f')]
+        ).properties(width=220, height=280, title=_labels[_m])
 
-    _chart = alt.Chart(_viz_df).mark_bar().encode(
-        x=alt.X('score:Q', title='Centrality Score'),
-        y=alt.Y('label:N', sort='-x', title=None),
-        color=alt.Color('measure:N', legend=None, scale=alt.Scale(
-            domain=list(_labels.values()), range=['#1f77b4', '#2ca02c', '#ff7f0e']
-        )),
-        tooltip=['label', alt.Tooltip('rank:Q', title='Rank'), alt.Tooltip('score:Q', format='.4f')]
-    ).properties(width=250, height=300).facet(
-        column=alt.Column('measure:N', title=None, header=alt.Header(labelFontSize=14, labelFontWeight='bold'))
-    )
+        _charts.append(_c)
+
+    _chart = alt.hconcat(*_charts).resolve_scale(y='independent')
 
     _fl = domestic_df[domestic_df['label'] == 'FL'].iloc[0]
 
@@ -259,11 +256,14 @@ def _(domestic_df, intl_df, mo):
     ]
 
     def _make_scatter(_measure, _title, _color):
-        _d = domestic_df[['label', f'rank_{_measure}']].copy()
-        _d.columns = ['state', 'domestic_rank']
-        _i = intl_df[['label', f'rank_{_measure}']].copy()
-        _i.columns = ['state', 'intl_rank']
+        _d = domestic_df[['label', _measure, f'rank_{_measure}']].copy()
+        _d.columns = ['state', 'raw_dom', 'domestic_rank']
+        _i = intl_df[['label', _measure, f'rank_{_measure}']].copy()
+        _i.columns = ['state', 'raw_intl', 'intl_rank']
         _merged = _d.merge(_i, on='state')
+        # For betweenness: filter out states with zero in BOTH networks (tied blob obscures the real movement)
+        if _measure == 'betweenness':
+            _merged = _merged[(_merged['raw_dom'] > 0) | (_merged['raw_intl'] > 0)]
 
         _diag = pd.DataFrame({'x': [1, 51], 'y': [1, 51]})
         _line = alt.Chart(_diag).mark_line(strokeDash=[4, 4], color='gray', opacity=0.5).encode(x='x:Q', y='y:Q')
@@ -307,7 +307,7 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(G_domestic, domestic_df, filtration_slider, mo):
     if filtration_slider.value == 0:
-        mo.md("**Baseline**: All 2,534 edges. Move the slider to remove weak edges.")
+        _out = mo.md("**Baseline**: All 2,534 edges. Move the slider to remove weak edges.")
     else:
         _pct = filtration_slider.value
         _comp = count_components_at_filtration(G_domestic, _pct)
@@ -322,20 +322,93 @@ def _(G_domestic, domestic_df, filtration_slider, mo):
                 _f = _f_df.set_index('state_id')[_col]
                 _c = _b.index.intersection(_f.index)
                 _rho, _ = spearmanr(_b.loc[_c], _f.loc[_c])
-                _rows.append(f"| {_m} | ρ = {_rho:.4f} | {'Stable' if _rho > 0.95 else 'Changed'} |")
+                _rows.append(f"| {_m} | ρ = {_rho:.4f} | {'✓ Stable' if _rho > 0.95 else '⚠ Changed'} |")
 
-            mo.md(f"""**Filtration at {_pct}%** — Connected ({_comp['edges_remaining']} edges)
+            _out = mo.md(f"""**Filtration at {_pct}%** — Connected ({_comp['edges_remaining']} edges)
 
 | Measure | Spearman ρ | Status |
 |---------|-----------|--------|
 {chr(10).join(_rows)}""")
         else:
-            mo.md(f"**Filtration at {_pct}%** — Fragmented ({_comp['n_strongly_connected']} components). Rankings no longer comparable.")
+            _out = mo.md(f"**Filtration at {_pct}%** — **Fragmented** ({_comp['n_strongly_connected']} components). Rankings no longer comparable.")
+
+    _out
     return
 
 
 # ============================================================
-# CELL 6: Key Numbers — Quick reference for Q&A
+# CELL 6a: State Delta Table — "Show me the full divergence"
+# ============================================================
+@app.cell(hide_code=True)
+def _(master, mo):
+    _df = master[['state_abbrev', 'state_name', 'rank_gdp', 'rank_eigenvector', 'div_eigenvector']].copy()
+    _df.columns = ['Abbrev', 'State', 'GDP Rank', 'Eig Rank', 'Delta']
+    _df = _df.sort_values('Delta', ascending=False)
+
+    _over = _df[_df['Delta'] >= 5].reset_index(drop=True)
+    _under = _df[_df['Delta'] <= -5].reset_index(drop=True)
+
+    mo.vstack([
+        mo.md("# GDP vs Eigenvector: Full Divergence Table"),
+        mo.md(f"**{len(_over)} overperformers** (centrality exceeds GDP rank by 5+) and **{len(_under)} underperformers** (GDP exceeds centrality rank by 5+). Together: {len(_over) + len(_under)}/51 = {(len(_over) + len(_under)) / 51 * 100:.1f}%"),
+        mo.hstack([
+            mo.vstack([mo.md("**Overperformers**"), mo.ui.table(_over, selection=None)]),
+            mo.vstack([mo.md("**Underperformers**"), mo.ui.table(_under, selection=None)]),
+        ], justify='center', gap=1),
+    ])
+    return
+
+
+# ============================================================
+# CELL 6b: GDP-Normalized Centrality — "MS ranks #1 how?"
+# ============================================================
+@app.cell(hide_code=True)
+def _(master, mo):
+    _df = master[['state_abbrev', 'gdp_billions', 'eigenvector', 'rank_gdp', 'rank_eigenvector']].copy()
+    _df['centrality_per_gdp'] = _df['eigenvector'] / _df['gdp_billions']
+    _df['norm_rank'] = _df['centrality_per_gdp'].rank(ascending=False, method='min').astype(int)
+    _df = _df.sort_values('centrality_per_gdp', ascending=False)
+
+    _top15 = _df.head(15)[['state_abbrev', 'norm_rank', 'centrality_per_gdp', 'rank_gdp', 'rank_eigenvector']].copy()
+    _top15.columns = ['State', 'Norm Rank', 'Centrality/B$ GDP', 'GDP Rank', 'Eig Rank']
+
+    mo.vstack([
+        mo.md("# GDP-Normalized Eigenvector Centrality"),
+        mo.md("Centrality per billion dollars GDP — which states punch the most above their economic weight?"),
+        mo.ui.table(_top15, selection=None),
+    ])
+    return
+
+
+# ============================================================
+# CELL 6c: Pre-Normalization — "Is this just GDP with extra steps?"
+# ============================================================
+@app.cell(hide_code=True)
+def _(G_domestic, compute_all_centralities, gdp_sender, gdp_df, domestic_df, mo, spearmanr):
+    _G_norm = gdp_sender(G_domestic, gdp_df)
+    _norm_df = compute_all_centralities(_G_norm)
+
+    _rows = []
+    for _m, _label in [('betweenness', 'Betweenness'), ('eigenvector', 'Eigenvector'), ('out_degree', 'Out-Degree')]:
+        _orig = domestic_df.set_index('state_id')[_m]
+        _normed = _norm_df.set_index('state_id')[_m]
+        _common = _orig.index.intersection(_normed.index)
+        _rho, _p = spearmanr(_orig.loc[_common].rank(), _normed.loc[_common].rank())
+        _rows.append(f"| {_label} | ρ = {_rho:.3f} | p = {_p:.2e} |")
+
+    mo.vstack([
+        mo.md("# Pre-Analysis Normalization (GDP-Sender)"),
+        mo.md("Divide each edge weight by sender GDP before computing centrality. If centrality is just measuring economic size, normalization should destroy the rankings."),
+        mo.md(f"""| Measure | Spearman ρ | p-value |
+|---------|-----------|---------|
+{chr(10).join(_rows)}"""),
+        mo.md("**Eigenvector ρ = 0.980** — rankings hold independent of GDP. The divergence is not an artifact of economic size."),
+    ])
+    return
+
+
+# ============================================================
+# CELL 7: Key Numbers — Quick reference for Q&A
 # ============================================================
 @app.cell(hide_code=True)
 def _(mo):
