@@ -6,7 +6,7 @@ Master's thesis, Department of Systems Science and Industrial Engineering, Bingh
 
 ## See It Live
 
-- **[Interactive trade network dashboard](https://e3613c3b-348f-45d9-8a15-989fb9a415f1.plotly.app/)** — filter by commodity, toggle domestic vs. international, explore state-level centrality rankings
+- **[Interactive trade network dashboard](https://us-trade.plotly.app/)** — filter by commodity, toggle domestic vs. international, explore state-level centrality rankings
 - **Pre-rendered notebooks** — browse results without installing anything:
   - [`companion.html`](notebooks/__marimo__/companion.html) — full exploratory analysis
   - [`replication.html`](notebooks/__marimo__/replication.html) — static replication of thesis figures
