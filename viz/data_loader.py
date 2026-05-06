@@ -5,14 +5,17 @@ import networkx as nx
 import pickle
 from pathlib import Path
 
+BASE_DIR = Path(__file__).resolve().parent
 
-def load_centralities(data_dir="data", network_type="51x51"):
+
+def load_centralities(data_dir=None, network_type="51x51"):
     """Load centrality scores from CSV.
 
     Args:
         data_dir: Directory containing data files
         network_type: "51x51" for domestic only, "52x52" for with international
     """
+    data_dir = data_dir or BASE_DIR / "data"
     filename = f"centralities_{network_type}.csv"
     file_path = Path(data_dir) / filename
     df = pd.read_csv(file_path)
@@ -20,22 +23,25 @@ def load_centralities(data_dir="data", network_type="51x51"):
     return df
 
 
-def load_network(data_dir="data"):
+def load_network(data_dir=None):
     """Load the trade network graph."""
+    data_dir = data_dir or BASE_DIR / "data"
     file_path = Path(data_dir) / "network_graph.gpickle"
     with open(file_path, 'rb') as f:
         G = pickle.load(f)
     return G
 
 
-def load_state_coords(data_dir="data"):
+def load_state_coords(data_dir=None):
     """Load state coordinates for map visualization."""
+    data_dir = data_dir or BASE_DIR / "data"
     file_path = Path(data_dir) / "state_coords.csv"
     return pd.read_csv(file_path)
 
 
-def load_gdp(data_dir="data"):
+def load_gdp(data_dir=None):
     """Load state GDP data."""
+    data_dir = data_dir or BASE_DIR / "data"
     file_path = Path(data_dir) / "state_gdp_2017.csv"
     df = pd.read_csv(file_path)
     df['gdp_billions'] = df['gdp_2017_q4_millions'] / 1000
@@ -43,8 +49,9 @@ def load_gdp(data_dir="data"):
     return df
 
 
-def load_filtration_data(data_dir="data"):
+def load_filtration_data(data_dir=None):
     """Load pre-computed filtration results."""
+    data_dir = data_dir or BASE_DIR / "data"
     file_path = Path(data_dir) / "filtration_results_51x51.csv"
     df = pd.read_csv(file_path)
     df = df.rename(columns={'label': 'state'})
@@ -60,26 +67,28 @@ def load_filtration_data(data_dir="data"):
     return filtration_data
 
 
-def load_commodity_centralities(data_dir="data"):
+def load_commodity_centralities(data_dir=None):
     """Load commodity-level centralities from CSV.
 
     Returns:
         DataFrame with columns: state_id, label (state), betweenness, eigenvector,
         out_degree, commodity_code, commodity_name
     """
+    data_dir = data_dir or BASE_DIR / "data"
     file_path = Path(data_dir) / "commodity_centralities.csv"
     df = pd.read_csv(file_path)
     df = df.rename(columns={'label': 'state'})
     return df
 
 
-def load_commodity_edges(data_dir="data"):
+def load_commodity_edges(data_dir=None):
     """Load commodity-specific edge data from CSV.
 
     Returns:
         DataFrame with columns: source, target, commodity_code, weight
         (source/target are state abbreviations like 'TX', 'CA')
     """
+    data_dir = data_dir or BASE_DIR / "data"
     file_path = Path(data_dir) / "commodity_edges.csv"
     df = pd.read_csv(file_path, dtype={'commodity_code': str})
     return df
