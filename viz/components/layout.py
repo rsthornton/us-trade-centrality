@@ -215,6 +215,12 @@ def create_layout():
                     )
                 ]),
 
+                html.Div([
+                    html.A("GitHub", href="https://github.com/rsthornton/us-trade-centrality",
+                           target="_blank", className="text-muted small",
+                           style={'textDecoration': 'none', 'opacity': '0.6'})
+                ], style={'marginTop': '8px'}),
+
             ], style={
                 'position': 'absolute',
                 'top': '20px',
