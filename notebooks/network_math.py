@@ -97,8 +97,8 @@ def _():
         mo.ui.plotly(_fig),
         mo.callout(
             mo.md(
-                "**Top 5 by GDP:** California ($2,802B), Texas ($1,747B), "
-                "New York ($1,564B), Florida ($984B), Illinois ($836B)"
+                "**Top 5 by GDP:** California (\$2,802B), Texas (\$1,747B), "
+                "New York (\$1,564B), Florida (\$984B), Illinois (\$836B)"
             ),
             kind="info",
         ),
@@ -113,8 +113,8 @@ def _():
     ## Same Totals, Different Structures
 
     Before we look at real data, consider a thought experiment. Here are two
-    tiny trade networks. **Every node has the same total trade volume** — $100
-    billion in and $100 billion out. By GDP logic, they're all equally important.
+    tiny trade networks. **Every node has the same total trade volume** — \$100
+    billion in and \$100 billion out. By GDP logic, they're all equally important.
 
     But look at the *structure:*
     """)
@@ -190,10 +190,10 @@ def _():
     )
 
     mo.vstack([
-        mo.hstack([mo.ui.altair_chart(_hub_chart), mo.ui.altair_chart(_ring_chart)]),
+        mo.hstack([_hub_chart, _ring_chart]),
         mo.callout(
             mo.md(
-                "**Every node trades $100B total.** But in the hub network, Node A is clearly "
+                "**Every node trades \$100B total.** But in the hub network, Node A is clearly "
                 "the most important — remove it and the network falls apart. In the ring, no "
                 "node is special.\n\n"
                 "**This is what GDP misses.** GDP would rank all five nodes equally in both "
@@ -294,7 +294,7 @@ def _():
     mo.md("""
     ### The Kentucky Story
 
-    Kentucky's GDP ranks **#28** — a modest, mid-tier economy at $206 billion.
+    Kentucky's GDP ranks **#28** — a modest, mid-tier economy at \$206 billion.
     But its network centrality ranks **#14**, placing it in the top quarter.
 
     Why? Kentucky is a manufacturing and logistics nexus: automobiles
@@ -321,7 +321,7 @@ def _():
             '''
             ### The Peninsula Puzzle: Florida
 
-            Florida is the **4th largest economy** in the nation at nearly $1 trillion.
+            Florida is the **4th largest economy** in the nation at nearly \$1 trillion.
             Its network prestige is #5 — roughly proportional.
 
             But here's the puzzle: Florida sits on **zero** of the shortest trade paths
