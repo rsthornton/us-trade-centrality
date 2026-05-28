@@ -24,6 +24,25 @@ marimo edit notebooks/companion.py
 
 Static replication notebook (5 sections, 18 cells) that delegates all computation to `cfs_toolkit`. Covers data exploration, centrality computation, filtration validation, GDP divergence, and boundary sensitivity. Each cell documents the equivalent `main.py` command for from-scratch replication.
 
+## network_math.py — Network Math for Policymakers
+
+Accessible notebook teaching why network centrality differs from GDP. Designed for non-technical audiences (policymakers, funders, journalists). Built from first principles informed by real communication failures (the "Luke conversation" — where a smart engineer couldn't get past the scalar assumption).
+
+Pedagogical sequence:
+1. **GDP baseline** — familiar map, establish common ground
+2. **Same Totals, Different Structures** — toy hub-vs-ring network that breaks the scalar assumption
+3. **The Surprise** — PRGn divergence map showing 40% of states diverge (results before method)
+4. **State Stories** — Kentucky (+14), Florida (zero betweenness) with toy-network callbacks
+5. **Look Up Your State** — interactive dropdown with profile card + scatter plot
+6. **Why the Math Differs** — "GDP is addition, centrality is multiplication" (concepts after intuition)
+7. **Why This Matters** — policy implications, three takeaways
+
+Key design principle: show the output before the method. Let the reader generate hypotheses before formalizing.
+
+```bash
+marimo edit notebooks/network_math.py --port 2730
+```
+
 ## Data Dependencies
 
 Uses canonical Nov 29, 2025 results (with weight inversion fix):
