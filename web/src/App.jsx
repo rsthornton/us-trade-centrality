@@ -8,12 +8,18 @@ import ColorLegend from "./components/ColorLegend";
 import RankingsTable from "./components/RankingsTable";
 import StateDrawer from "./components/StateDrawer";
 
+// TODO: swap to Marimo Cloud URL once the WASM export is live (5/28 next-action).
+const NOTEBOOK_URL =
+  "https://github.com/rsthornton/us-trade-centrality/blob/main/notebooks/network_math.py";
+
 export default function App() {
   const [data, setData] = useState(null);
   const [measure, setMeasure] = useState("eigenvector");
   const [selectedState, setSelectedState] = useState(null);
   const [networkType, setNetworkType] = useState("51");
   const [showEdges, setShowEdges] = useState(true);
+  const [topN, setTopN] = useState(50);
+  const [flowDirection, setFlowDirection] = useState("both");
   const [commodity, setCommodity] = useState("all");
   const [commodityCentralities, setCommodityCentralities] = useState(null);
   const [commodityEdges, setCommodityEdges] = useState(null);
@@ -50,10 +56,14 @@ export default function App() {
     return networkType === "51" ? data.centralities51 : data.centralities52;
   }, [data, networkType, commodity, commodityCentralities]);
 
-  const edges = useMemo(() => {
-    if (commodity !== "all" && commodityEdges) return commodityEdges;
-    return data?.topEdges || [];
+  // Full weight-sorted edge set (topEdges is pre-sorted; sort commodity edges to be safe).
+  const allEdges = useMemo(() => {
+    const raw = (commodity !== "all" && commodityEdges) ? commodityEdges : (data?.topEdges || []);
+    return [...raw].sort((a, b) => b.weight - a.weight);
   }, [data, commodity, commodityEdges]);
+
+  // Top-N slice actually drawn / explored.
+  const edges = useMemo(() => allEdges.slice(0, topN), [allEdges, topN]);
 
   const selectedData = useMemo(() => {
     if (!selectedState || !centralities.length) return null;
@@ -89,6 +99,15 @@ export default function App() {
           The map shows what GDP cannot — which states hold structural power in
           the $4 trillion interstate trade network.
         </p>
+        <a
+          href={NOTEBOOK_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block text-sm mt-2 font-medium transition-opacity hover:opacity-70"
+          style={{ color: "var(--accent-blue)" }}
+        >
+          Explore the Math →
+        </a>
       </header>
 
       <div className="px-6 py-3 flex items-center gap-4 flex-wrap">
@@ -131,6 +150,63 @@ export default function App() {
         </div>
       </div>
 
+      {showEdges && (
+        <div className="px-6 pb-3 flex items-center gap-5 flex-wrap text-xs" style={{ color: "var(--text-secondary)" }}>
+          {/* Top-N slider */}
+          <label className="flex items-center gap-2">
+            <span className="font-mono uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
+              Top flows
+            </span>
+            <input
+              type="range"
+              min={Math.min(10, allEdges.length || 10)}
+              max={Math.max(allEdges.length, 10)}
+              step={10}
+              value={Math.min(topN, allEdges.length)}
+              onChange={(e) => setTopN(Number(e.target.value))}
+              className="cursor-pointer"
+              style={{ accentColor: "var(--accent-blue)", width: "140px" }}
+            />
+            <span className="font-mono tabular-nums" style={{ color: "var(--accent-blue)" }}>
+              {Math.min(topN, allEdges.length)}
+            </span>
+          </label>
+
+          {/* Flow-direction filter (applies when a state is selected) */}
+          <div className="flex items-center gap-1.5">
+            <span className="font-mono uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
+              Direction
+            </span>
+            {[
+              { code: "both", label: "Both" },
+              { code: "in", label: "Inbound" },
+              { code: "out", label: "Outbound" },
+            ].map(({ code, label }) => {
+              const active = flowDirection === code;
+              return (
+                <button
+                  key={code}
+                  onClick={() => setFlowDirection(code)}
+                  className="px-2.5 py-1 rounded text-xs font-medium cursor-pointer border transition-all duration-200"
+                  style={{
+                    backgroundColor: active ? "var(--accent-blue)" + "18" : "transparent",
+                    borderColor: active ? "var(--accent-blue)" : "var(--border)",
+                    color: active ? "var(--accent-blue)" : "var(--text-secondary)",
+                  }}
+                >
+                  {label}
+                </button>
+              );
+            })}
+            {!selectedState && (
+              <span className="ml-1" style={{ color: "var(--text-muted)" }}>
+                — select a state to apply
+              </span>
+            )}
+          </div>
+        </div>
+      )}
+
       <div className="px-6 relative">
         <TradeMap
           geojson={geojson}
@@ -140,6 +216,7 @@ export default function App() {
           onSelectState={setSelectedState}
           edges={edges}
           showEdges={showEdges}
+          flowDirection={flowDirection}
         />
 
         {selectedState && selectedData && (

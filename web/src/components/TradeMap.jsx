@@ -28,6 +28,7 @@ export default function TradeMap({
   onSelectState,
   edges,
   showEdges,
+  flowDirection = "both",
 }) {
   const [hoveredState, setHoveredState] = useState(null);
 
@@ -65,6 +66,7 @@ export default function TradeMap({
   const edgeLines = useMemo(() => {
     if (!edges || !showEdges) return [];
     const maxWeight = Math.max(...edges.map((e) => e.weight));
+    const totalWeight = edges.reduce((sum, e) => sum + e.weight, 0);
     return edges.map((e) => {
       const [x1, y1] = projectPoint(e.source_lon, e.source_lat, null);
       const [x2, y2] = projectPoint(e.target_lon, e.target_lat, null);
@@ -74,9 +76,15 @@ export default function TradeMap({
       const dist = Math.sqrt(dx * dx + dy * dy);
       const my = (y1 + y2) / 2 - dist * 0.18;
       const weightRatio = e.weight / maxWeight;
+      const pct = totalWeight ? (e.weight / totalWeight) * 100 : 0;
 
-      const isConnectedToSelected = selectedState
-        && (e.source === selectedState || e.target === selectedState);
+      // Direction-aware emphasis: when a state is selected, the In/Out/Both
+      // filter decides which incident edges light up.
+      const touchesSelected =
+        flowDirection === "out" ? e.source === selectedState
+        : flowDirection === "in" ? e.target === selectedState
+        : (e.source === selectedState || e.target === selectedState);
+      const isConnectedToSelected = selectedState && touchesSelected;
       const isConnectedToHovered = hoveredState
         && (e.source === hoveredState || e.target === hoveredState);
 
@@ -108,10 +116,11 @@ export default function TradeMap({
 
       return {
         x1, y1, x2, y2, mx, my, opacity, width, stroke, glow,
+        source: e.source, target: e.target, weight: e.weight, pct,
         key: `${e.source}-${e.target}`,
       };
     });
-  }, [edges, showEdges, selectedState, hoveredState]);
+  }, [edges, showEdges, selectedState, hoveredState, flowDirection]);
 
   return (
     <svg
@@ -189,19 +198,37 @@ export default function TradeMap({
         );
       })}
 
-      {showEdges && edgeLines.map((e) => (
-        <path
-          key={e.key}
-          d={`M${e.x1},${e.y1} Q${e.mx},${e.my} ${e.x2},${e.y2}`}
-          fill="none"
-          stroke={e.stroke}
-          strokeWidth={e.width}
-          opacity={e.opacity}
-          filter={e.glow ? "url(#edge-glow)" : undefined}
-          pointerEvents="none"
-          className="transition-opacity duration-200"
-        />
-      ))}
+      {showEdges && edgeLines.map((e) => {
+        const arcPath = `M${e.x1},${e.y1} Q${e.mx},${e.my} ${e.x2},${e.y2}`;
+        return (
+          <g key={e.key}>
+            {/* Visible flow arc (no pointer events — the hit-path below captures hover) */}
+            <path
+              d={arcPath}
+              fill="none"
+              stroke={e.stroke}
+              strokeWidth={e.width}
+              opacity={e.opacity}
+              filter={e.glow ? "url(#edge-glow)" : undefined}
+              pointerEvents="none"
+              className="transition-opacity duration-200"
+            />
+            {/* Transparent wide hit-path carries the native tooltip */}
+            <path
+              d={arcPath}
+              fill="none"
+              stroke="transparent"
+              strokeWidth={8}
+              pointerEvents="stroke"
+              style={{ cursor: "crosshair" }}
+            >
+              <title>
+                {e.source} → {e.target}: ${e.weight.toLocaleString("en-US", { maximumFractionDigits: 0 })} ({e.pct.toFixed(1)}% of shown flows)
+              </title>
+            </path>
+          </g>
+        );
+      })}
     </svg>
   );
 }
