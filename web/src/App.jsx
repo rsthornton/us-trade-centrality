@@ -8,9 +8,9 @@ import ColorLegend from "./components/ColorLegend";
 import RankingsTable from "./components/RankingsTable";
 import StateDrawer from "./components/StateDrawer";
 
-// TODO: swap to Marimo Cloud URL once the WASM export is live (5/28 next-action).
+// Interactive WASM notebook hosted on molab (marimo Cloud).
 const NOTEBOOK_URL =
-  "https://github.com/rsthornton/us-trade-centrality/blob/main/notebooks/network_math.py";
+  "https://molab.marimo.io/notebooks/nb_ssAp6xhuFRsEaQKP2y7ZjH/app";
 
 export default function App() {
   const [data, setData] = useState(null);
