@@ -22,16 +22,177 @@ with app.setup(hide_code=True):
     import altair as alt
     import plotly.express as px
     import marimo as mo
-    from pathlib import Path
+    import io
 
-    REPO_ROOT = Path(__file__).parent.parent
-    VIZ_DATA = REPO_ROOT / "viz" / "data"
+    # Data inlined from viz/data/*.csv so the notebook runs self-contained in a
+    # browser WASM kernel (molab / marimo Cloud) with no filesystem access.
+    _CENTRALITIES_CSV = """state_id,label,betweenness,eigenvector,out_degree,rank_betweenness,rank_eigenvector,rank_out_degree
+6,CA,0.506122,0.309053,1.000000,1,2,1
+48,TX,0.262857,0.371410,0.751976,2,1,2
+36,NY,0.203265,0.290221,0.506828,3,3,7
+42,PA,0.167755,0.241298,0.679378,4,7,4
+17,IL,0.144898,0.252299,0.750789,5,6,3
+25,MA,0.113061,0.097417,0.276643,6,22,17
+39,OH,0.100816,0.267610,0.592153,7,4,5
+53,WA,0.097959,0.102527,0.265489,8,21,18
+27,MN,0.060000,0.084294,0.282741,9,26,16
+13,GA,0.047347,0.197682,0.470041,10,11,10
+8,CO,0.040000,0.069734,0.135678,11,28,31
+37,NC,0.035102,0.150187,0.436896,12,13,12
+19,IA,0.025714,0.064726,0.230628,13,31,22
+51,VA,0.024898,0.128090,0.237228,14,15,20
+24,MD,0.020000,0.104622,0.164852,15,20,28
+22,LA,0.015510,0.111356,0.192163,16,17,25
+47,TN,0.010612,0.164833,0.481051,17,12,9
+29,MO,0.005714,0.111091,0.309702,18,18,14
+26,MI,0.004082,0.216665,0.455857,19,8,11
+18,IN,0.002857,0.200740,0.484304,20,10,8
+44,RI,0.000000,0.011950,0.060230,21,46,40
+45,SC,0.000000,0.110592,0.231858,21,19,21
+46,SD,0.000000,0.011894,0.037304,21,47,43
+49,UT,0.000000,0.060815,0.132414,21,33,32
+40,OK,0.000000,0.093710,0.121389,21,24,33
+50,VT,0.000000,0.011874,0.030173,21,48,45
+38,ND,0.000000,0.025825,0.042310,21,40,42
+54,WV,0.000000,0.037784,0.062533,21,36,39
+41,OR,0.000000,0.066402,0.144813,21,30,30
+35,NM,0.000000,0.031639,0.023833,21,38,46
+1,AL,0.000000,0.092047,0.229895,21,25,23
+33,NH,0.000000,0.027337,0.063342,21,39,38
+2,AK,0.000000,0.009274,0.005832,21,51,49
+4,AZ,0.000000,0.097213,0.153863,21,23,29
+5,AR,0.000000,0.054696,0.117005,21,35,34
+9,CT,0.000000,0.066599,0.207223,21,29,24
+10,DE,0.000000,0.019866,0.065058,21,42,36
+11,DC,0.000000,0.011182,0.001796,21,49,50
+12,FL,0.000000,0.263732,0.257017,21,5,19
+15,HI,0.000000,0.016752,0.001535,21,45,51
+16,ID,0.000000,0.018993,0.046488,21,43,41
+20,KS,0.000000,0.059335,0.184869,21,34,26
+21,KY,0.000000,0.135501,0.290912,21,14,15
+23,ME,0.000000,0.018961,0.034035,21,44,44
+28,MS,0.000000,0.076198,0.173923,21,27,27
+55,WI,0.000000,0.127759,0.340689,21,16,13
+30,MT,0.000000,0.023661,0.017099,21,41,48
+31,NE,0.000000,0.031901,0.104429,21,37,35
+32,NV,0.000000,0.063537,0.064484,21,32,37
+34,NJ,0.000000,0.211918,0.522331,21,9,6
+56,WY,0.000000,0.009351,0.019084,21,50,47
+"""
 
-    _c51 = pd.read_csv(VIZ_DATA / "centralities_51x51.csv").rename(columns={"label": "state"})
-    _gdp = pd.read_csv(VIZ_DATA / "state_gdp_2017.csv")
+    _GDP_CSV = """state_abbrev,state_name,gdp_2017_q4_millions
+AK,Alaska,54403
+AL,Alabama,213903
+AR,Arkansas,126263
+AZ,Arizona,327933
+CA,California,2802289
+CO,Colorado,351666
+CT,Connecticut,265876
+DC,District of Columbia,134000
+DE,Delaware,74978
+FL,Florida,984138
+GA,Georgia,563784
+HI,Hawaii,89302
+IA,Iowa,191072
+ID,Idaho,73324
+IL,Illinois,835642
+IN,Indiana,364649
+KS,Kansas,160390
+KY,Kentucky,205935
+LA,Louisiana,251058
+MA,Massachusetts,537127
+MD,Maryland,400630
+ME,Maine,62519
+MI,Michigan,512762
+MN,Minnesota,353283
+MO,Missouri,309190
+MS,Mississippi,113387
+MT,Montana,48604
+NC,North Carolina,547187
+ND,North Dakota,55894
+NE,Nebraska,123120
+NH,New Hampshire,82030
+NJ,New Jersey,601940
+NM,New Mexico,99129
+NV,Nevada,160140
+NY,New York,1564340
+OH,Ohio,661077
+OK,Oklahoma,192343
+OR,Oregon,240695
+PA,Pennsylvania,767580
+RI,Rhode Island,60685
+SC,South Carolina,222216
+SD,South Dakota,50277
+TN,Tennessee,351966
+TX,Texas,1747212
+UT,Utah,169130
+VA,Virginia,517548
+VT,Vermont,32594
+WA,Washington,517236
+WI,Wisconsin,330842
+WV,West Virginia,78767
+WY,Wyoming,41365
+"""
+
+    _COORDS_CSV = """state_abbr,state_name,lat,lon
+AL,Alabama,32.806671,-86.791130
+AK,Alaska,61.370716,-152.404419
+AZ,Arizona,33.729759,-111.431221
+AR,Arkansas,34.969704,-92.373123
+CA,California,36.116203,-119.681564
+CO,Colorado,39.059811,-105.311104
+CT,Connecticut,41.597782,-72.755371
+DE,Delaware,39.318523,-75.507141
+FL,Florida,27.766279,-81.686783
+GA,Georgia,33.040619,-83.643074
+HI,Hawaii,21.094318,-157.498337
+ID,Idaho,44.240459,-114.478828
+IL,Illinois,40.349457,-88.986137
+IN,Indiana,39.849426,-86.258278
+IA,Iowa,42.011539,-93.210526
+KS,Kansas,38.526600,-96.726486
+KY,Kentucky,37.668140,-84.670067
+LA,Louisiana,31.169546,-91.867805
+ME,Maine,44.693947,-69.381927
+MD,Maryland,39.063946,-76.802101
+MA,Massachusetts,42.230171,-71.530106
+MI,Michigan,43.326618,-84.536095
+MN,Minnesota,45.694454,-93.900192
+MS,Mississippi,32.741646,-89.678696
+MO,Missouri,38.456085,-92.288368
+MT,Montana,46.921925,-110.454353
+NE,Nebraska,41.125370,-98.268082
+NV,Nevada,38.313515,-117.055374
+NH,New Hampshire,43.452492,-71.563896
+NJ,New Jersey,40.298904,-74.521011
+NM,New Mexico,34.840515,-106.248482
+NY,New York,42.165726,-74.948051
+NC,North Carolina,35.630066,-79.806419
+ND,North Dakota,47.528912,-99.784012
+OH,Ohio,40.388783,-82.764915
+OK,Oklahoma,35.565342,-96.928917
+OR,Oregon,44.572021,-122.070938
+PA,Pennsylvania,40.590752,-77.209755
+RI,Rhode Island,41.680893,-71.511780
+SC,South Carolina,33.856892,-80.945007
+SD,South Dakota,44.299782,-99.438828
+TN,Tennessee,35.747845,-86.692345
+TX,Texas,31.054487,-97.563461
+UT,Utah,40.150032,-111.862434
+VT,Vermont,44.045876,-72.710686
+VA,Virginia,37.769337,-78.169968
+WA,Washington,47.400902,-121.490494
+WV,West Virginia,38.491226,-80.954453
+WI,Wisconsin,44.268543,-89.616508
+WY,Wyoming,42.755966,-107.302490
+DC,District of Columbia,38.897438,-77.026817
+"""
+
+    _c51 = pd.read_csv(io.StringIO(_CENTRALITIES_CSV)).rename(columns={"label": "state"})
+    _gdp = pd.read_csv(io.StringIO(_GDP_CSV))
     _gdp["gdp_billions"] = _gdp["gdp_2017_q4_millions"] / 1000
     _gdp["gdp_rank"] = _gdp["gdp_billions"].rank(ascending=False, method="min").astype(int)
-    _coords = pd.read_csv(VIZ_DATA / "state_coords.csv")
+    _coords = pd.read_csv(io.StringIO(_COORDS_CSV))
 
     df = _c51.merge(
         _gdp[["state_abbrev", "gdp_billions", "gdp_rank"]],
