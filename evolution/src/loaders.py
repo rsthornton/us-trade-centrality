@@ -82,6 +82,8 @@ def load_year(year, sample_size=None, truncation_value=30_000_000):
         df.groupby(["ORIG_STATE", "DEST_STATE", "SCTG"], observed=True, as_index=False)
         ["weighted_value"].sum()
     )
+    # plain strings: categorical dtype does not survive pickle round-trips reliably
+    commodity_edges["SCTG"] = commodity_edges["SCTG"].astype(str)
 
     edges = aggregate_cfs_to_edges(df)
     stats["interstate_records"] = int(len(df))
