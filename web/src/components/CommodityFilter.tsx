@@ -1,3 +1,5 @@
+import type { Metadata } from "../types";
+
 const QUICK_PICKS = [
   { code: "all", label: "All" },
   { code: "01-05", label: "Agri" },
@@ -5,13 +7,17 @@ const QUICK_PICKS = [
   { code: "35-38", label: "Mfg" },
 ];
 
-export default function CommodityFilter({ selected, onSelect, metadata }) {
+interface CommodityFilterProps {
+  selected: string;
+  onSelect: (code: string) => void;
+  metadata: Metadata | null;
+}
+
+export default function CommodityFilter({ selected, onSelect, metadata }: CommodityFilterProps) {
   const groups = metadata?.commodity_groups ?? {};
   const names = metadata?.sctg_names ?? {};
 
-  const displayName = selected !== "all" && names[selected]
-    ? names[selected]
-    : null;
+  const displayName = selected !== "all" && names[selected] ? names[selected] : null;
 
   return (
     <div className="flex flex-col gap-1.5">

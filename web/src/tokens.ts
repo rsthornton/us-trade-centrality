@@ -12,7 +12,7 @@ export const mapColors = {
   dim: "#9ca3af",
   empty: "#e8e8f0",
   stroke: "#d0d0d8",
-};
+} as const;
 
 export const radius = {
   sm: 4,
@@ -20,22 +20,22 @@ export const radius = {
   lg: 8,
   button: 24,
   pill: 9999,
-};
+} as const;
 
 export const shadow = {
   card: "0 4px 14px rgba(0, 0, 0, 0.08)",
   cardHover: "0 6px 20px rgba(0, 0, 0, 0.12)",
   drawer: "-4px 0 24px rgba(0, 0, 0, 0.12)",
-};
+} as const;
 
 export const zIndex = {
   drawer: 10,
   tooltip: 20,
   hint: 30,
-};
+} as const;
 
 export const transition = {
   fast: 150,
   base: 200,
   slow: 300,
-};
+} as const;

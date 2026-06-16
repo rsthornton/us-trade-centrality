@@ -5,12 +5,17 @@
  * Matches D3's geoAlbersUsa() output for a 975×610 viewport.
  */
 
+import type { FeatureCollection, GeoPosition, GeoRing, StatePath } from "../types";
+
 const WIDTH = 975;
 const HEIGHT = 610;
 
 const DEG = Math.PI / 180;
 
-function conicEqualArea(phi1Deg, phi2Deg) {
+type RawProjection = (lambda: number, phi: number) => GeoPosition;
+type Projection = (lon: number, lat: number) => GeoPosition;
+
+function conicEqualArea(phi1Deg: number, phi2Deg: number): RawProjection {
   const phi1 = phi1Deg * DEG;
   const phi2 = phi2Deg * DEG;
   const sy0 = Math.sin(phi1);
@@ -26,7 +31,15 @@ function conicEqualArea(phi1Deg, phi2Deg) {
   };
 }
 
-function makeProjection(phi1, phi2, centerLon, centerLat, scale, tx, ty) {
+function makeProjection(
+  phi1: number,
+  phi2: number,
+  centerLon: number,
+  centerLat: number,
+  scale: number,
+  tx: number,
+  ty: number,
+): Projection {
   const raw = conicEqualArea(phi1, phi2);
   const lambda0 = centerLon * DEG;
   const phi0 = centerLat * DEG;
@@ -47,13 +60,13 @@ const hawaii = makeProjection(8, 18, -157, 20.5, 1070, 310, 440);
 const ALASKA_FIPS = "02";
 const HAWAII_FIPS = "15";
 
-export function projectPoint(lon, lat, fips) {
+export function projectPoint(lon: number, lat: number, fips?: string | null): GeoPosition {
   if (fips === ALASKA_FIPS) return alaska(lon, lat);
   if (fips === HAWAII_FIPS) return hawaii(lon, lat);
   return lower48(lon, lat);
 }
 
-function ringToPath(ring, fips) {
+function ringToPath(ring: GeoRing, fips: string): string {
   if (ring.length === 0) return "";
   const points = ring.map(([lon, lat]) => {
     const [x, y] = projectPoint(lon, lat, fips);
@@ -62,15 +75,15 @@ function ringToPath(ring, fips) {
   return `M${points.join("L")}Z`;
 }
 
-export function geoToSvgPaths(geojson) {
-  const paths = {};
+export function geoToSvgPaths(geojson: FeatureCollection): Record<string, StatePath> {
+  const paths: Record<string, StatePath> = {};
   for (const feature of geojson.features) {
     const fips = feature.id;
     const name = feature.properties.name;
     const geo = feature.geometry;
     if (!geo) continue;
 
-    let d;
+    let d: string;
     if (geo.type === "Polygon") {
       d = geo.coordinates.map((ring) => ringToPath(ring, fips)).join("");
     } else if (geo.type === "MultiPolygon") {

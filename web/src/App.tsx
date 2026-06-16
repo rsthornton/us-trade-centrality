@@ -7,22 +7,33 @@ import CommodityFilter from "./components/CommodityFilter";
 import ColorLegend from "./components/ColorLegend";
 import RankingsTable from "./components/RankingsTable";
 import StateDrawer from "./components/StateDrawer";
+import type {
+  BaseCentralityRow,
+  CommodityCentralityRow,
+  CoreData,
+  Edge,
+  Measure,
+} from "./types";
 
 // Interactive WASM notebook hosted on molab (marimo Cloud).
-const NOTEBOOK_URL =
-  "https://molab.marimo.io/notebooks/nb_ssAp6xhuFRsEaQKP2y7ZjH/app";
+const NOTEBOOK_URL = "https://molab.marimo.io/notebooks/nb_ssAp6xhuFRsEaQKP2y7ZjH/app";
+
+type NetworkType = "51" | "52";
+type FlowDirection = "both" | "in" | "out";
 
 export default function App() {
-  const [data, setData] = useState(null);
-  const [measure, setMeasure] = useState("eigenvector");
-  const [selectedState, setSelectedState] = useState(null);
-  const [networkType, setNetworkType] = useState("51");
+  const [data, setData] = useState<CoreData | null>(null);
+  const [measure, setMeasure] = useState<Measure>("eigenvector");
+  const [selectedState, setSelectedState] = useState<string | null>(null);
+  const [networkType, setNetworkType] = useState<NetworkType>("51");
   const [showEdges, setShowEdges] = useState(true);
   const [topN, setTopN] = useState(50);
-  const [flowDirection, setFlowDirection] = useState("both");
+  const [flowDirection, setFlowDirection] = useState<FlowDirection>("both");
   const [commodity, setCommodity] = useState("all");
-  const [commodityCentralities, setCommodityCentralities] = useState(null);
-  const [commodityEdges, setCommodityEdges] = useState(null);
+  const [commodityCentralities, setCommodityCentralities] = useState<
+    CommodityCentralityRow[] | null
+  >(null);
+  const [commodityEdges, setCommodityEdges] = useState<Edge[] | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -50,15 +61,15 @@ export default function App() {
     return topoFeature(data.topo, "states");
   }, [data?.topo]);
 
-  const centralities = useMemo(() => {
+  const centralities = useMemo<BaseCentralityRow[]>(() => {
     if (!data) return [];
     if (commodity !== "all" && commodityCentralities) return commodityCentralities;
     return networkType === "51" ? data.centralities51 : data.centralities52;
   }, [data, networkType, commodity, commodityCentralities]);
 
   // Full weight-sorted edge set (topEdges is pre-sorted; sort commodity edges to be safe).
-  const allEdges = useMemo(() => {
-    const raw = (commodity !== "all" && commodityEdges) ? commodityEdges : (data?.topEdges || []);
+  const allEdges = useMemo<Edge[]>(() => {
+    const raw = commodity !== "all" && commodityEdges ? commodityEdges : (data?.topEdges ?? []);
     return [...raw].sort((a, b) => b.weight - a.weight);
   }, [data, commodity, commodityEdges]);
 
@@ -67,10 +78,10 @@ export default function App() {
 
   const selectedData = useMemo(() => {
     if (!selectedState || !centralities.length) return null;
-    return centralities.find((r) => r.state === selectedState);
+    return centralities.find((r) => r.state === selectedState) ?? null;
   }, [selectedState, centralities]);
 
-  if (loading) {
+  if (loading || !data) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div
@@ -86,18 +97,12 @@ export default function App() {
   return (
     <div className="min-h-screen relative">
       <header className="px-6 pt-6 pb-2">
-        <h1
-          className="text-3xl font-light tracking-tight"
-          style={{ color: "var(--text-primary)" }}
-        >
+        <h1 className="text-3xl font-light tracking-tight" style={{ color: "var(--text-primary)" }}>
           US Interstate Trade Centrality
         </h1>
-        <p
-          className="text-sm mt-1 max-w-xl"
-          style={{ color: "var(--text-secondary)" }}
-        >
-          The map shows what GDP cannot — which states hold structural power in
-          the $4 trillion interstate trade network.
+        <p className="text-sm mt-1 max-w-xl" style={{ color: "var(--text-secondary)" }}>
+          The map shows what GDP cannot — which states hold structural power in the $4 trillion
+          interstate trade network.
         </p>
         <a
           href={NOTEBOOK_URL}
@@ -151,7 +156,10 @@ export default function App() {
       </div>
 
       {showEdges && (
-        <div className="px-6 pb-3 flex items-center gap-5 flex-wrap text-xs" style={{ color: "var(--text-secondary)" }}>
+        <div
+          className="px-6 pb-3 flex items-center gap-5 flex-wrap text-xs"
+          style={{ color: "var(--text-secondary)" }}
+        >
           {/* Top-N slider */}
           <label className="flex items-center gap-2">
             <span className="font-mono uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
@@ -177,11 +185,13 @@ export default function App() {
             <span className="font-mono uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
               Direction
             </span>
-            {[
-              { code: "both", label: "Both" },
-              { code: "in", label: "Inbound" },
-              { code: "out", label: "Outbound" },
-            ].map(({ code, label }) => {
+            {(
+              [
+                { code: "both", label: "Both" },
+                { code: "in", label: "Inbound" },
+                { code: "out", label: "Outbound" },
+              ] as const
+            ).map(({ code, label }) => {
               const active = flowDirection === code;
               return (
                 <button
@@ -261,7 +271,6 @@ export default function App() {
         selectedState={selectedState}
         onSelectState={setSelectedState}
       />
-
     </div>
   );
 }

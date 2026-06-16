@@ -1,7 +1,9 @@
 /**
  * Color scales for centrality visualization.
- * Perceptually uniform, dark-mode optimized.
+ * Viridis is perceptually uniform and colorblind-safe; PRGn is the divergence scale.
  */
+
+import type { Measure } from "../types";
 
 const VIRIDIS = [
   "#440154", "#46085c", "#471164", "#481a6c", "#482273", "#472a7a",
@@ -19,29 +21,29 @@ const PRGN = [
   "#00641a", "#005000",
 ];
 
-export function interpolateViridis(t) {
+export function interpolateViridis(t: number): string {
   const i = Math.max(0, Math.min(VIRIDIS.length - 1, Math.floor(t * (VIRIDIS.length - 1))));
   return VIRIDIS[i];
 }
 
-export function interpolateDivergence(t) {
+export function interpolateDivergence(t: number): string {
   const i = Math.max(0, Math.min(PRGN.length - 1, Math.floor(t * (PRGN.length - 1))));
   return PRGN[i];
 }
 
-export function centralityToColor(value, min, max) {
+export function centralityToColor(value: number, min: number, max: number): string {
   if (max === min) return VIRIDIS[VIRIDIS.length >> 1];
   const t = (value - min) / (max - min);
   return interpolateViridis(t);
 }
 
-export function divergenceToColor(rankDiff, maxAbs) {
+export function divergenceToColor(rankDiff: number, maxAbs: number): string {
   if (maxAbs === 0) return PRGN[PRGN.length >> 1];
   const t = (rankDiff / maxAbs + 1) / 2;
   return interpolateDivergence(t);
 }
 
-export const MEASURE_COLORS = {
+export const MEASURE_COLORS: Record<Measure, string> = {
   eigenvector: "#44cc88",
   betweenness: "#4488ff",
   out_degree: "#ff9944",

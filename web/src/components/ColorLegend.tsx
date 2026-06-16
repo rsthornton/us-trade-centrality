@@ -2,7 +2,13 @@ import { interpolateViridis } from "../lib/colors";
 
 const STEPS = 32;
 
-export default function ColorLegend({ label = "Centrality", min = 0, max = 1 }) {
+interface ColorLegendProps {
+  label?: string;
+  min?: number;
+  max?: number;
+}
+
+export default function ColorLegend({ label = "Centrality", min = 0, max = 1 }: ColorLegendProps) {
   const stops = Array.from({ length: STEPS }, (_, i) => {
     const t = i / (STEPS - 1);
     return interpolateViridis(t);
@@ -21,7 +27,9 @@ export default function ColorLegend({ label = "Centrality", min = 0, max = 1 }) 
       <span className="text-xs font-mono" style={{ color: "var(--text-muted)" }}>
         {max.toFixed(2)}
       </span>
-      <span className="text-xs" style={{ color: "var(--text-muted)" }}>{label}</span>
+      <span className="text-xs" style={{ color: "var(--text-muted)" }}>
+        {label}
+      </span>
     </div>
   );
 }

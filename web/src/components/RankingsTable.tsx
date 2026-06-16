@@ -1,13 +1,14 @@
 import { useState, useMemo, useRef, useEffect } from "react";
 import { centralityToColor } from "../lib/colors";
+import type { BaseCentralityRow, Measure } from "../types";
 
-const MEASURE_FILLS = {
+const MEASURE_FILLS: Record<Measure, { bg: string; text: string; shadow: string }> = {
   eigenvector: { bg: "#ECFDF5", text: "#065F46", shadow: "rgba(6, 95, 70, 0.12)" },
   betweenness: { bg: "#EFF6FF", text: "#1E40AF", shadow: "rgba(30, 64, 175, 0.12)" },
   out_degree: { bg: "#FFF7ED", text: "#9A3412", shadow: "rgba(154, 52, 18, 0.12)" },
 };
 
-const MEASURES = [
+const MEASURES: { key: Measure; label: string; short: string }[] = [
   { key: "eigenvector", label: "Eigenvector", short: "Eig" },
   { key: "betweenness", label: "Betweenness", short: "Bet" },
   { key: "out_degree", label: "Out-Degree", short: "Out" },
@@ -20,8 +21,22 @@ const INNER_W = CHART_W - PAD.left - PAD.right;
 const INNER_H = CHART_H - PAD.top - PAD.bottom;
 const LABEL_THRESHOLD = 7;
 
-function DivergenceScatter({ centralities, measureKey, label, selectedState, onSelectState }) {
-  const rankKey = `rank_${measureKey}`;
+interface ScatterProps {
+  centralities: BaseCentralityRow[];
+  measureKey: Measure;
+  label: string;
+  selectedState: string | null;
+  onSelectState: (state: string | null) => void;
+}
+
+function DivergenceScatter({
+  centralities,
+  measureKey,
+  label,
+  selectedState,
+  onSelectState,
+}: ScatterProps) {
+  const rankKey = `rank_${measureKey}` as const;
 
   const { points, minVal, maxVal } = useMemo(() => {
     if (!centralities.length) return { points: [], minVal: 0, maxVal: 1 };
@@ -46,7 +61,7 @@ function DivergenceScatter({ centralities, measureKey, label, selectedState, onS
     return { points: pts, minVal: mn, maxVal: mx };
   }, [centralities, measureKey, rankKey]);
 
-  const [hovered, setHovered] = useState(null);
+  const [hovered, setHovered] = useState<string | null>(null);
 
   const diagX1 = PAD.left;
   const diagY1 = PAD.top;
@@ -55,10 +70,7 @@ function DivergenceScatter({ centralities, measureKey, label, selectedState, onS
 
   return (
     <div className="flex-1 min-w-0">
-      <div
-        className="text-xs font-medium text-center mb-1"
-        style={{ color: "var(--text-secondary)" }}
-      >
+      <div className="text-xs font-medium text-center mb-1" style={{ color: "var(--text-secondary)" }}>
         {label}
       </div>
       <svg viewBox={`0 0 ${CHART_W} ${CHART_H}`} className="w-full h-auto">
@@ -67,10 +79,7 @@ function DivergenceScatter({ centralities, measureKey, label, selectedState, onS
           stroke="#d0d0d8" strokeWidth={1} strokeDasharray="3,3"
         />
 
-        <text
-          x={PAD.left + INNER_W / 2} y={CHART_H - 4}
-          textAnchor="middle" fontSize={9} fill="var(--text-muted)"
-        >
+        <text x={PAD.left + INNER_W / 2} y={CHART_H - 4} textAnchor="middle" fontSize={9} fill="var(--text-muted)">
           GDP Rank →
         </text>
         <text
@@ -133,34 +142,42 @@ function DivergenceScatter({ centralities, measureKey, label, selectedState, onS
           );
         })}
 
-        {hovered && (() => {
-          const p = points.find((pt) => pt.state === hovered);
-          if (!p) return null;
-          const tx = Math.min(p.x + 8, CHART_W - 90);
-          const ty = Math.max(p.y - 8, 30);
-          return (
-            <g pointerEvents="none">
-              <rect
-                x={tx - 2} y={ty - 12} width={88} height={32} rx={4}
-                fill="white" stroke="var(--border)" strokeWidth={0.5}
-                opacity={0.95}
-              />
-              <text x={tx + 2} y={ty} fontSize={8} fontWeight={600} fill="var(--text-primary)">
-                {p.name}
-              </text>
-              <text x={tx + 2} y={ty + 12} fontSize={7.5} fill="var(--text-secondary)">
-                GDP #{p.gdp} → Net #{p.rank} ({p.delta > 0 ? "+" : ""}{p.delta})
-              </text>
-            </g>
-          );
-        })()}
+        {hovered &&
+          (() => {
+            const p = points.find((pt) => pt.state === hovered);
+            if (!p) return null;
+            const tx = Math.min(p.x + 8, CHART_W - 90);
+            const ty = Math.max(p.y - 8, 30);
+            return (
+              <g pointerEvents="none">
+                <rect
+                  x={tx - 2} y={ty - 12} width={88} height={32} rx={4}
+                  fill="white" stroke="var(--border)" strokeWidth={0.5} opacity={0.95}
+                />
+                <text x={tx + 2} y={ty} fontSize={8} fontWeight={600} fill="var(--text-primary)">
+                  {p.name}
+                </text>
+                <text x={tx + 2} y={ty + 12} fontSize={7.5} fill="var(--text-secondary)">
+                  GDP #{p.gdp} → Net #{p.rank} ({p.delta > 0 ? "+" : ""}
+                  {p.delta})
+                </text>
+              </g>
+            );
+          })()}
       </svg>
     </div>
   );
 }
 
-function DivergenceTable({ centralities, measure, selectedState, onSelectState }) {
-  const rankKey = `rank_${measure}`;
+interface TableProps {
+  centralities: BaseCentralityRow[];
+  measure: Measure;
+  selectedState: string | null;
+  onSelectState: (state: string | null) => void;
+}
+
+function DivergenceTable({ centralities, measure, selectedState, onSelectState }: TableProps) {
+  const rankKey = `rank_${measure}` as const;
   const [ascending, setAscending] = useState(false);
 
   const rows = useMemo(() => {
@@ -174,7 +191,7 @@ function DivergenceTable({ centralities, measure, selectedState, onSelectState }
         isZero: r[measure] === 0,
         value: r[measure],
       }))
-      .sort((a, b) => ascending ? a.delta - b.delta : b.delta - a.delta);
+      .sort((a, b) => (ascending ? a.delta - b.delta : b.delta - a.delta));
   }, [centralities, rankKey, measure, ascending]);
 
   const measureLabel = MEASURES.find((m) => m.key === measure)?.label || measure;
@@ -214,11 +231,12 @@ function DivergenceTable({ centralities, measure, selectedState, onSelectState }
           <tbody>
             {rows.map((r) => {
               const isSelected = r.state === selectedState;
-              const deltaColor = r.delta >= 5
-                ? "var(--accent-green)"
-                : r.delta <= -5
-                  ? "var(--accent-red)"
-                  : "var(--text-muted)";
+              const deltaColor =
+                r.delta >= 5
+                  ? "var(--accent-green)"
+                  : r.delta <= -5
+                    ? "var(--accent-red)"
+                    : "var(--text-muted)";
               return (
                 <tr
                   key={r.state}
@@ -227,21 +245,30 @@ function DivergenceTable({ centralities, measure, selectedState, onSelectState }
                   style={{
                     backgroundColor: isSelected ? "rgba(255, 169, 77, 0.12)" : "transparent",
                   }}
-                  onMouseEnter={(e) => { if (!isSelected) e.currentTarget.style.backgroundColor = "var(--bg-surface)"; }}
-                  onMouseLeave={(e) => { if (!isSelected) e.currentTarget.style.backgroundColor = "transparent"; }}
+                  onMouseEnter={(e) => {
+                    if (!isSelected) e.currentTarget.style.backgroundColor = "var(--bg-surface)";
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isSelected) e.currentTarget.style.backgroundColor = "transparent";
+                  }}
                 >
                   <td className="text-sm py-1 pr-3" style={{ color: "var(--text-primary)" }}>
                     {r.name}
-                    <span className="font-mono text-xs ml-1.5" style={{ color: "var(--text-muted)" }}>{r.state}</span>
+                    <span className="font-mono text-xs ml-1.5" style={{ color: "var(--text-muted)" }}>
+                      {r.state}
+                    </span>
                   </td>
                   <td className="text-right font-mono text-sm py-1 px-2" style={{ color: "var(--text-secondary)" }}>
                     {r.gdp}
                   </td>
-                  <td className="text-right font-mono text-sm py-1 px-2" style={{ color: r.isZero ? "var(--text-muted)" : "var(--text-secondary)" }}>
+                  <td
+                    className="text-right font-mono text-sm py-1 px-2"
+                    style={{ color: r.isZero ? "var(--text-muted)" : "var(--text-secondary)" }}
+                  >
                     {r.isZero ? "—" : r.rank}
                   </td>
                   <td className="text-right font-mono text-sm font-semibold py-1 pl-2" style={{ color: deltaColor }}>
-                    {r.isZero ? "—" : (r.delta > 0 ? `+${r.delta}` : r.delta)}
+                    {r.isZero ? "—" : r.delta > 0 ? `+${r.delta}` : r.delta}
                   </td>
                 </tr>
               );
@@ -253,11 +280,23 @@ function DivergenceTable({ centralities, measure, selectedState, onSelectState }
   );
 }
 
-export default function RankingsTable({ centralities, measure, selectedState, onSelectState }) {
+interface RankingsTableProps {
+  centralities: BaseCentralityRow[];
+  measure: Measure;
+  selectedState: string | null;
+  onSelectState: (state: string | null) => void;
+}
+
+export default function RankingsTable({
+  centralities,
+  measure,
+  selectedState,
+  onSelectState,
+}: RankingsTableProps) {
   const [expanded, setExpanded] = useState(false);
   const [bounced, setBounced] = useState(false);
-  const contentRef = useRef(null);
-  const buttonRef = useRef(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (expanded && contentRef.current) {
