@@ -25,7 +25,8 @@ before using them in a component.
 
 | Group | Tokens |
 |---|---|
-| Surface | `--bg-primary #fafafa`, `--bg-secondary #ffffff`, `--bg-surface #f0f0f5` |
+| Surface | `--bg-primary #f5f5fb` (faint indigo tint), `--bg-secondary #ffffff` (cards pop), `--bg-surface #ececf6` |
+| Canvas stage | `--canvas-from #f6f5fd` → `--canvas-to #eeedf8` (gradient behind map + divergence panels) |
 | Text | `--text-primary #1a1a2e`, `--text-secondary #4a4a6a`, `--text-muted #8888a8` |
 | Accents | `--accent-blue #2266dd`, `--accent-green #1a9960`, `--accent-red #dd3344`, `--accent-orange #dd7722`, `--accent-purple #7744cc` |
 | Borders | `--border #e4e1ec` (interactive elements), `--hairline #eeecf3` (faint dividers) |
@@ -82,9 +83,15 @@ the measure + commodity controls.
 
 ## Craft principles (the polish rules)
 
-- **Quiet chrome, loud data.** The map ramp and the divergence green/red are the only saturated
-  color. Keep UI chrome near-monochrome: greys + one blue for links/actions. Don't add accent fills
-  to controls.
+- **Quiet chrome, loud data, colored surfaces.** Controls stay near-monochrome (greys + one blue
+  for links). The *data* (map ramp, divergence green/red) owns saturated color. *Surfaces* carry
+  tasteful low-saturation tint: a tinted page + soft violet glow, and a lavender "canvas stage"
+  gradient behind the map and divergence panels. Tint ≠ chrome noise; don't accent-fill controls.
+- **The active measure's hue threads the UI.** The canvas stage's 2.5px top accent and the measure
+  selector dot use the active measure's color (eigenvector green / betweenness blue / out-degree
+  orange). Switching measures retints the stage.
+- **Color earns its place by meaning.** The divergence dumbbell's faint green/red background bands
+  reinforce the overperform/underperform split. Prefer meaningful color washes over decorative ones.
 - **Surfaces and hairlines over outlines.** Prefer whitespace, a `--bg-surface` fill, or a soft
   shadow to group things. Reach for `--hairline` for dividers and `--border` only on interactive
   elements. Avoid wrapping every control in its own outline.
