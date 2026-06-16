@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { geoToSvgPaths, projectPoint, MAP_WIDTH, MAP_HEIGHT } from "../lib/geo";
-import { centralityToColor, MEASURE_COLORS } from "../lib/colors";
+import { centralityToColor } from "../lib/colors";
 
 const FIPS_TO_ABBR = {
   "01": "AL", "02": "AK", "04": "AZ", "05": "AR", "06": "CA",

@@ -233,7 +233,6 @@ export default function App() {
               state={selectedState}
               data={selectedData}
               edges={edges}
-              measure={measure}
               onClose={() => setSelectedState(null)}
               inline
             />

@@ -57,9 +57,7 @@ const MEASURES = [
   { key: "out_degree", label: "Out-Degree" },
 ];
 
-export default function StateDrawer({ state, data, edges, measure, onClose, inline }) {
-  if (!state || !data) return null;
-
+export default function StateDrawer({ state, data, edges, onClose, inline }) {
   const { outbound, inbound, topOutbound, topInbound } = useMemo(() => {
     if (!edges || edges.length === 0) {
       return { outbound: 0, inbound: 0, topOutbound: [], topInbound: [] };
@@ -93,6 +91,8 @@ export default function StateDrawer({ state, data, edges, measure, onClose, inli
 
     return { outbound: out, inbound: inb, topOutbound: topOut, topInbound: topIn };
   }, [edges, state]);
+
+  if (!state || !data) return null;
 
   const divergences = MEASURES.map(({ key, label }) => ({
     key,

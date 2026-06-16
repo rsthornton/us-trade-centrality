@@ -1,5 +1,5 @@
 import { useState, useMemo, useRef, useEffect } from "react";
-import { centralityToColor, MEASURE_COLORS } from "../lib/colors";
+import { centralityToColor } from "../lib/colors";
 
 const MEASURE_FILLS = {
   eigenvector: { bg: "#ECFDF5", text: "#065F46", shadow: "rgba(6, 95, 70, 0.12)" },
