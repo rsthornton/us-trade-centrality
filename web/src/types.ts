@@ -5,11 +5,12 @@
 export type Measure = "betweenness" | "eigenvector" | "out_degree";
 export type RankKey = `rank_${Measure}`;
 
-/** Fields shared by national and commodity centrality rows. */
+/** Fields shared by national and commodity centrality rows.
+ *  state_name is optional here: national rows carry it, commodity rows do not. */
 export interface BaseCentralityRow {
   state_id: number;
   state: string;
-  state_name: string;
+  state_name?: string;
   betweenness: number;
   eigenvector: number;
   out_degree: number;
@@ -20,8 +21,9 @@ export interface BaseCentralityRow {
   gdp_rank: number;
 }
 
-/** National network rows (centralities_51.json / centralities_52.json) carry coords. */
+/** National network rows (centralities_51.json / centralities_52.json) carry coords + name. */
 export interface CentralityRow extends BaseCentralityRow {
+  state_name: string;
   lat: number;
   lon: number;
 }
