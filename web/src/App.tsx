@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, lazy, Suspense } from "react";
 import { loadAllCore, loadCommodityCentralities, loadCommodityEdges } from "./data/loader";
 import { topoFeature } from "./lib/topo";
 import TradeMap from "./components/TradeMap";
@@ -17,6 +17,9 @@ import type {
 
 // Interactive WASM notebook hosted on molab (marimo Cloud).
 const NOTEBOOK_URL = "https://molab.marimo.io/notebooks/nb_ssAp6xhuFRsEaQKP2y7ZjH/app";
+
+// DEV-only component gallery (lazy: its chunk is never loaded in production).
+const Gallery = import.meta.env.DEV ? lazy(() => import("./dev/Gallery")) : null;
 
 type NetworkType = "51" | "52";
 type FlowDirection = "both" | "in" | "out";
@@ -80,6 +83,14 @@ export default function App() {
     if (!selectedState || !centralities.length) return null;
     return centralities.find((r) => r.state === selectedState) ?? null;
   }, [selectedState, centralities]);
+
+  if (Gallery && location.hash === "#/components") {
+    return (
+      <Suspense fallback={null}>
+        <Gallery />
+      </Suspense>
+    );
+  }
 
   if (loading || !data) {
     return (
