@@ -216,6 +216,28 @@ export default function App() {
             onChange={setView}
           />
 
+          {selectedState && selectedData && (
+            <div
+              key={selectedState}
+              style={{
+                backgroundColor: "var(--bg-secondary)",
+                border: "1px solid var(--border)",
+                borderRadius: "var(--radius-card)",
+                boxShadow: "var(--shadow-card)",
+                animation: "ipo-row-in 0.3s ease",
+              }}
+            >
+              <StateDrawer
+                state={selectedState}
+                data={selectedData}
+                edges={edges}
+                totals={selectedTotals}
+                onClose={() => setSelectedState(null)}
+                inline
+              />
+            </div>
+          )}
+
           <CentralityPills vertical selected={measure} onSelect={setMeasure} />
 
           <CommodityFilter
@@ -309,28 +331,6 @@ export default function App() {
                   flowDirection={flowDirection}
                   accent={measureColor}
                 />
-
-                {selectedState && selectedData && (
-                  <div
-                    className="absolute right-0 top-0 w-80 overflow-y-auto"
-                    style={{
-                      backgroundColor: "var(--bg-secondary)",
-                      border: "1px solid var(--border)",
-                      borderRadius: "var(--radius-card)",
-                      boxShadow: "var(--shadow-drawer)",
-                      maxHeight: "62vh",
-                    }}
-                  >
-                    <StateDrawer
-                      state={selectedState}
-                      data={selectedData}
-                      edges={edges}
-                      totals={selectedTotals}
-                      onClose={() => setSelectedState(null)}
-                      inline
-                    />
-                  </div>
-                )}
               </div>
 
               <div className="mt-2 pt-2" style={{ borderTop: "1px solid var(--hairline)" }}>

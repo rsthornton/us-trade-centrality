@@ -75,10 +75,12 @@ Composable, token-driven. Prefer these over new bespoke inline styles. View them
 
 Brand bar (wordmark + nav) → hero (eyebrow, title, dek, rotating finding) → then a **two-column
 console**: a **left control rail** beside the **canvas stage**.
-- **Left rail** (`lg:w-[300px]`): Map / Divergence view tabs, the vertical measure selector, the
-  commodity filter, and (map view only) the network/flows toggles + top-N slider + direction.
-- **Stage:** the selected view fills the rest — Map (choropleth + flow arcs + floating state drawer
-  + legend) or Divergence (the dumbbell + "show all 51 states" table).
+- **Left rail** (`lg:w-[300px]`): Map / Divergence view tabs (pinned top), then — when a state is
+  selected — the **state dossier slides in here** (not over the map), followed by the vertical
+  measure selector, the commodity filter, and (map view only) the network/flows toggles + top-N
+  slider + direction.
+- **Stage:** the selected view fills the rest, always uncovered — Map (choropleth + flow arcs +
+  legend) or Divergence (the dumbbell + "show all 51 states" table).
 
 Below the console: a persistent mono status bar (nodes/edges/density) → footer. On `< lg` the rail
 collapses to a stacked column above the stage. The two views are peers, switched by the tab control
