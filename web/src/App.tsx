@@ -177,7 +177,13 @@ export default function App() {
           </div>
           <h1
             className="text-3xl sm:text-4xl font-light tracking-tight"
-            style={{ color: "var(--text-primary)" }}
+            style={{
+              backgroundImage: "linear-gradient(115deg, #1a1a2e 30%, #463080 75%, #6a3aa8 100%)",
+              WebkitBackgroundClip: "text",
+              backgroundClip: "text",
+              color: "transparent",
+              width: "fit-content",
+            }}
           >
             The Interstate Power Observatory
           </h1>

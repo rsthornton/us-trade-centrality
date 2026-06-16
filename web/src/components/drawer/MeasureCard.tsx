@@ -1,5 +1,6 @@
 import Card from "../ui/Card";
 import Badge from "../ui/Badge";
+import { tint } from "../ui/style";
 
 function rankColor(rank: number, total = 51): string {
   const pct = rank / total;
@@ -15,13 +16,19 @@ export interface MeasureCardProps {
   /** Pre-formatted value string (dollars or centrality score). */
   value: string;
   rank: number;
-  /** Optional color for the value text (used for measure accents). */
+  /** Optional color for the value text + a faint left accent (measure hue). */
   valueColor?: string;
 }
 
 export default function MeasureCard({ label, value, rank, valueColor }: MeasureCardProps) {
   return (
-    <Card>
+    <Card
+      style={
+        valueColor
+          ? { borderLeft: `2.5px solid ${valueColor}`, backgroundColor: tint(valueColor, 5) }
+          : undefined
+      }
+    >
       <div className="text-xs uppercase tracking-wider mb-1" style={{ color: "var(--text-muted)" }}>
         {label}
       </div>
