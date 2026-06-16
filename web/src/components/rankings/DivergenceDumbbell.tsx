@@ -115,7 +115,8 @@ export default function DivergenceDumbbell({
               />
               {/* GDP rank: hollow dot */}
               <circle cx={gx} cy={y} r={4} fill="var(--bg-secondary)" stroke="var(--text-muted)" strokeWidth={1.5} />
-              {/* network rank: filled dot in the direction color */}
+              {/* network rank: filled dot with a soft halo in the direction color */}
+              <circle cx={nx} cy={y} r={8} fill={color} opacity={isSel ? 0.22 : 0.12} />
               <circle cx={nx} cy={y} r={4.5} fill={color} />
               <text
                 x={W - RIGHT + 12} y={y + 3} fontSize={11} fontWeight={600} fill={color}

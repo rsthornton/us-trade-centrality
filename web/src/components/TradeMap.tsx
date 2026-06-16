@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { geoToSvgPaths, projectPoint, MAP_WIDTH, MAP_HEIGHT } from "../lib/geo";
 import { centralityToColor } from "../lib/colors";
 import Tooltip from "./ui/Tooltip";
+import { mapColors } from "../tokens";
 import type { BaseCentralityRow, Edge, FeatureCollection, Measure } from "../types";
 
 interface HoverInfo {
@@ -125,23 +126,23 @@ export default function TradeMap({
 
       if (selectedState) {
         if (isConnectedToSelected) {
-          stroke = "#FFA94D";
+          stroke = mapColors.selection;
           opacity = 0.95;
           width = 0.75 + weightRatio * 3.5;
           glow = true;
         } else {
-          stroke = "#9CA3AF";
+          stroke = mapColors.dim;
           opacity = 0.1;
           width = 0.5;
           glow = false;
         }
       } else if (isConnectedToHovered) {
-        stroke = "#FFA94D";
+        stroke = mapColors.selection;
         opacity = 0.7;
         width = 0.75 + weightRatio * 2.5;
         glow = true;
       } else {
-        stroke = "#9CA3AF";
+        stroke = mapColors.dim;
         opacity = 0.35;
         width = 0.75;
         glow = false;
@@ -190,20 +191,20 @@ export default function TradeMap({
         const abbr = FIPS_TO_ABBR[fips];
         const data = abbr ? centralityMap[abbr] : null;
         const value = data ? data[measure] : 0;
-        const fill = data ? centralityToColor(value, min, max) : "#e8e8f0";
+        const fill = data ? centralityToColor(value, min, max) : mapColors.empty;
         const isSelected = abbr === selectedState;
         const isHovered = abbr === hoveredState;
         const dimmed = selectedState && !isSelected;
-        const washed = dimmed ? "#E5E7EB" : null;
+        const washed = dimmed ? mapColors.wash : null;
 
         // selection uses white outline + glow, not fill change; hover uses medium outline
-        let stroke = "#c8c8d8";
+        let stroke: string = mapColors.stroke;
         let strokeWidth = 0.5;
         if (isSelected) {
           stroke = "#ffffff";
           strokeWidth = 2.5;
         } else if (isHovered) {
-          stroke = "#666";
+          stroke = mapColors.hover;
           strokeWidth = 1.5;
         }
 

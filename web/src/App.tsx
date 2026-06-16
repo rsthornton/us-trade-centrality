@@ -338,6 +338,7 @@ export default function App() {
             >
               <ColorLegend
                 label={measure.replace("_", " ")}
+                color={measureColor}
                 min={centralities.length ? Math.min(...centralities.map((r) => r[measure])) : 0}
                 max={centralities.length ? Math.max(...centralities.map((r) => r[measure])) : 1}
               />

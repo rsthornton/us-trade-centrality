@@ -29,11 +29,13 @@
   --border: #e4e1ec;
   --hairline: #eeecf3;
 
-  /* map viz palette (kept distinct from UI accents) */
+  /* map viz palette (lavender-tinted to sit on the canvas stage) */
   --map-selection: #ffa94d;
-  --map-dim: #9ca3af;
-  --map-empty: #e8e8f0;
-  --map-stroke: #d0d0d8;
+  --map-dim: #a6a3bd;
+  --map-empty: #e7e5f1;
+  --map-wash: #e3e1ee;
+  --map-stroke: #d4d1e2;
+  --map-hover: #7a7790;
 
   /* radius — control = 8, card = 12, pill = full */
   --radius-sm: 4px;
