@@ -66,12 +66,18 @@ Composable, token-driven. Prefer these over new bespoke inline styles. View them
 - `TradeMap.tsx` — **the hero**; zero-dep SVG choropleth + Bézier flow arcs + hover tooltip. Props: `geojson, centralities, measure, selectedState, onSelectState, edges, showEdges, flowDirection`. The viz color literals inside are the viz contract.
 - `CentralityPills.tsx`, `CommodityFilter.tsx`, `ColorLegend.tsx` — controls.
 - `drawer/` — `StateDrawer` + `TradeCard`, `MeasureCard`, `PartnersList`, `format.ts`.
-- `rankings/` — `RankingsTable` (calm "Explore" reveal) + `DivergenceDumbbell` (the hero: GDP-rank → network-rank gap per state), `DivergenceTable` (full 51-state list behind "show all"), `constants.ts`.
+- `rankings/` — `DivergenceView` (the Divergence canvas) + `DivergenceDumbbell` (GDP-rank → network-rank gap per state, the hero chart), `DivergenceTable` (full 51-state list behind "show all"), `constants.ts`.
 - `hooks/useUrlState.ts` — deep-link read on mount + sync on change.
 
 ## Layout
 
-Brand bar (wordmark + nav) → hero (eyebrow, title, dek) → control bar (pills, commodity, network/flows) → flow controls (top-N, direction) → map + state drawer → legend + network stats → rankings (collapsible) → footer.
+Brand bar (wordmark + nav) → hero (eyebrow, title, dek) → **Map / Divergence view tabs** → shared
+controls (measure pills, commodity). Then the selected view:
+- **Map:** network/flows controls → flow controls (top-N, direction) → map + state drawer → legend + network stats.
+- **Divergence:** the full-width dumbbell canvas + "show all 51 states" table.
+
+Then the footer. The two views are peers, switched by the tab control (App `view` state); they share
+the measure + commodity controls.
 
 ## Do / Don't
 
