@@ -7,7 +7,7 @@ import CentralityPills from "./components/CentralityPills";
 import CommodityFilter from "./components/CommodityFilter";
 import ColorLegend from "./components/ColorLegend";
 import DivergenceView from "./components/rankings/DivergenceView";
-import StateDrawer from "./components/drawer/StateDrawer";
+import StateDossier from "./components/drawer/StateDossier";
 import Wordmark from "./components/brand/Wordmark";
 import Footer from "./components/Footer";
 import { Button, SegmentedControl, Slider } from "./components/ui";
@@ -216,28 +216,6 @@ export default function App() {
             onChange={setView}
           />
 
-          {selectedState && selectedData && (
-            <div
-              key={selectedState}
-              style={{
-                backgroundColor: "var(--bg-secondary)",
-                border: "1px solid var(--border)",
-                borderRadius: "var(--radius-card)",
-                boxShadow: "var(--shadow-card)",
-                animation: "ipo-row-in 0.3s ease",
-              }}
-            >
-              <StateDrawer
-                state={selectedState}
-                data={selectedData}
-                edges={edges}
-                totals={selectedTotals}
-                onClose={() => setSelectedState(null)}
-                inline
-              />
-            </div>
-          )}
-
           <CentralityPills vertical selected={measure} onSelect={setMeasure} />
 
           <CommodityFilter
@@ -330,6 +308,7 @@ export default function App() {
                   showEdges={showEdges}
                   flowDirection={flowDirection}
                   accent={measureColor}
+                  maxHeightVh={selectedState ? 46 : 62}
                 />
               </div>
 
@@ -349,6 +328,16 @@ export default function App() {
               selectedState={selectedState}
               onSelectState={setSelectedState}
               accent={measureColor}
+            />
+          )}
+
+          {selectedState && selectedData && (
+            <StateDossier
+              state={selectedState}
+              data={selectedData}
+              edges={edges}
+              totals={selectedTotals}
+              onClose={() => setSelectedState(null)}
             />
           )}
         </div>

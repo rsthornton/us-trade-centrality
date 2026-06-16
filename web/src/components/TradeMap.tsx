@@ -48,6 +48,8 @@ interface TradeMapProps {
   flowDirection?: FlowDirection;
   /** Active measure hue (used for the hover outline). */
   accent: string;
+  /** Max SVG height as a vh fraction (shrinks when the dossier opens). */
+  maxHeightVh?: number;
 }
 
 export default function TradeMap({
@@ -60,6 +62,7 @@ export default function TradeMap({
   showEdges,
   flowDirection = "both",
   accent,
+  maxHeightVh = 62,
 }: TradeMapProps) {
   const [hoveredState, setHoveredState] = useState<string | null>(null);
   const [hoverInfo, setHoverInfo] = useState<HoverInfo | null>(null);
@@ -164,7 +167,7 @@ export default function TradeMap({
     <svg
       viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`}
       className="w-full h-auto"
-      style={{ maxHeight: "62vh" }}
+      style={{ maxHeight: `${maxHeightVh}vh`, transition: "max-height 300ms ease" }}
     >
       <defs>
         <filter id="glow">

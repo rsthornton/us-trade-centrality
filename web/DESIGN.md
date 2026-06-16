@@ -67,7 +67,7 @@ Composable, token-driven. Prefer these over new bespoke inline styles. View them
 - `OrientationHint.tsx` — dismissible first-visit nudge (localStorage).
 - `TradeMap.tsx` — **the hero**; zero-dep SVG choropleth + Bézier flow arcs + hover tooltip. Props: `geojson, centralities, measure, selectedState, onSelectState, edges, showEdges, flowDirection`. The viz color literals inside are the viz contract.
 - `CentralityPills.tsx`, `CommodityFilter.tsx`, `ColorLegend.tsx` — controls.
-- `drawer/` — `StateDrawer` + `TradeCard`, `MeasureCard`, `PartnersList`, `format.ts`.
+- `drawer/` — `StateDossier` (horizontal detail panel below the stage) + `TradeCard`, `PartnersList`, `format.ts`.
 - `rankings/` — `DivergenceView` (the Divergence canvas) + `DivergenceDumbbell` (GDP-rank → network-rank gap per state, the hero chart), `DivergenceTable` (full 51-state list behind "show all"), `constants.ts`.
 - `hooks/useUrlState.ts` — deep-link read on mount + sync on change.
 
@@ -75,12 +75,12 @@ Composable, token-driven. Prefer these over new bespoke inline styles. View them
 
 Brand bar (wordmark + nav) → hero (eyebrow, title, dek, rotating finding) → then a **two-column
 console**: a **left control rail** beside the **canvas stage**.
-- **Left rail** (`lg:w-[300px]`): Map / Divergence view tabs (pinned top), then — when a state is
-  selected — the **state dossier slides in here** (not over the map), followed by the vertical
-  measure selector, the commodity filter, and (map view only) the network/flows toggles + top-N
-  slider + direction.
-- **Stage:** the selected view fills the rest, always uncovered — Map (choropleth + flow arcs +
-  legend) or Divergence (the dumbbell + "show all 51 states" table).
+- **Left rail** (`lg:w-[300px]`): Map / Divergence view tabs, the vertical measure selector, the
+  commodity filter, and (map view only) the network/flows toggles + top-N slider + direction.
+- **Stage:** the selected view fills the rest — Map (choropleth + flow arcs + legend) or Divergence
+  (the dumbbell + "show all 51 states" table). When a state is selected, a **horizontal
+  `StateDossier` opens below the stage content** (the map shrinks slightly to fit), keeping the
+  detail with the data instead of over it or in the rail.
 
 Below the console: a persistent mono status bar (nodes/edges/density) → footer. On `< lg` the rail
 collapses to a stacked column above the stage. The two views are peers, switched by the tab control
