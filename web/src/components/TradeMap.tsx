@@ -1,7 +1,22 @@
 import { useEffect, useMemo, useState } from "react";
 import { geoToSvgPaths, projectPoint, MAP_WIDTH, MAP_HEIGHT } from "../lib/geo";
 import { centralityToColor } from "../lib/colors";
+import Tooltip from "./ui/Tooltip";
 import type { BaseCentralityRow, Edge, FeatureCollection, Measure } from "../types";
+
+interface HoverInfo {
+  name: string;
+  rank: number | null;
+  gdpRank: number | null;
+  x: number;
+  y: number;
+}
+
+const MEASURE_LABEL: Record<Measure, string> = {
+  betweenness: "Bridge rank",
+  eigenvector: "Prestige rank",
+  out_degree: "Export rank",
+};
 
 const FIPS_TO_ABBR: Record<string, string> = {
   "01": "AL", "02": "AK", "04": "AZ", "05": "AR", "06": "CA",
@@ -43,6 +58,7 @@ export default function TradeMap({
   flowDirection = "both",
 }: TradeMapProps) {
   const [hoveredState, setHoveredState] = useState<string | null>(null);
+  const [hoverInfo, setHoverInfo] = useState<HoverInfo | null>(null);
 
   // ESC key dismisses selection
   useEffect(() => {
@@ -140,6 +156,7 @@ export default function TradeMap({
   }, [edges, showEdges, selectedState, hoveredState, flowDirection]);
 
   return (
+    <>
     <svg
       viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`}
       className="w-full h-auto"
@@ -201,7 +218,20 @@ export default function TradeMap({
             filter={isSelected ? "url(#glow)" : undefined}
             className="cursor-pointer transition-all duration-300"
             onMouseEnter={() => setHoveredState(abbr ?? null)}
-            onMouseLeave={() => setHoveredState(null)}
+            onMouseMove={(e) => {
+              if (!abbr) return;
+              setHoverInfo({
+                name: name ?? abbr,
+                rank: data ? data[`rank_${measure}`] : null,
+                gdpRank: data ? data.gdp_rank : null,
+                x: e.clientX,
+                y: e.clientY,
+              });
+            }}
+            onMouseLeave={() => {
+              setHoveredState(null);
+              setHoverInfo(null);
+            }}
             onClick={(e) => {
               e.stopPropagation();
               onSelectState(isSelected ? null : (abbr ?? null));
@@ -250,5 +280,18 @@ export default function TradeMap({
           );
         })}
     </svg>
+      <Tooltip x={hoverInfo?.x ?? 0} y={hoverInfo?.y ?? 0} visible={!!hoverInfo}>
+        {hoverInfo && (
+          <>
+            <div className="font-semibold">{hoverInfo.name}</div>
+            <div style={{ color: "var(--text-secondary)" }}>
+              {hoverInfo.rank != null
+                ? `${MEASURE_LABEL[measure]} #${hoverInfo.rank} · GDP #${hoverInfo.gdpRank}`
+                : "No data for this commodity"}
+            </div>
+          </>
+        )}
+      </Tooltip>
+    </>
   );
 }

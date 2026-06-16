@@ -1,10 +1,12 @@
+import { Select, SegmentedControl } from "./ui";
+import type { SelectGroup, SegmentOption } from "./ui";
 import type { Metadata } from "../types";
 
-const QUICK_PICKS = [
-  { code: "all", label: "All" },
-  { code: "01-05", label: "Agri" },
-  { code: "15-19", label: "Energy" },
-  { code: "35-38", label: "Mfg" },
+const QUICK_PICKS: SegmentOption<string>[] = [
+  { value: "all", label: "All" },
+  { value: "01-05", label: "Agri" },
+  { value: "15-19", label: "Energy" },
+  { value: "35-38", label: "Mfg" },
 ];
 
 interface CommodityFilterProps {
@@ -14,58 +16,27 @@ interface CommodityFilterProps {
 }
 
 export default function CommodityFilter({ selected, onSelect, metadata }: CommodityFilterProps) {
-  const groups = metadata?.commodity_groups ?? {};
+  const groupsObj = metadata?.commodity_groups ?? {};
   const names = metadata?.sctg_names ?? {};
+
+  const groups: SelectGroup[] = Object.entries(groupsObj).map(([groupName, codes]) => ({
+    label: groupName,
+    options: codes.map((code) => ({ value: code, label: `${code} — ${names[code] || code}` })),
+  }));
 
   const displayName = selected !== "all" && names[selected] ? names[selected] : null;
 
   return (
     <div className="flex flex-col gap-1.5">
-      {/* Quick-select buttons */}
-      <div className="flex gap-1.5">
-        {QUICK_PICKS.map(({ code, label }) => {
-          const active = selected === code;
-          return (
-            <button
-              key={code}
-              onClick={() => onSelect(code)}
-              className="px-2.5 py-1 rounded text-xs font-medium cursor-pointer border transition-all duration-200"
-              style={{
-                backgroundColor: active ? "var(--accent-blue)" + "18" : "transparent",
-                borderColor: active ? "var(--accent-blue)" : "var(--border)",
-                color: active ? "var(--accent-blue)" : "var(--text-secondary)",
-              }}
-            >
-              {label}
-            </button>
-          );
-        })}
-      </div>
+      <SegmentedControl options={QUICK_PICKS} value={selected} onChange={onSelect} />
 
-      {/* Grouped commodity select */}
       <div className="flex items-center gap-2">
-        <select
+        <Select
           value={selected}
-          onChange={(e) => onSelect(e.target.value)}
-          className="text-xs rounded border px-2 py-1 cursor-pointer min-w-[180px]"
-          style={{
-            backgroundColor: "var(--bg-surface)",
-            borderColor: "var(--border)",
-            color: "var(--text-primary)",
-            outline: "none",
-          }}
-        >
-          <option value="all">All Commodities</option>
-          {Object.entries(groups).map(([groupName, codes]) => (
-            <optgroup key={groupName} label={groupName}>
-              {codes.map((code) => (
-                <option key={code} value={code}>
-                  {code} — {names[code] || code}
-                </option>
-              ))}
-            </optgroup>
-          ))}
-        </select>
+          onChange={onSelect}
+          leadingOption={{ value: "all", label: "All Commodities" }}
+          groups={groups}
+        />
 
         {displayName && (
           <span

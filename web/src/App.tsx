@@ -9,6 +9,9 @@ import RankingsTable from "./components/RankingsTable";
 import StateDrawer from "./components/StateDrawer";
 import Wordmark from "./components/brand/Wordmark";
 import Footer from "./components/Footer";
+import { Button, SegmentedControl, Slider } from "./components/ui";
+import OrientationHint from "./components/OrientationHint";
+import { readInitialUrlState, useSyncUrlState } from "./hooks/useUrlState";
 import type {
   BaseCentralityRow,
   CommodityCentralityRow,
@@ -29,8 +32,12 @@ type FlowDirection = "both" | "in" | "out";
 
 export default function App() {
   const [data, setData] = useState<CoreData | null>(null);
-  const [measure, setMeasure] = useState<Measure>("eigenvector");
-  const [selectedState, setSelectedState] = useState<string | null>(null);
+  const [measure, setMeasure] = useState<Measure>(
+    () => readInitialUrlState().measure ?? "eigenvector",
+  );
+  const [selectedState, setSelectedState] = useState<string | null>(
+    () => readInitialUrlState().state,
+  );
   const [networkType, setNetworkType] = useState<NetworkType>("51");
   const [showEdges, setShowEdges] = useState(true);
   const [topN, setTopN] = useState(50);
@@ -86,6 +93,8 @@ export default function App() {
     if (!selectedState || !centralities.length) return null;
     return centralities.find((r) => r.state === selectedState) ?? null;
   }, [selectedState, centralities]);
+
+  useSyncUrlState(selectedState, measure);
 
   if (Gallery && location.hash === "#/components") {
     return (
@@ -175,30 +184,25 @@ export default function App() {
         />
 
         <div className="flex items-center gap-2 ml-auto">
-          <button
-            onClick={() => setNetworkType(networkType === "51" ? "52" : "51")}
+          <Button
+            variant="outline"
+            size="sm"
+            mono
             disabled={commodity !== "all"}
-            className="px-3 py-1.5 rounded text-xs font-mono cursor-pointer border transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-            style={{
-              borderColor: "var(--border)",
-              color: "var(--text-secondary)",
-              backgroundColor: "transparent",
-            }}
+            onClick={() => setNetworkType(networkType === "51" ? "52" : "51")}
           >
             {networkType === "51" ? "51×51 Domestic" : "52×52 + Intl"}
-          </button>
+          </Button>
 
-          <button
+          <Button
+            variant="outline"
+            size="sm"
+            mono
+            active={showEdges}
             onClick={() => setShowEdges(!showEdges)}
-            className="px-3 py-1.5 rounded text-xs font-mono cursor-pointer border transition-colors"
-            style={{
-              borderColor: showEdges ? "var(--accent-blue)" : "var(--border)",
-              color: showEdges ? "var(--accent-blue)" : "var(--text-secondary)",
-              backgroundColor: showEdges ? "var(--accent-blue)" + "15" : "transparent",
-            }}
           >
             {showEdges ? "Flows On" : "Flows Off"}
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -212,15 +216,12 @@ export default function App() {
             <span className="font-mono uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
               Top flows
             </span>
-            <input
-              type="range"
+            <Slider
               min={Math.min(10, allEdges.length || 10)}
               max={Math.max(allEdges.length, 10)}
               step={10}
               value={Math.min(topN, allEdges.length)}
-              onChange={(e) => setTopN(Number(e.target.value))}
-              className="cursor-pointer"
-              style={{ accentColor: "var(--accent-blue)", width: "140px" }}
+              onChange={setTopN}
             />
             <span className="font-mono tabular-nums" style={{ color: "var(--accent-blue)" }}>
               {Math.min(topN, allEdges.length)}
@@ -232,32 +233,18 @@ export default function App() {
             <span className="font-mono uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
               Direction
             </span>
-            {(
-              [
-                { code: "both", label: "Both" },
-                { code: "in", label: "Inbound" },
-                { code: "out", label: "Outbound" },
-              ] as const
-            ).map(({ code, label }) => {
-              const active = flowDirection === code;
-              return (
-                <button
-                  key={code}
-                  onClick={() => setFlowDirection(code)}
-                  className="px-2.5 py-1 rounded text-xs font-medium cursor-pointer border transition-all duration-200"
-                  style={{
-                    backgroundColor: active ? "var(--accent-blue)" + "18" : "transparent",
-                    borderColor: active ? "var(--accent-blue)" : "var(--border)",
-                    color: active ? "var(--accent-blue)" : "var(--text-secondary)",
-                  }}
-                >
-                  {label}
-                </button>
-              );
-            })}
+            <SegmentedControl
+              options={[
+                { value: "both", label: "Both" },
+                { value: "in", label: "Inbound" },
+                { value: "out", label: "Outbound" },
+              ]}
+              value={flowDirection}
+              onChange={setFlowDirection}
+            />
             {!selectedState && (
               <span className="ml-1" style={{ color: "var(--text-muted)" }}>
-                — select a state to apply
+                select a state to apply
               </span>
             )}
           </div>
@@ -265,6 +252,7 @@ export default function App() {
       )}
 
       <div className="px-6 relative">
+        {!selectedState && <OrientationHint />}
         <TradeMap
           geojson={geojson}
           centralities={centralities}
