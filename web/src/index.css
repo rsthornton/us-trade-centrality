@@ -21,7 +21,10 @@
   --accent-red: #dd3344;
   --accent-orange: #dd7722;
   --accent-purple: #7744cc;
-  --border: #d8d8e8;
+  /* Two border weights: a soft default for interactive elements, a fainter
+     hairline for dividers. Lighter than before so the chrome recedes. */
+  --border: #e4e1ec;
+  --hairline: #eeecf3;
 
   /* map viz palette (kept distinct from UI accents) */
   --map-selection: #ffa94d;
@@ -29,10 +32,11 @@
   --map-empty: #e8e8f0;
   --map-stroke: #d0d0d8;
 
-  /* radius */
+  /* radius — control = 8, card = 12, pill = full */
   --radius-sm: 4px;
   --radius-md: 6px;
   --radius-lg: 8px;
+  --radius-card: 12px;
   --radius-button: 24px;
   --radius-pill: 9999px;
 

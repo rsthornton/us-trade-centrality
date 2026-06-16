@@ -28,7 +28,7 @@ export default function CommodityFilter({ selected, onSelect, metadata }: Commod
 
   return (
     <div className="flex flex-col gap-1.5">
-      <SegmentedControl options={QUICK_PICKS} value={selected} onChange={onSelect} />
+      <SegmentedControl options={QUICK_PICKS} value={selected} onChange={onSelect} size="sm" />
 
       <div className="flex items-center gap-2">
         <Select

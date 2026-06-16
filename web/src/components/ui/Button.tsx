@@ -39,7 +39,11 @@ export default function Button({
   if (variant === "solid") {
     computed = { backgroundColor: accent, borderColor: accent, color: "#ffffff" };
   } else if (active) {
-    computed = { backgroundColor: tint(accent, 12), borderColor: accent, color: accent };
+    computed = {
+      backgroundColor: tint(accent, 12),
+      borderColor: variant === "ghost" ? "transparent" : accent,
+      color: accent,
+    };
   } else {
     computed = {
       backgroundColor: "transparent",

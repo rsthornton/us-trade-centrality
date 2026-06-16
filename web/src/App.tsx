@@ -120,7 +120,8 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen relative">
+    <div className="min-h-screen">
+     <div className="mx-auto w-full max-w-[1240px]">
       <header className="px-6 pt-5">
         <div
           className="flex items-center justify-between gap-4 pb-4"
@@ -173,37 +174,19 @@ export default function App() {
         </div>
       </header>
 
-      <div className="px-6 pt-4">
-        <div
-          className="inline-flex rounded-lg p-1 gap-1"
-          style={{ backgroundColor: "var(--bg-surface)", border: "1px solid var(--border)" }}
-        >
-          {(
-            [
-              { v: "map", label: "Map" },
-              { v: "divergence", label: "Divergence" },
-            ] as const
-          ).map(({ v, label }) => {
-            const active = view === v;
-            return (
-              <button
-                key={v}
-                onClick={() => setView(v)}
-                className="px-4 py-1.5 rounded-md text-sm font-medium cursor-pointer transition-all duration-200"
-                style={{
-                  background: active ? "var(--bg-secondary)" : "transparent",
-                  color: active ? "var(--text-primary)" : "var(--text-secondary)",
-                  boxShadow: active ? "var(--shadow-card)" : "none",
-                }}
-              >
-                {label}
-              </button>
-            );
-          })}
-        </div>
+      <div className="px-6 pt-5">
+        <SegmentedControl
+          size="lg"
+          options={[
+            { value: "map", label: "Map" },
+            { value: "divergence", label: "Divergence" },
+          ]}
+          value={view}
+          onChange={setView}
+        />
       </div>
 
-      <div className="px-6 py-3 flex items-center gap-4 flex-wrap">
+      <div className="px-6 pt-4 pb-3 flex items-center gap-3 flex-wrap">
         <CentralityPills selected={measure} onSelect={setMeasure} />
 
         <CommodityFilter
@@ -216,9 +199,9 @@ export default function App() {
         />
 
         {view === "map" && (
-          <div className="flex items-center gap-2 ml-auto">
+          <div className="flex items-center gap-1 ml-auto">
             <Button
-              variant="outline"
+              variant="ghost"
               size="sm"
               mono
               disabled={commodity !== "all"}
@@ -228,7 +211,7 @@ export default function App() {
             </Button>
 
             <Button
-              variant="outline"
+              variant="ghost"
               size="sm"
               mono
               active={showEdges}
@@ -268,6 +251,7 @@ export default function App() {
               Direction
             </span>
             <SegmentedControl
+              size="sm"
               options={[
                 { value: "both", label: "Both" },
                 { value: "in", label: "Inbound" },
@@ -302,11 +286,12 @@ export default function App() {
 
             {selectedState && selectedData && (
               <div
-                className="absolute right-6 top-0 w-80 overflow-y-auto rounded-lg"
+                className="absolute right-6 top-0 w-80 overflow-y-auto"
                 style={{
                   backgroundColor: "var(--bg-secondary)",
                   border: "1px solid var(--border)",
-                  boxShadow: "-4px 0 24px rgba(0,0,0,0.12)",
+                  borderRadius: "var(--radius-card)",
+                  boxShadow: "var(--shadow-drawer)",
                   maxHeight: "62vh",
                 }}
               >
@@ -346,6 +331,7 @@ export default function App() {
       )}
 
       <Footer />
+     </div>
     </div>
   );
 }

@@ -31,8 +31,12 @@ export default function DivergenceView({
   return (
     <div className="px-6">
       <div
-        className="rounded-lg p-5"
-        style={{ backgroundColor: "var(--bg-secondary)", border: "1px solid var(--border)" }}
+        className="p-6"
+        style={{
+          backgroundColor: "var(--bg-secondary)",
+          border: "1px solid var(--border)",
+          borderRadius: "var(--radius-card)",
+        }}
       >
         <div className="flex items-baseline justify-between gap-4 flex-wrap mb-1">
           <h2 className="text-lg font-medium" style={{ color: "var(--text-primary)" }}>
