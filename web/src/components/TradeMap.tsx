@@ -46,6 +46,8 @@ interface TradeMapProps {
   edges: Edge[];
   showEdges: boolean;
   flowDirection?: FlowDirection;
+  /** Active measure hue (used for the hover outline). */
+  accent: string;
 }
 
 export default function TradeMap({
@@ -57,6 +59,7 @@ export default function TradeMap({
   edges,
   showEdges,
   flowDirection = "both",
+  accent,
 }: TradeMapProps) {
   const [hoveredState, setHoveredState] = useState<string | null>(null);
   const [hoverInfo, setHoverInfo] = useState<HoverInfo | null>(null);
@@ -204,8 +207,8 @@ export default function TradeMap({
           stroke = "#ffffff";
           strokeWidth = 2.5;
         } else if (isHovered) {
-          stroke = mapColors.hover;
-          strokeWidth = 1.5;
+          stroke = accent;
+          strokeWidth = 2;
         }
 
         return (

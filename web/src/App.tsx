@@ -126,12 +126,15 @@ export default function App() {
 
   if (loading || !data) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4">
+        <div style={{ animation: "ipo-pulse 1.6s ease-in-out infinite" }}>
+          <Wordmark size={28} />
+        </div>
         <div
-          className="text-sm font-mono tracking-widest uppercase"
+          className="text-xs font-mono tracking-[0.18em] uppercase"
           style={{ color: "var(--text-muted)" }}
         >
-          Loading network data...
+          Loading network data
         </div>
       </div>
     );
@@ -307,6 +310,7 @@ export default function App() {
                 edges={edges}
                 showEdges={showEdges}
                 flowDirection={flowDirection}
+                accent={measureColor}
               />
 
               {selectedState && selectedData && (

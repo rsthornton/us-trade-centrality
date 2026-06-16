@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import type { BaseCentralityRow, Measure } from "../../types";
 import { MEASURES } from "./constants";
+import { tint } from "../ui/style";
 
 export interface DivergenceTableProps {
   centralities: BaseCentralityRow[];
@@ -75,19 +76,24 @@ export default function DivergenceTable({
                   : r.delta <= -5
                     ? "var(--accent-red)"
                     : "var(--text-muted)";
+              const rowBg = isSelected
+                ? "rgba(255, 169, 77, 0.14)"
+                : r.delta >= 5
+                  ? tint("var(--accent-green)", 14)
+                  : r.delta <= -5
+                    ? tint("var(--accent-red)", 14)
+                    : "transparent";
               return (
                 <tr
                   key={r.state}
                   className="cursor-pointer"
                   onClick={() => onSelectState(isSelected ? null : r.state)}
-                  style={{
-                    backgroundColor: isSelected ? "rgba(255, 169, 77, 0.12)" : "transparent",
-                  }}
+                  style={{ backgroundColor: rowBg }}
                   onMouseEnter={(e) => {
                     if (!isSelected) e.currentTarget.style.backgroundColor = "var(--bg-surface)";
                   }}
                   onMouseLeave={(e) => {
-                    if (!isSelected) e.currentTarget.style.backgroundColor = "transparent";
+                    if (!isSelected) e.currentTarget.style.backgroundColor = rowBg;
                   }}
                 >
                   <td className="text-sm py-1 pr-3" style={{ color: "var(--text-primary)" }}>
