@@ -203,160 +203,156 @@ export default function App() {
         </div>
       </header>
 
-      <div className="px-6 pt-5">
-        <SegmentedControl
-          size="lg"
-          options={[
-            { value: "map", label: "Map" },
-            { value: "divergence", label: "Divergence" },
-          ]}
-          value={view}
-          onChange={setView}
-        />
-      </div>
+      <div className="px-6 pt-5 flex flex-col lg:flex-row gap-5 items-start">
+        {/* Control rail */}
+        <aside className="w-full lg:w-[300px] lg:shrink-0 flex flex-col gap-4">
+          <SegmentedControl
+            size="lg"
+            options={[
+              { value: "map", label: "Map" },
+              { value: "divergence", label: "Divergence" },
+            ]}
+            value={view}
+            onChange={setView}
+          />
 
-      <div className="px-6 pt-4 pb-3 flex items-center gap-3 flex-wrap">
-        <CentralityPills selected={measure} onSelect={setMeasure} />
+          <CentralityPills vertical selected={measure} onSelect={setMeasure} />
 
-        <CommodityFilter
-          selected={commodity}
-          onSelect={(code) => {
-            setCommodity(code);
-            if (code !== "all") setNetworkType("51");
-          }}
-          metadata={data.metadata}
-        />
+          <CommodityFilter
+            selected={commodity}
+            onSelect={(code) => {
+              setCommodity(code);
+              if (code !== "all") setNetworkType("51");
+            }}
+            metadata={data.metadata}
+          />
 
-        {view === "map" && (
-          <div className="flex items-center gap-1 ml-auto">
-            <Button
-              variant="ghost"
-              size="sm"
-              mono
-              disabled={commodity !== "all"}
-              onClick={() => setNetworkType(networkType === "51" ? "52" : "51")}
-            >
-              {networkType === "51" ? "51×51 Domestic" : "52×52 + Intl"}
-            </Button>
-
-            <Button
-              variant="ghost"
-              size="sm"
-              mono
-              active={showEdges}
-              onClick={() => setShowEdges(!showEdges)}
-            >
-              {showEdges ? "Flows On" : "Flows Off"}
-            </Button>
-          </div>
-        )}
-      </div>
-
-      {view === "map" && showEdges && (
-        <div
-          className="px-6 pb-3 flex items-center gap-5 flex-wrap text-xs"
-          style={{ color: "var(--text-secondary)" }}
-        >
-          {/* Top-N slider */}
-          <label className="flex items-center gap-2">
-            <span className="font-mono uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
-              Top flows
-            </span>
-            <Slider
-              min={Math.min(10, allEdges.length || 10)}
-              max={Math.max(allEdges.length, 10)}
-              step={10}
-              value={Math.min(topN, allEdges.length)}
-              onChange={setTopN}
-            />
-            <span className="font-mono tabular-nums" style={{ color: "var(--accent-blue)" }}>
-              {Math.min(topN, allEdges.length)}
-            </span>
-          </label>
-
-          {/* Flow-direction filter (applies when a state is selected) */}
-          <div className="flex items-center gap-1.5">
-            <span className="font-mono uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
-              Direction
-            </span>
-            <SegmentedControl
-              size="sm"
-              options={[
-                { value: "both", label: "Both" },
-                { value: "in", label: "Inbound" },
-                { value: "out", label: "Outbound" },
-              ]}
-              value={flowDirection}
-              onChange={setFlowDirection}
-            />
-            {!selectedState && (
-              <span className="ml-1" style={{ color: "var(--text-muted)" }}>
-                select a state to apply
-              </span>
-            )}
-          </div>
-        </div>
-      )}
-
-      {view === "map" ? (
-        <div className="px-6">
-          <div className="px-4 pt-4 pb-3" style={stageStyle}>
-            <div className="relative">
-              {!selectedState && <OrientationHint />}
-              <TradeMap
-                geojson={geojson}
-                centralities={centralities}
-                measure={measure}
-                selectedState={selectedState}
-                onSelectState={setSelectedState}
-                edges={edges}
-                showEdges={showEdges}
-                flowDirection={flowDirection}
-                accent={measureColor}
-              />
-
-              {selectedState && selectedData && (
-                <div
-                  className="absolute right-0 top-0 w-80 overflow-y-auto"
-                  style={{
-                    backgroundColor: "var(--bg-secondary)",
-                    border: "1px solid var(--border)",
-                    borderRadius: "var(--radius-card)",
-                    boxShadow: "var(--shadow-drawer)",
-                    maxHeight: "62vh",
-                  }}
+          {view === "map" && (
+            <div className="flex flex-col gap-3 pt-1">
+              <div className="flex items-center gap-1">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  mono
+                  disabled={commodity !== "all"}
+                  onClick={() => setNetworkType(networkType === "51" ? "52" : "51")}
                 >
-                  <StateDrawer
-                    state={selectedState}
-                    data={selectedData}
-                    edges={edges}
-                    totals={selectedTotals}
-                    onClose={() => setSelectedState(null)}
-                    inline
-                  />
+                  {networkType === "51" ? "51×51 Domestic" : "52×52 + Intl"}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  mono
+                  active={showEdges}
+                  onClick={() => setShowEdges(!showEdges)}
+                >
+                  {showEdges ? "Flows On" : "Flows Off"}
+                </Button>
+              </div>
+
+              {showEdges && (
+                <div className="flex flex-col gap-3 text-xs" style={{ color: "var(--text-secondary)" }}>
+                  <label className="flex items-center gap-2">
+                    <span className="font-mono uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
+                      Top flows
+                    </span>
+                    <Slider
+                      min={Math.min(10, allEdges.length || 10)}
+                      max={Math.max(allEdges.length, 10)}
+                      step={10}
+                      value={Math.min(topN, allEdges.length)}
+                      onChange={setTopN}
+                    />
+                    <span className="font-mono tabular-nums" style={{ color: "var(--accent-blue)" }}>
+                      {Math.min(topN, allEdges.length)}
+                    </span>
+                  </label>
+
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="font-mono uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
+                      Direction
+                    </span>
+                    <SegmentedControl
+                      size="sm"
+                      options={[
+                        { value: "both", label: "Both" },
+                        { value: "in", label: "Inbound" },
+                        { value: "out", label: "Outbound" },
+                      ]}
+                      value={flowDirection}
+                      onChange={setFlowDirection}
+                    />
+                  </div>
+                  {!selectedState && (
+                    <span style={{ color: "var(--text-muted)" }}>Select a state to apply direction.</span>
+                  )}
                 </div>
               )}
             </div>
+          )}
+        </aside>
 
-            <div className="mt-2 pt-2" style={{ borderTop: "1px solid var(--hairline)" }}>
-              <ColorLegend
-                label={measure.replace("_", " ")}
-                color={measureColor}
-                min={centralities.length ? Math.min(...centralities.map((r) => r[measure])) : 0}
-                max={centralities.length ? Math.max(...centralities.map((r) => r[measure])) : 1}
-              />
+        {/* Stage */}
+        <div className="flex-1 min-w-0 w-full">
+          {view === "map" ? (
+            <div className="px-4 pt-4 pb-3" style={stageStyle}>
+              <div className="relative">
+                {!selectedState && <OrientationHint />}
+                <TradeMap
+                  geojson={geojson}
+                  centralities={centralities}
+                  measure={measure}
+                  selectedState={selectedState}
+                  onSelectState={setSelectedState}
+                  edges={edges}
+                  showEdges={showEdges}
+                  flowDirection={flowDirection}
+                  accent={measureColor}
+                />
+
+                {selectedState && selectedData && (
+                  <div
+                    className="absolute right-0 top-0 w-80 overflow-y-auto"
+                    style={{
+                      backgroundColor: "var(--bg-secondary)",
+                      border: "1px solid var(--border)",
+                      borderRadius: "var(--radius-card)",
+                      boxShadow: "var(--shadow-drawer)",
+                      maxHeight: "62vh",
+                    }}
+                  >
+                    <StateDrawer
+                      state={selectedState}
+                      data={selectedData}
+                      edges={edges}
+                      totals={selectedTotals}
+                      onClose={() => setSelectedState(null)}
+                      inline
+                    />
+                  </div>
+                )}
+              </div>
+
+              <div className="mt-2 pt-2" style={{ borderTop: "1px solid var(--hairline)" }}>
+                <ColorLegend
+                  label={measure.replace("_", " ")}
+                  color={measureColor}
+                  min={centralities.length ? Math.min(...centralities.map((r) => r[measure])) : 0}
+                  max={centralities.length ? Math.max(...centralities.map((r) => r[measure])) : 1}
+                />
+              </div>
             </div>
-          </div>
+          ) : (
+            <DivergenceView
+              centralities={centralities}
+              measure={measure}
+              selectedState={selectedState}
+              onSelectState={setSelectedState}
+              accent={measureColor}
+            />
+          )}
         </div>
-      ) : (
-        <DivergenceView
-          centralities={centralities}
-          measure={measure}
-          selectedState={selectedState}
-          onSelectState={setSelectedState}
-          accent={measureColor}
-        />
-      )}
+      </div>
 
       <div className="px-6">
         <div

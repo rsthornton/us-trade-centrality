@@ -10,14 +10,16 @@ const MEASURES: { key: Measure; label: string; description: string }[] = [
 interface CentralityPillsProps {
   selected: Measure;
   onSelect: (measure: Measure) => void;
+  /** Stack the three measures vertically (for the control rail). */
+  vertical?: boolean;
 }
 
 /** Measure selector. Enclosed group; the measure's color rides as a small dot
  *  (tying it to the map ramp) rather than a full colored border. */
-export default function CentralityPills({ selected, onSelect }: CentralityPillsProps) {
+export default function CentralityPills({ selected, onSelect, vertical }: CentralityPillsProps) {
   return (
     <div
-      className="inline-flex gap-0.5 p-0.5 rounded-lg"
+      className={`${vertical ? "flex flex-col w-full" : "inline-flex"} gap-0.5 p-0.5 rounded-lg`}
       style={{ backgroundColor: "var(--bg-surface)", border: "1px solid var(--hairline)" }}
     >
       {MEASURES.map(({ key, label, description }) => {
@@ -26,7 +28,7 @@ export default function CentralityPills({ selected, onSelect }: CentralityPillsP
           <button
             key={key}
             onClick={() => onSelect(key)}
-            className="text-left px-3 py-1.5 rounded-md cursor-pointer transition-all duration-200"
+            className={`text-left px-3 py-1.5 rounded-md cursor-pointer transition-all duration-200 ${vertical ? "w-full" : ""}`}
             style={{
               backgroundColor: active ? "var(--bg-secondary)" : "transparent",
               boxShadow: active ? "var(--shadow-card)" : "none",

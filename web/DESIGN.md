@@ -73,13 +73,16 @@ Composable, token-driven. Prefer these over new bespoke inline styles. View them
 
 ## Layout
 
-Brand bar (wordmark + nav) → hero (eyebrow, title, dek) → **Map / Divergence view tabs** → shared
-controls (measure pills, commodity). Then the selected view:
-- **Map:** network/flows controls → flow controls (top-N, direction) → map + state drawer → legend + network stats.
-- **Divergence:** the full-width dumbbell canvas + "show all 51 states" table.
+Brand bar (wordmark + nav) → hero (eyebrow, title, dek, rotating finding) → then a **two-column
+console**: a **left control rail** beside the **canvas stage**.
+- **Left rail** (`lg:w-[300px]`): Map / Divergence view tabs, the vertical measure selector, the
+  commodity filter, and (map view only) the network/flows toggles + top-N slider + direction.
+- **Stage:** the selected view fills the rest — Map (choropleth + flow arcs + floating state drawer
+  + legend) or Divergence (the dumbbell + "show all 51 states" table).
 
-Then the footer. The two views are peers, switched by the tab control (App `view` state); they share
-the measure + commodity controls.
+Below the console: a persistent mono status bar (nodes/edges/density) → footer. On `< lg` the rail
+collapses to a stacked column above the stage. The two views are peers, switched by the tab control
+(App `view` state); they share the measure + commodity controls.
 
 ## Craft principles (the polish rules)
 

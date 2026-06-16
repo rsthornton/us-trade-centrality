@@ -32,17 +32,16 @@ export default function DivergenceView({
   if (!centralities.length) return null;
 
   return (
-    <div className="px-6">
-      <div
-        className="p-6"
-        style={{
-          background: "linear-gradient(180deg, var(--canvas-from), var(--canvas-to))",
-          border: "1px solid var(--hairline)",
-          borderTop: `2.5px solid ${accent}`,
-          borderRadius: "var(--radius-card)",
-          boxShadow: "0 1px 2px rgba(26, 26, 46, 0.05)",
-        }}
-      >
+    <div
+      className="p-6"
+      style={{
+        background: "linear-gradient(180deg, var(--canvas-from), var(--canvas-to))",
+        border: "1px solid var(--hairline)",
+        borderTop: `2.5px solid ${accent}`,
+        borderRadius: "var(--radius-card)",
+        boxShadow: "0 1px 2px rgba(26, 26, 46, 0.05)",
+      }}
+    >
         <div className="flex items-baseline justify-between gap-4 flex-wrap mb-1">
           <h2 className="text-lg font-medium" style={{ color: "var(--text-primary)" }}>
             Where GDP and network power diverge
@@ -86,7 +85,6 @@ export default function DivergenceView({
             onSelectState={onSelectState}
           />
         )}
-      </div>
     </div>
   );
 }
