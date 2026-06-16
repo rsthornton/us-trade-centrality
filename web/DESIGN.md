@@ -66,7 +66,7 @@ Composable, token-driven. Prefer these over new bespoke inline styles. View them
 - `TradeMap.tsx` — **the hero**; zero-dep SVG choropleth + Bézier flow arcs + hover tooltip. Props: `geojson, centralities, measure, selectedState, onSelectState, edges, showEdges, flowDirection`. The viz color literals inside are the viz contract.
 - `CentralityPills.tsx`, `CommodityFilter.tsx`, `ColorLegend.tsx` — controls.
 - `drawer/` — `StateDrawer` + `TradeCard`, `MeasureCard`, `PartnersList`, `format.ts`.
-- `rankings/` — `RankingsTable` + `DivergenceScatter`, `DivergenceTable`, `constants.ts`.
+- `rankings/` — `RankingsTable` (calm "Explore" reveal) + `DivergenceDumbbell` (the hero: GDP-rank → network-rank gap per state), `DivergenceTable` (full 51-state list behind "show all"), `constants.ts`.
 - `hooks/useUrlState.ts` — deep-link read on mount + sync on change.
 
 ## Layout
