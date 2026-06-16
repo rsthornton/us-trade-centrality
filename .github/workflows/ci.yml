@@ -1,0 +1,48 @@
+# CI for the web app + a light Python schema check.
+#
+# GUARDRAIL: this workflow NEVER runs anything under evolution/ (a registered ResearchHub
+# pre-registration) and NEVER downloads the gated 477MB CFS data. The Python job only lints
+# statically and runs the zero-data schema test against the committed web/public/data JSON.
+
+name: ci
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: ["evolution/**", "paper/**"]
+  pull_request:
+    paths-ignore: ["evolution/**", "paper/**"]
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run test
+      - run: npm run build
+
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pytest ruff
+      # Lint is advisory for now: the existing analysis code predates ruff.
+      # Remove continue-on-error after the one-time cleanup pass.
+      - run: ruff check cfs-network-toolkit scripts tests main.py
+        continue-on-error: true
+      # Zero-data schema test only (no gated CFS data, nothing under evolution/).
+      - run: pytest tests/test_export_schema.py
