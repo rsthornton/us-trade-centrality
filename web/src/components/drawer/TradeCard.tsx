@@ -11,7 +11,7 @@ export interface TradeCardProps {
 export default function TradeCard({ label, value }: TradeCardProps) {
   const animated = useCountUp(value);
   return (
-    <Card>
+    <Card surface="secondary">
       <div className="text-xs uppercase tracking-wider mb-1" style={{ color: "var(--text-muted)" }}>
         {label}
       </div>

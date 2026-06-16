@@ -337,6 +337,7 @@ export default function App() {
               data={selectedData}
               edges={edges}
               totals={selectedTotals}
+              accent={measureColor}
               onClose={() => setSelectedState(null)}
             />
           )}

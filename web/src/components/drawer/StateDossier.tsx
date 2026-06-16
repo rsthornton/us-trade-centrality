@@ -84,11 +84,20 @@ interface StateDossierProps {
   data: BaseCentralityRow;
   edges: Edge[];
   totals?: StateTotals | null;
+  /** Active measure hue for the top accent + watermark. */
+  accent: string;
   onClose: () => void;
 }
 
 /** Horizontal state detail panel that sits below the stage (map/divergence). */
-export default function StateDossier({ state, data, edges, totals, onClose }: StateDossierProps) {
+export default function StateDossier({
+  state,
+  data,
+  edges,
+  totals,
+  accent,
+  onClose,
+}: StateDossierProps) {
   const fromEdges = useMemo(() => {
     if (!edges || edges.length === 0) {
       return { outbound: 0, inbound: 0, topOutbound: [] as Partner[], topInbound: [] as Partner[] };
@@ -130,16 +139,24 @@ export default function StateDossier({ state, data, edges, totals, onClose }: St
   return (
     <div
       key={state}
-      className="mt-3 p-5"
+      className="mt-3 p-5 relative overflow-hidden"
       style={{
-        backgroundColor: "var(--bg-secondary)",
-        border: "1px solid var(--border)",
+        background: "linear-gradient(180deg, var(--canvas-from), var(--canvas-to))",
+        border: "1px solid var(--hairline)",
+        borderTop: `2.5px solid ${accent}`,
         borderRadius: "var(--radius-card)",
-        boxShadow: "var(--shadow-card)",
+        boxShadow: "0 1px 2px rgba(26, 26, 46, 0.05)",
         animation: "ipo-finding-in 0.3s ease",
       }}
     >
-      <div className="flex flex-wrap items-start gap-x-8 gap-y-5">
+      <span
+        aria-hidden
+        className="absolute pointer-events-none select-none font-bold tracking-tighter"
+        style={{ right: 18, top: -18, fontSize: 130, lineHeight: 1, color: accent, opacity: 0.07 }}
+      >
+        {state}
+      </span>
+      <div className="relative flex flex-wrap items-start gap-x-8 gap-y-5">
         {/* Identity + interpretation */}
         <div className="min-w-[200px] max-w-[260px]">
           <div className="flex items-start justify-between gap-3">
