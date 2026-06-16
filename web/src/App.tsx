@@ -7,6 +7,8 @@ import CommodityFilter from "./components/CommodityFilter";
 import ColorLegend from "./components/ColorLegend";
 import RankingsTable from "./components/RankingsTable";
 import StateDrawer from "./components/StateDrawer";
+import Wordmark from "./components/brand/Wordmark";
+import Footer from "./components/Footer";
 import type {
   BaseCentralityRow,
   CommodityCentralityRow,
@@ -17,6 +19,7 @@ import type {
 
 // Interactive WASM notebook hosted on molab (marimo Cloud).
 const NOTEBOOK_URL = "https://molab.marimo.io/notebooks/nb_ssAp6xhuFRsEaQKP2y7ZjH/app";
+const REPO_URL = "https://github.com/rsthornton/us-trade-centrality";
 
 // DEV-only component gallery (lazy: its chunk is never loaded in production).
 const Gallery = import.meta.env.DEV ? lazy(() => import("./dev/Gallery")) : null;
@@ -107,23 +110,56 @@ export default function App() {
 
   return (
     <div className="min-h-screen relative">
-      <header className="px-6 pt-6 pb-2">
-        <h1 className="text-3xl font-light tracking-tight" style={{ color: "var(--text-primary)" }}>
-          US Interstate Trade Centrality
-        </h1>
-        <p className="text-sm mt-1 max-w-xl" style={{ color: "var(--text-secondary)" }}>
-          The map shows what GDP cannot — which states hold structural power in the $4 trillion
-          interstate trade network.
-        </p>
-        <a
-          href={NOTEBOOK_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block text-sm mt-2 font-medium transition-opacity hover:opacity-70"
-          style={{ color: "var(--accent-blue)" }}
+      <header className="px-6 pt-5">
+        <div
+          className="flex items-center justify-between gap-4 pb-4"
+          style={{ borderBottom: "1px solid var(--border)" }}
         >
-          Explore the Math →
-        </a>
+          <Wordmark />
+          <nav className="flex items-center gap-5 text-sm">
+            <a
+              href={NOTEBOOK_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium transition-opacity hover:opacity-70"
+              style={{ color: "var(--accent-blue)" }}
+            >
+              Explore the math →
+            </a>
+            <a
+              href={REPO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-opacity hover:opacity-70"
+              style={{ color: "var(--text-secondary)" }}
+            >
+              Source
+            </a>
+          </nav>
+        </div>
+
+        <div className="pt-6 pb-1">
+          <div
+            className="text-xs font-mono uppercase tracking-[0.18em] mb-2"
+            style={{ color: "var(--text-muted)" }}
+          >
+            Structural power in U.S. interstate trade · CFS 2017
+          </div>
+          <h1
+            className="text-3xl sm:text-4xl font-light tracking-tight"
+            style={{ color: "var(--text-primary)" }}
+          >
+            The Interstate Power Observatory
+          </h1>
+          <p
+            className="text-sm sm:text-base mt-2 max-w-2xl leading-relaxed"
+            style={{ color: "var(--text-secondary)" }}
+          >
+            GDP measures what a state produces. Network centrality reveals the leverage it holds.
+            Explore which states are the true hubs, bridges, and exporters of America's $4 trillion
+            interstate commerce network.
+          </p>
+        </div>
       </header>
 
       <div className="px-6 py-3 flex items-center gap-4 flex-wrap">
@@ -282,6 +318,8 @@ export default function App() {
         selectedState={selectedState}
         onSelectState={setSelectedState}
       />
+
+      <Footer />
     </div>
   );
 }
