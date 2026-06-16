@@ -5,7 +5,7 @@ import TradeMap from "./components/TradeMap";
 import CentralityPills from "./components/CentralityPills";
 import CommodityFilter from "./components/CommodityFilter";
 import ColorLegend from "./components/ColorLegend";
-import RankingsTable from "./components/rankings/RankingsTable";
+import DivergenceView from "./components/rankings/DivergenceView";
 import StateDrawer from "./components/drawer/StateDrawer";
 import Wordmark from "./components/brand/Wordmark";
 import Footer from "./components/Footer";
@@ -29,9 +29,11 @@ const Gallery = import.meta.env.DEV ? lazy(() => import("./dev/Gallery")) : null
 
 type NetworkType = "51" | "52";
 type FlowDirection = "both" | "in" | "out";
+type View = "map" | "divergence";
 
 export default function App() {
   const [data, setData] = useState<CoreData | null>(null);
+  const [view, setView] = useState<View>("map");
   const [measure, setMeasure] = useState<Measure>(
     () => readInitialUrlState().measure ?? "eigenvector",
   );
@@ -171,6 +173,36 @@ export default function App() {
         </div>
       </header>
 
+      <div className="px-6 pt-4">
+        <div
+          className="inline-flex rounded-lg p-1 gap-1"
+          style={{ backgroundColor: "var(--bg-surface)", border: "1px solid var(--border)" }}
+        >
+          {(
+            [
+              { v: "map", label: "Map" },
+              { v: "divergence", label: "Divergence" },
+            ] as const
+          ).map(({ v, label }) => {
+            const active = view === v;
+            return (
+              <button
+                key={v}
+                onClick={() => setView(v)}
+                className="px-4 py-1.5 rounded-md text-sm font-medium cursor-pointer transition-all duration-200"
+                style={{
+                  background: active ? "var(--bg-secondary)" : "transparent",
+                  color: active ? "var(--text-primary)" : "var(--text-secondary)",
+                  boxShadow: active ? "var(--shadow-card)" : "none",
+                }}
+              >
+                {label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       <div className="px-6 py-3 flex items-center gap-4 flex-wrap">
         <CentralityPills selected={measure} onSelect={setMeasure} />
 
@@ -183,30 +215,32 @@ export default function App() {
           metadata={data.metadata}
         />
 
-        <div className="flex items-center gap-2 ml-auto">
-          <Button
-            variant="outline"
-            size="sm"
-            mono
-            disabled={commodity !== "all"}
-            onClick={() => setNetworkType(networkType === "51" ? "52" : "51")}
-          >
-            {networkType === "51" ? "51×51 Domestic" : "52×52 + Intl"}
-          </Button>
+        {view === "map" && (
+          <div className="flex items-center gap-2 ml-auto">
+            <Button
+              variant="outline"
+              size="sm"
+              mono
+              disabled={commodity !== "all"}
+              onClick={() => setNetworkType(networkType === "51" ? "52" : "51")}
+            >
+              {networkType === "51" ? "51×51 Domestic" : "52×52 + Intl"}
+            </Button>
 
-          <Button
-            variant="outline"
-            size="sm"
-            mono
-            active={showEdges}
-            onClick={() => setShowEdges(!showEdges)}
-          >
-            {showEdges ? "Flows On" : "Flows Off"}
-          </Button>
-        </div>
+            <Button
+              variant="outline"
+              size="sm"
+              mono
+              active={showEdges}
+              onClick={() => setShowEdges(!showEdges)}
+            >
+              {showEdges ? "Flows On" : "Flows Off"}
+            </Button>
+          </div>
+        )}
       </div>
 
-      {showEdges && (
+      {view === "map" && showEdges && (
         <div
           className="px-6 pb-3 flex items-center gap-5 flex-wrap text-xs"
           style={{ color: "var(--text-secondary)" }}
@@ -251,61 +285,65 @@ export default function App() {
         </div>
       )}
 
-      <div className="px-6 relative">
-        {!selectedState && <OrientationHint />}
-        <TradeMap
-          geojson={geojson}
+      {view === "map" ? (
+        <>
+          <div className="px-6 relative">
+            {!selectedState && <OrientationHint />}
+            <TradeMap
+              geojson={geojson}
+              centralities={centralities}
+              measure={measure}
+              selectedState={selectedState}
+              onSelectState={setSelectedState}
+              edges={edges}
+              showEdges={showEdges}
+              flowDirection={flowDirection}
+            />
+
+            {selectedState && selectedData && (
+              <div
+                className="absolute right-6 top-0 w-80 overflow-y-auto rounded-lg"
+                style={{
+                  backgroundColor: "var(--bg-secondary)",
+                  border: "1px solid var(--border)",
+                  boxShadow: "-4px 0 24px rgba(0,0,0,0.12)",
+                  maxHeight: "62vh",
+                }}
+              >
+                <StateDrawer
+                  state={selectedState}
+                  data={selectedData}
+                  edges={edges}
+                  onClose={() => setSelectedState(null)}
+                  inline
+                />
+              </div>
+            )}
+          </div>
+
+          <div className="px-6 py-1 flex items-center justify-between">
+            <ColorLegend
+              label={measure.replace("_", " ")}
+              min={centralities.length ? Math.min(...centralities.map((r) => r[measure])) : 0}
+              max={centralities.length ? Math.max(...centralities.map((r) => r[measure])) : 1}
+            />
+            {data.stats && (
+              <div className="flex gap-6 text-xs font-mono" style={{ color: "var(--text-muted)" }}>
+                <span>{data.stats.nodes} nodes</span>
+                <span>{data.stats.edges.toLocaleString()} edges</span>
+                <span>density {data.stats.density}</span>
+              </div>
+            )}
+          </div>
+        </>
+      ) : (
+        <DivergenceView
           centralities={centralities}
           measure={measure}
           selectedState={selectedState}
           onSelectState={setSelectedState}
-          edges={edges}
-          showEdges={showEdges}
-          flowDirection={flowDirection}
         />
-
-        {selectedState && selectedData && (
-          <div
-            className="absolute right-6 top-0 w-80 overflow-y-auto rounded-lg"
-            style={{
-              backgroundColor: "var(--bg-secondary)",
-              border: "1px solid var(--border)",
-              boxShadow: "-4px 0 24px rgba(0,0,0,0.12)",
-              maxHeight: "62vh",
-            }}
-          >
-            <StateDrawer
-              state={selectedState}
-              data={selectedData}
-              edges={edges}
-              onClose={() => setSelectedState(null)}
-              inline
-            />
-          </div>
-        )}
-      </div>
-
-      <div className="px-6 py-1 flex items-center justify-between">
-        <ColorLegend
-          label={measure.replace("_", " ")}
-          min={centralities.length ? Math.min(...centralities.map((r) => r[measure])) : 0}
-          max={centralities.length ? Math.max(...centralities.map((r) => r[measure])) : 1}
-        />
-        {data.stats && (
-          <div className="flex gap-6 text-xs font-mono" style={{ color: "var(--text-muted)" }}>
-            <span>{data.stats.nodes} nodes</span>
-            <span>{data.stats.edges.toLocaleString()} edges</span>
-            <span>density {data.stats.density}</span>
-          </div>
-        )}
-      </div>
-
-      <RankingsTable
-        centralities={centralities}
-        measure={measure}
-        selectedState={selectedState}
-        onSelectState={setSelectedState}
-      />
+      )}
 
       <Footer />
     </div>
