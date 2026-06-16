@@ -27,9 +27,10 @@ before using them in a component.
 |---|---|
 | Surface | `--bg-primary #fafafa`, `--bg-secondary #ffffff`, `--bg-surface #f0f0f5` |
 | Text | `--text-primary #1a1a2e`, `--text-secondary #4a4a6a`, `--text-muted #8888a8` |
-| Accents | `--accent-blue #2266dd`, `--accent-green #1a9960`, `--accent-red #dd3344`, `--accent-orange #dd7722`, `--accent-purple #7744cc`, `--border #d8d8e8` |
+| Accents | `--accent-blue #2266dd`, `--accent-green #1a9960`, `--accent-red #dd3344`, `--accent-orange #dd7722`, `--accent-purple #7744cc` |
+| Borders | `--border #e4e1ec` (interactive elements), `--hairline #eeecf3` (faint dividers) |
 | Map viz | `--map-selection #ffa94d`, `--map-dim #9ca3af`, `--map-empty #e8e8f0`, `--map-stroke #d0d0d8` |
-| Radius | `--radius-sm 4`, `--radius-md 6`, `--radius-lg 8`, `--radius-button 24`, `--radius-pill 9999` |
+| Radius | `--radius-sm 4`, `--radius-md 6`, `--radius-lg 8` (controls), `--radius-card 12` (cards/panels/drawer), `--radius-pill 9999` |
 | Shadow | `--shadow-card`, `--shadow-card-hover`, `--shadow-drawer` |
 | Z-index | `--z-drawer 10`, `--z-tooltip 20`, `--z-hint 30` |
 | Motion | `--transition-fast 150ms`, `--transition-base 200ms`, `--transition-slow 300ms` |
@@ -78,6 +79,22 @@ controls (measure pills, commodity). Then the selected view:
 
 Then the footer. The two views are peers, switched by the tab control (App `view` state); they share
 the measure + commodity controls.
+
+## Craft principles (the polish rules)
+
+- **Quiet chrome, loud data.** The map ramp and the divergence green/red are the only saturated
+  color. Keep UI chrome near-monochrome: greys + one blue for links/actions. Don't add accent fills
+  to controls.
+- **Surfaces and hairlines over outlines.** Prefer whitespace, a `--bg-surface` fill, or a soft
+  shadow to group things. Reach for `--hairline` for dividers and `--border` only on interactive
+  elements. Avoid wrapping every control in its own outline.
+- **One segmented language.** The enclosed `SegmentedControl` (surface container, active segment
+  lifts on `--bg-secondary` + `--shadow-card`) is the shared style for view tabs, the direction
+  toggle, the commodity quick-picks, and the measure selector. Reuse it; don't invent new toggles.
+- **Measure color = a dot, not a border.** The measure's color appears as a small dot tying it to
+  the map ramp, never as a full pill tint/outline.
+- **Centered frame.** Content sits in a centered `max-w-[1240px]` column, not edge-to-edge.
+- **Radius:** controls `--radius-lg` (8), cards/panels/drawer `--radius-card` (12), pills full.
 
 ## Do / Don't
 
