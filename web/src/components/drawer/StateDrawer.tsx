@@ -52,6 +52,22 @@ const MEASURES: { key: Measure; label: string }[] = [
   { key: "out_degree", label: "Out-Degree" },
 ];
 
+/** One plain-English read of a state's biggest GDP-vs-network divergence. */
+function interpret(key: Measure, diff: number): string {
+  if (diff > 0) {
+    const phrase =
+      key === "betweenness"
+        ? "a critical bridge"
+        : key === "eigenvector"
+          ? "trades with powerful partners"
+          : "an outsized exporter";
+    return `Punches above its weight: ${phrase}, ${diff} ranks more central than its economy.`;
+  }
+  const plain =
+    key === "betweenness" ? "bridge position" : key === "eigenvector" ? "trade prestige" : "export reach";
+  return `Below its economic weight: ${Math.abs(diff)} ranks lower in ${plain} than its size.`;
+}
+
 interface StateDrawerProps {
   state: string | null;
   data: BaseCentralityRow | null;
@@ -144,11 +160,20 @@ export default function StateDrawer({
       </div>
 
       {/* GDP divergence chips — all three measures */}
-      <div className="flex flex-wrap gap-1.5 mb-5">
+      <div className="flex flex-wrap gap-1.5 mb-2">
         {divergences.map(({ key, label, diff, color }) => (
           <DivergenceChip key={key} label={label.slice(0, 3)} diff={diff} color={color} />
         ))}
       </div>
+      {(() => {
+        const standout = divergences.reduce((a, b) => (Math.abs(b.diff) > Math.abs(a.diff) ? b : a));
+        if (Math.abs(standout.diff) < 5) return null;
+        return (
+          <p className="text-xs mb-5 leading-snug" style={{ color: standout.color }}>
+            {interpret(standout.key, standout.diff)}
+          </p>
+        );
+      })()}
 
       {/* Trade volume cards */}
       {hasVolume && (

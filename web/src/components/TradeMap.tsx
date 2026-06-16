@@ -215,12 +215,15 @@ export default function TradeMap({
           <path
             key={fips}
             d={d}
-            fill={washed || fill}
-            stroke={stroke}
-            strokeWidth={strokeWidth}
             opacity={1}
             filter={isSelected ? "url(#glow)" : undefined}
-            className="cursor-pointer transition-all duration-300"
+            className="cursor-pointer"
+            style={{
+              fill: washed || fill,
+              stroke,
+              strokeWidth,
+              transition: "fill 450ms ease, stroke 250ms ease, stroke-width 250ms ease",
+            }}
             onMouseEnter={() => setHoveredState(abbr ?? null)}
             onMouseMove={(e) => {
               if (!abbr) return;

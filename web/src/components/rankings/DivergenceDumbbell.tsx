@@ -48,8 +48,30 @@ export default function DivergenceDumbbell({
   const dirColor = (delta: number) =>
     delta > 0 ? "var(--accent-green)" : delta < 0 ? "var(--accent-red)" : "var(--text-muted)";
 
+  const top = rows[0];
+  const bottom = rows[rows.length - 1];
+
   return (
     <div>
+      {top && (
+        <div className="text-xs mb-3" style={{ color: "var(--text-secondary)" }}>
+          Biggest gaps:{" "}
+          <span style={{ color: "var(--accent-green)", fontWeight: 600 }}>
+            {top.name} +{top.delta}
+          </span>{" "}
+          overperforms
+          {bottom && bottom.delta < 0 && (
+            <>
+              ,{" "}
+              <span style={{ color: "var(--accent-red)", fontWeight: 600 }}>
+                {bottom.name} {bottom.delta}
+              </span>{" "}
+              underperforms
+            </>
+          )}
+          .
+        </div>
+      )}
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto">
         {/* faint semantic bands: green behind overperformers, red behind underperformers */}
         {firstNeg > 0 && (
@@ -89,8 +111,9 @@ export default function DivergenceDumbbell({
           const nx = xScale(r.net);
           return (
             <g
-              key={r.state}
+              key={`${measure}-${r.state}`}
               className="cursor-pointer"
+              style={{ animation: "ipo-row-in 0.45s ease both", animationDelay: `${i * 28}ms` }}
               onClick={() => onSelectState(isSel ? null : r.state)}
             >
               <title>

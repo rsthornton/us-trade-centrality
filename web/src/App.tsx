@@ -12,6 +12,7 @@ import Wordmark from "./components/brand/Wordmark";
 import Footer from "./components/Footer";
 import { Button, SegmentedControl, Slider } from "./components/ui";
 import OrientationHint from "./components/OrientationHint";
+import HeroFinding from "./components/HeroFinding";
 import { readInitialUrlState, useSyncUrlState } from "./hooks/useUrlState";
 import type {
   BaseCentralityRow,
@@ -198,6 +199,7 @@ export default function App() {
             Explore which states are the true hubs, bridges, and exporters of America's $4 trillion
             interstate commerce network.
           </p>
+          <HeroFinding centralities={data.centralities51} />
         </div>
       </header>
 
@@ -336,23 +338,13 @@ export default function App() {
               )}
             </div>
 
-            <div
-              className="flex items-center justify-between mt-2 pt-2"
-              style={{ borderTop: "1px solid var(--hairline)" }}
-            >
+            <div className="mt-2 pt-2" style={{ borderTop: "1px solid var(--hairline)" }}>
               <ColorLegend
                 label={measure.replace("_", " ")}
                 color={measureColor}
                 min={centralities.length ? Math.min(...centralities.map((r) => r[measure])) : 0}
                 max={centralities.length ? Math.max(...centralities.map((r) => r[measure])) : 1}
               />
-              {data.stats && (
-                <div className="flex gap-6 text-xs font-mono" style={{ color: "var(--text-muted)" }}>
-                  <span>{data.stats.nodes} nodes</span>
-                  <span>{data.stats.edges.toLocaleString()} edges</span>
-                  <span>density {data.stats.density}</span>
-                </div>
-              )}
             </div>
           </div>
         </div>
@@ -365,6 +357,21 @@ export default function App() {
           accent={measureColor}
         />
       )}
+
+      <div className="px-6">
+        <div
+          className="flex items-center justify-between flex-wrap gap-2 mt-5 pt-3 text-xs font-mono"
+          style={{ borderTop: "1px solid var(--hairline)", color: "var(--text-muted)" }}
+        >
+          <span className="tracking-wide uppercase">U.S. interstate commerce · CFS 2017</span>
+          {data.stats && (
+            <span>
+              {data.stats.nodes} nodes · {data.stats.edges.toLocaleString()} edges · density{" "}
+              {data.stats.density}
+            </span>
+          )}
+        </div>
+      </div>
 
       <Footer />
      </div>
