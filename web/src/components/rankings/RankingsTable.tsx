@@ -1,14 +1,8 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useMemo } from "react";
 import type { BaseCentralityRow, Measure } from "../../types";
 import { MEASURES } from "./constants";
-import DivergenceScatter from "./DivergenceScatter";
+import DivergenceDumbbell from "./DivergenceDumbbell";
 import DivergenceTable from "./DivergenceTable";
-
-const MEASURE_FILLS: Record<Measure, { bg: string; text: string; shadow: string }> = {
-  eigenvector: { bg: "#ECFDF5", text: "#065F46", shadow: "rgba(6, 95, 70, 0.12)" },
-  betweenness: { bg: "#EFF6FF", text: "#1E40AF", shadow: "rgba(30, 64, 175, 0.12)" },
-  out_degree: { bg: "#FFF7ED", text: "#9A3412", shadow: "rgba(154, 52, 18, 0.12)" },
-};
 
 interface RankingsTableProps {
   centralities: BaseCentralityRow[];
@@ -24,101 +18,91 @@ export default function RankingsTable({
   onSelectState,
 }: RankingsTableProps) {
   const [expanded, setExpanded] = useState(false);
-  const [bounced, setBounced] = useState(false);
-  const contentRef = useRef<HTMLDivElement>(null);
+  const [showAll, setShowAll] = useState(false);
 
-  useEffect(() => {
-    if (expanded && contentRef.current) {
-      contentRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  }, [expanded]);
+  const measureLabel = MEASURES.find((m) => m.key === measure)?.label ?? measure;
 
-  useEffect(() => {
-    const timer = setTimeout(() => setBounced(true), 2000);
-    return () => clearTimeout(timer);
-  }, []);
+  // Teaser: how many states shift >= 5 rank positions on the active measure.
+  const shifted = useMemo(() => {
+    const rankKey = `rank_${measure}` as const;
+    return centralities.filter((r) => Math.abs(r.gdp_rank - r[rankKey]) >= 5).length;
+  }, [centralities, measure]);
 
   if (!centralities || !centralities.length) return null;
 
-  const fill = MEASURE_FILLS[measure] || MEASURE_FILLS.eigenvector;
-
   return (
-    <div
-      className="mx-6 mt-2 rounded-t-lg overflow-hidden"
-      style={{
-        backgroundColor: "var(--bg-secondary)",
-        border: "1px solid var(--border)",
-        borderBottom: "none",
-      }}
+    <section
+      className="mx-6 mt-3 rounded-lg overflow-hidden"
+      style={{ backgroundColor: "var(--bg-secondary)", border: "1px solid var(--border)" }}
     >
-      <div className="flex justify-center py-3">
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="cursor-pointer transition-all duration-200"
-          style={{
-            background: expanded ? "var(--bg-surface)" : fill.bg,
-            color: expanded ? "var(--text-secondary)" : fill.text,
-            border: "none",
-            borderRadius: 24,
-            padding: "10px 24px",
-            fontSize: 15,
-            fontWeight: 500,
-            boxShadow: expanded ? "none" : `0 4px 14px ${fill.shadow}`,
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 8,
-            animation: bounced && !expanded ? "nudge 0.6s ease-in-out 1" : "none",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.boxShadow = expanded ? "none" : `0 6px 20px ${fill.shadow}`;
-            e.currentTarget.style.transform = "translateY(-1px)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.boxShadow = expanded ? "none" : `0 4px 14px ${fill.shadow}`;
-            e.currentTarget.style.transform = "none";
-          }}
+      <button
+        onClick={() => setExpanded(!expanded)}
+        className="w-full flex items-center justify-between gap-4 px-5 py-3.5 cursor-pointer text-left transition-colors"
+        style={{ background: "transparent" }}
+        onMouseEnter={(e) => (e.currentTarget.style.background = "var(--bg-surface)")}
+        onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+      >
+        <span className="min-w-0">
+          <span className="text-sm font-medium" style={{ color: "var(--text-primary)" }}>
+            Where GDP and network power diverge
+          </span>
+          <span className="text-xs ml-2" style={{ color: "var(--text-muted)" }}>
+            {shifted} states shift 5+ ranks on {measureLabel.toLowerCase()}
+          </span>
+        </span>
+        <span
+          className="text-xs flex items-center gap-1.5 flex-shrink-0"
+          style={{ color: "var(--text-secondary)" }}
         >
+          {expanded ? "Hide" : "Explore"}
           <span
             className="inline-block transition-transform duration-200"
-            style={{ transform: expanded ? "rotate(180deg)" : "none", fontSize: 11 }}
+            style={{ transform: expanded ? "rotate(180deg)" : "none", fontSize: 10 }}
           >
-            ▼
+            ▾
           </span>
-          {expanded ? "Collapse" : "See where GDP and network power diverge"}
-        </button>
-      </div>
-
-      <style>{`
-        @keyframes nudge {
-          0%, 100% { transform: translateY(0); }
-          40% { transform: translateY(6px); }
-          70% { transform: translateY(-2px); }
-        }
-      `}</style>
+        </span>
+      </button>
 
       {expanded && (
-        <div ref={contentRef} className="px-5 pb-5">
-          <div className="flex gap-2">
-            {MEASURES.map(({ key, label }) => (
-              <DivergenceScatter
-                key={key}
-                centralities={centralities}
-                measureKey={key}
-                label={label}
-                selectedState={selectedState}
-                onSelectState={onSelectState}
-              />
-            ))}
-          </div>
+        <div className="px-5 pb-5" style={{ borderTop: "1px solid var(--border)" }}>
+          <p className="text-xs mt-4 mb-3 max-w-2xl leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+            Each state's economic size (GDP rank) compared to its position in the trade network
+            ({measureLabel.toLowerCase()} rank). The longer the bar, the more its structural power
+            diverges from what GDP would predict.
+          </p>
 
-          <DivergenceTable
+          <DivergenceDumbbell
             centralities={centralities}
             measure={measure}
             selectedState={selectedState}
             onSelectState={onSelectState}
           />
+
+          <button
+            onClick={() => setShowAll(!showAll)}
+            className="mt-4 text-xs cursor-pointer flex items-center gap-1.5 transition-opacity hover:opacity-70"
+            style={{ color: "var(--accent-blue)" }}
+          >
+            {showAll ? "Hide full ranking" : "Show all 51 states"}
+            <span
+              className="inline-block transition-transform duration-200"
+              style={{ transform: showAll ? "rotate(180deg)" : "none", fontSize: 9 }}
+            >
+              ▾
+            </span>
+          </button>
+
+          {showAll && (
+            <DivergenceTable
+              centralities={centralities}
+              measure={measure}
+              selectedState={selectedState}
+              onSelectState={onSelectState}
+            />
+          )}
         </div>
       )}
-    </div>
+    </section>
   );
 }
