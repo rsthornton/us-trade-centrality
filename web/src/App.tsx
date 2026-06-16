@@ -97,6 +97,13 @@ export default function App() {
     return centralities.find((r) => r.state === selectedState) ?? null;
   }, [selectedState, centralities]);
 
+  // True per-state totals (all-commodity view only); commodity view falls back to
+  // the visible commodity edges inside the drawer.
+  const selectedTotals = useMemo(() => {
+    if (!selectedState || commodity !== "all" || !data) return null;
+    return data.stateTotals.find((t) => t.state === selectedState) ?? null;
+  }, [selectedState, commodity, data]);
+
   useSyncUrlState(selectedState, measure);
 
   // The active measure's hue threads through the UI (canvas top accent, etc.).
@@ -311,6 +318,7 @@ export default function App() {
                     state={selectedState}
                     data={selectedData}
                     edges={edges}
+                    totals={selectedTotals}
                     onClose={() => setSelectedState(null)}
                     inline
                   />

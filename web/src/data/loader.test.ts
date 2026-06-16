@@ -19,11 +19,20 @@ describe("loadAllCore", () => {
 
     const data = await loadAllCore();
     expect(Object.keys(data).sort()).toEqual(
-      ["centralities51", "centralities52", "metadata", "rankChanges", "stats", "topEdges", "topo"].sort(),
+      [
+        "centralities51",
+        "centralities52",
+        "metadata",
+        "rankChanges",
+        "stateTotals",
+        "stats",
+        "topEdges",
+        "topo",
+      ].sort(),
     );
 
     const callsAfterFirst = fetchMock.mock.calls.length;
-    expect(callsAfterFirst).toBe(7);
+    expect(callsAfterFirst).toBe(8);
 
     // Second call hits the in-memory cache: no additional fetches.
     await loadAllCore();

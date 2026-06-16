@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { MEASURE_COLORS } from "../../lib/colors";
-import type { BaseCentralityRow, Edge, Measure } from "../../types";
+import type { BaseCentralityRow, Edge, Measure, StateTotals } from "../../types";
 import TradeCard from "./TradeCard";
 import MeasureCard from "./MeasureCard";
 import PartnersList from "./PartnersList";
@@ -56,12 +56,22 @@ interface StateDrawerProps {
   state: string | null;
   data: BaseCentralityRow | null;
   edges: Edge[];
+  /** True per-state totals (all-commodity view). When absent, fall back to the
+   *  visible top-N edges (commodity view). */
+  totals?: StateTotals | null;
   onClose: () => void;
   inline?: boolean;
 }
 
-export default function StateDrawer({ state, data, edges, onClose, inline }: StateDrawerProps) {
-  const { outbound, inbound, topOutbound, topInbound } = useMemo(() => {
+export default function StateDrawer({
+  state,
+  data,
+  edges,
+  totals,
+  onClose,
+  inline,
+}: StateDrawerProps) {
+  const fromEdges = useMemo(() => {
     if (!edges || edges.length === 0) {
       return {
         outbound: 0,
@@ -97,6 +107,13 @@ export default function StateDrawer({ state, data, edges, onClose, inline }: Sta
   }, [edges, state]);
 
   if (!state || !data) return null;
+
+  // Prefer true totals (full bilateral matrix); else the visible top-N flows.
+  const outbound = totals ? totals.out_total : fromEdges.outbound;
+  const inbound = totals ? totals.in_total : fromEdges.inbound;
+  const topOutbound = totals ? totals.top_out.slice(0, 5) : fromEdges.topOutbound;
+  const topInbound = totals ? totals.top_in.slice(0, 5) : fromEdges.topInbound;
+  const hasVolume = totals != null || edges.length > 0;
 
   const divergences = MEASURES.map(({ key, label }) => ({
     key,
@@ -134,11 +151,16 @@ export default function StateDrawer({ state, data, edges, onClose, inline }: Sta
       </div>
 
       {/* Trade volume cards */}
-      {edges && edges.length > 0 && (
+      {hasVolume && (
         <div className="grid grid-cols-2 gap-2 mb-5">
           <TradeCard label="Outbound" value={outbound} />
           <TradeCard label="Inbound" value={inbound} />
         </div>
+      )}
+      {!totals && edges.length > 0 && (
+        <p className="text-[11px] mb-4" style={{ color: "var(--text-muted)" }}>
+          Within the shown commodity flows.
+        </p>
       )}
 
       {/* GDP + centrality measure cards */}

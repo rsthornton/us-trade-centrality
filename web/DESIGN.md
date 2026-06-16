@@ -117,7 +117,9 @@ the measure + commodity controls.
 
 The app reads static JSON from `public/data/`, produced by `scripts/export_viz_data.py`. Types
 are in `src/types.ts` (`CentralityRow`, `CommodityCentralityRow`, `Edge`, `NetworkStats`,
-`Metadata`, `CoreData`). Presentation changes never touch data shape. To change a field you change
+`Metadata`, `StateTotals`, `CoreData`). Note: the state panel's Outbound/Inbound and top partners
+come from `state_trade_totals.json` (true totals from the full bilateral matrix), NOT from the
+top-N flows drawn on the map — don't recompute trade volume from the visible `edges`. Presentation changes never touch data shape. To change a field you change
 the export script, the consuming component, and `src/types.ts` together.
 
 ## Verify

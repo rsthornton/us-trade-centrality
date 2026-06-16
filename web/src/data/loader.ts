@@ -6,6 +6,7 @@ import type {
   Metadata,
   NetworkStats,
   RankChange,
+  StateTotals,
   TopoTopology,
 } from "../types";
 
@@ -55,8 +56,12 @@ export function loadTopoJSON(): Promise<TopoTopology> {
   return fetchJSON("/data/us-states-10m.json");
 }
 
+export function loadStateTotals(): Promise<StateTotals[]> {
+  return fetchJSON("/data/state_trade_totals.json");
+}
+
 export async function loadAllCore(): Promise<CoreData> {
-  const [centralities51, centralities52, rankChanges, topEdges, stats, metadata, topo] =
+  const [centralities51, centralities52, rankChanges, topEdges, stats, metadata, topo, stateTotals] =
     await Promise.all([
       loadCentralities("51"),
       loadCentralities("52"),
@@ -65,7 +70,17 @@ export async function loadAllCore(): Promise<CoreData> {
       loadNetworkStats(),
       loadMetadata(),
       loadTopoJSON(),
+      loadStateTotals(),
     ]);
 
-  return { centralities51, centralities52, rankChanges, topEdges, stats, metadata, topo };
+  return {
+    centralities51,
+    centralities52,
+    rankChanges,
+    topEdges,
+    stats,
+    metadata,
+    topo,
+    stateTotals,
+  };
 }

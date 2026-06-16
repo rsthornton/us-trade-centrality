@@ -263,6 +263,39 @@ def export_metadata():
     print("  metadata.json: commodity groups + SCTG names")
 
 
+def export_state_trade_totals(top_n=8):
+    """Export each state's TRUE total inbound/outbound trade and top partners.
+
+    Reads the full bilateral flow matrix (all 2,534 interstate edges), not the
+    top-N display backbone, so the dashboard's state panel reflects real totals
+    instead of only the corridors currently drawn on the map.
+    """
+    df = pd.read_csv(PROJECT_ROOT / "data" / "bilateral_flows_51x51.csv")
+    states = sorted(set(df["origin"]) | set(df["destination"]))
+    records = []
+    for st in states:
+        out_df = df[df["origin"] == st]
+        in_df = df[df["destination"] == st]
+        top_out = out_df.sort_values("trade_value_usd", ascending=False).head(top_n)
+        top_in = in_df.sort_values("trade_value_usd", ascending=False).head(top_n)
+        records.append({
+            "state": st,
+            "out_total": round(float(out_df["trade_value_usd"].sum()), 2),
+            "in_total": round(float(in_df["trade_value_usd"].sum()), 2),
+            "top_out": [
+                {"partner": r.destination, "weight": round(float(r.trade_value_usd), 2)}
+                for r in top_out.itertuples()
+            ],
+            "top_in": [
+                {"partner": r.origin, "weight": round(float(r.trade_value_usd), 2)}
+                for r in top_in.itertuples()
+            ],
+        })
+    with open(OUT_DIR / "state_trade_totals.json", "w") as f:
+        json.dump(records, f)
+    print(f"  state_trade_totals.json: {len(records)} states")
+
+
 def main():
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     (OUT_DIR / "commodity_edges").mkdir(exist_ok=True)
@@ -276,6 +309,7 @@ def main():
     export_filtration()
     export_network_stats()
     export_metadata()
+    export_state_trade_totals()
     print(f"\nDone. Output: {OUT_DIR}")
 
 

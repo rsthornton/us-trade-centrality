@@ -65,3 +65,14 @@ def test_rank_changes():
     assert {"state", "betweenness_change", "eigenvector_change", "out_degree_change"}.issubset(
         rows[0].keys()
     )
+
+
+def test_state_trade_totals():
+    rows = load("state_trade_totals.json")
+    assert len(rows) == 51
+    r = rows[0]
+    assert {"state", "out_total", "in_total", "top_out", "top_in"}.issubset(r.keys())
+    assert {"partner", "weight"}.issubset(r["top_out"][0].keys())
+    # Smaller states must carry real totals, not the top-N display artifact of $0.
+    me = next(x for x in rows if x["state"] == "ME")
+    assert me["out_total"] > 0 and me["in_total"] > 0

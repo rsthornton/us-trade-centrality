@@ -45,6 +45,20 @@ export interface Edge {
   target_lon: number;
 }
 
+export interface PartnerFlow {
+  partner: string;
+  weight: number;
+}
+
+/** A state's true total trade + top partners (full bilateral matrix, not the display backbone). */
+export interface StateTotals {
+  state: string;
+  out_total: number;
+  in_total: number;
+  top_out: PartnerFlow[];
+  top_in: PartnerFlow[];
+}
+
 export interface RankChange {
   state: string;
   betweenness_change: number;
@@ -134,4 +148,5 @@ export interface CoreData {
   stats: NetworkStats;
   metadata: Metadata;
   topo: TopoTopology;
+  stateTotals: StateTotals[];
 }
