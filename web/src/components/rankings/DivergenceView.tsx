@@ -9,6 +9,8 @@ interface DivergenceViewProps {
   measure: Measure;
   selectedState: string | null;
   onSelectState: (state: string | null) => void;
+  /** Active measure color — threads the canvas top accent. */
+  accent: string;
 }
 
 /** The Divergence canvas: a first-class peer to the map (not a bottom drawer). */
@@ -17,6 +19,7 @@ export default function DivergenceView({
   measure,
   selectedState,
   onSelectState,
+  accent,
 }: DivergenceViewProps) {
   const [showAll, setShowAll] = useState(false);
   const measureLabel = MEASURES.find((m) => m.key === measure)?.label ?? measure;
@@ -33,9 +36,11 @@ export default function DivergenceView({
       <div
         className="p-6"
         style={{
-          backgroundColor: "var(--bg-secondary)",
-          border: "1px solid var(--border)",
+          background: "linear-gradient(180deg, var(--canvas-from), var(--canvas-to))",
+          border: "1px solid var(--hairline)",
+          borderTop: `2.5px solid ${accent}`,
           borderRadius: "var(--radius-card)",
+          boxShadow: "0 1px 2px rgba(26, 26, 46, 0.05)",
         }}
       >
         <div className="flex items-baseline justify-between gap-4 flex-wrap mb-1">

@@ -7,10 +7,13 @@
  * Mirror any change in web/DESIGN.md.
  */
 :root {
-  /* surface + text */
-  --bg-primary: #fafafa;
+  /* surface + text — a faint cool/indigo tint, not flat grey */
+  --bg-primary: #f5f5fb;
   --bg-secondary: #ffffff;
-  --bg-surface: #f0f0f5;
+  --bg-surface: #ececf6;
+  /* canvas "stage" gradient behind the map + divergence panels */
+  --canvas-from: #f6f5fd;
+  --canvas-to: #eeedf8;
   --text-primary: #1a1a2e;
   --text-secondary: #4a4a6a;
   --text-muted: #8888a8;
@@ -66,7 +69,12 @@
 
 body {
   margin: 0;
-  background: var(--bg-primary);
+  /* soft violet glow behind the hero, fading into the tinted page */
+  background:
+    radial-gradient(1100px 460px at 50% -160px, rgba(119, 68, 204, 0.08), transparent 70%),
+    radial-gradient(900px 400px at 100% 0%, rgba(34, 102, 221, 0.05), transparent 60%),
+    var(--bg-primary);
+  background-attachment: fixed;
   color: var(--text-primary);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;

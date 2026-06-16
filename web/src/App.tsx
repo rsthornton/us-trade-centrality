@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, lazy, Suspense } from "react";
 import { loadAllCore, loadCommodityCentralities, loadCommodityEdges } from "./data/loader";
 import { topoFeature } from "./lib/topo";
+import { MEASURE_COLORS } from "./lib/colors";
 import TradeMap from "./components/TradeMap";
 import CentralityPills from "./components/CentralityPills";
 import CommodityFilter from "./components/CommodityFilter";
@@ -97,6 +98,16 @@ export default function App() {
   }, [selectedState, centralities]);
 
   useSyncUrlState(selectedState, measure);
+
+  // The active measure's hue threads through the UI (canvas top accent, etc.).
+  const measureColor = MEASURE_COLORS[measure];
+  const stageStyle: React.CSSProperties = {
+    background: "linear-gradient(180deg, var(--canvas-from), var(--canvas-to))",
+    border: "1px solid var(--hairline)",
+    borderTop: `2.5px solid ${measureColor}`,
+    borderRadius: "var(--radius-card)",
+    boxShadow: "0 1px 2px rgba(26, 26, 46, 0.05)",
+  };
 
   if (Gallery && location.hash === "#/components") {
     return (
@@ -270,63 +281,69 @@ export default function App() {
       )}
 
       {view === "map" ? (
-        <>
-          <div className="px-6 relative">
-            {!selectedState && <OrientationHint />}
-            <TradeMap
-              geojson={geojson}
-              centralities={centralities}
-              measure={measure}
-              selectedState={selectedState}
-              onSelectState={setSelectedState}
-              edges={edges}
-              showEdges={showEdges}
-              flowDirection={flowDirection}
-            />
+        <div className="px-6">
+          <div className="px-4 pt-4 pb-3" style={stageStyle}>
+            <div className="relative">
+              {!selectedState && <OrientationHint />}
+              <TradeMap
+                geojson={geojson}
+                centralities={centralities}
+                measure={measure}
+                selectedState={selectedState}
+                onSelectState={setSelectedState}
+                edges={edges}
+                showEdges={showEdges}
+                flowDirection={flowDirection}
+              />
 
-            {selectedState && selectedData && (
-              <div
-                className="absolute right-6 top-0 w-80 overflow-y-auto"
-                style={{
-                  backgroundColor: "var(--bg-secondary)",
-                  border: "1px solid var(--border)",
-                  borderRadius: "var(--radius-card)",
-                  boxShadow: "var(--shadow-drawer)",
-                  maxHeight: "62vh",
-                }}
-              >
-                <StateDrawer
-                  state={selectedState}
-                  data={selectedData}
-                  edges={edges}
-                  onClose={() => setSelectedState(null)}
-                  inline
-                />
-              </div>
-            )}
-          </div>
+              {selectedState && selectedData && (
+                <div
+                  className="absolute right-0 top-0 w-80 overflow-y-auto"
+                  style={{
+                    backgroundColor: "var(--bg-secondary)",
+                    border: "1px solid var(--border)",
+                    borderRadius: "var(--radius-card)",
+                    boxShadow: "var(--shadow-drawer)",
+                    maxHeight: "62vh",
+                  }}
+                >
+                  <StateDrawer
+                    state={selectedState}
+                    data={selectedData}
+                    edges={edges}
+                    onClose={() => setSelectedState(null)}
+                    inline
+                  />
+                </div>
+              )}
+            </div>
 
-          <div className="px-6 py-1 flex items-center justify-between">
-            <ColorLegend
-              label={measure.replace("_", " ")}
-              min={centralities.length ? Math.min(...centralities.map((r) => r[measure])) : 0}
-              max={centralities.length ? Math.max(...centralities.map((r) => r[measure])) : 1}
-            />
-            {data.stats && (
-              <div className="flex gap-6 text-xs font-mono" style={{ color: "var(--text-muted)" }}>
-                <span>{data.stats.nodes} nodes</span>
-                <span>{data.stats.edges.toLocaleString()} edges</span>
-                <span>density {data.stats.density}</span>
-              </div>
-            )}
+            <div
+              className="flex items-center justify-between mt-2 pt-2"
+              style={{ borderTop: "1px solid var(--hairline)" }}
+            >
+              <ColorLegend
+                label={measure.replace("_", " ")}
+                min={centralities.length ? Math.min(...centralities.map((r) => r[measure])) : 0}
+                max={centralities.length ? Math.max(...centralities.map((r) => r[measure])) : 1}
+              />
+              {data.stats && (
+                <div className="flex gap-6 text-xs font-mono" style={{ color: "var(--text-muted)" }}>
+                  <span>{data.stats.nodes} nodes</span>
+                  <span>{data.stats.edges.toLocaleString()} edges</span>
+                  <span>density {data.stats.density}</span>
+                </div>
+              )}
+            </div>
           </div>
-        </>
+        </div>
       ) : (
         <DivergenceView
           centralities={centralities}
           measure={measure}
           selectedState={selectedState}
           onSelectState={setSelectedState}
+          accent={measureColor}
         />
       )}
 

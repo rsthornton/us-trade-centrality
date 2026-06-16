@@ -51,6 +51,20 @@ export default function DivergenceDumbbell({
   return (
     <div>
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto">
+        {/* faint semantic bands: green behind overperformers, red behind underperformers */}
+        {firstNeg > 0 && (
+          <rect
+            x={0} y={TOP - 4} width={W} height={firstNeg * ROW_H}
+            fill="var(--accent-green)" opacity={0.05} rx={6}
+          />
+        )}
+        {firstNeg >= 0 && firstNeg < rows.length && (
+          <rect
+            x={0} y={TOP - 4 + firstNeg * ROW_H} width={W} height={(rows.length - firstNeg) * ROW_H}
+            fill="var(--accent-red)" opacity={0.05} rx={6}
+          />
+        )}
+
         {/* rank axis hints */}
         <text x={xScale(1)} y={14} fontSize={9} fill="var(--text-muted)">
           rank #1
