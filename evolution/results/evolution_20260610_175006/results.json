@@ -1,0 +1,329 @@
+{
+  "generated": "20260610_175006",
+  "sample_size": 200000,
+  "thresholds_sha256": "a3a6b77b689cb4e0ad370cd94d9d58f587ad01d89e9e06a78135073b6f9a53e4",
+  "years": {
+    "2012": {
+      "year": 2012,
+      "source_file": "/Users/home/Desktop/halcyonic-projects/archive/reference/cfs_2012_pumf_csv.txt",
+      "sample_size": 200000,
+      "raw_records": 200000,
+      "raw_weighted_total": 622484933625.1362,
+      "grouped_sctg_share": 0.002705,
+      "sctg16_records_dropped": 48,
+      "truncation_share": 4e-05,
+      "interstate_records": 100632,
+      "interstate_weighted_total": 316963978704.012,
+      "edge_count": 2373
+    },
+    "2017": {
+      "year": 2017,
+      "source_file": "/Users/home/Desktop/halcyonic-projects/archive/research/cfs-network-analysis/data/cfs_2017_puf.csv",
+      "sample_size": 200000,
+      "raw_records": 200000,
+      "raw_weighted_total": 480913654523.5597,
+      "grouped_sctg_share": 0.002505,
+      "sctg16_records_dropped": 41,
+      "truncation_share": 4e-05,
+      "interstate_records": 98858,
+      "interstate_weighted_total": 245632490060.61377,
+      "edge_count": 2357
+    },
+    "2022": {
+      "year": 2022,
+      "source_file": "/Users/home/Desktop/halcyonic-projects/archive/reference/cfs_2022_pums.csv",
+      "sample_size": 200000,
+      "raw_records": 200000,
+      "raw_weighted_total": 94517965758.39052,
+      "grouped_sctg_share": 0.00135,
+      "sctg16_records_dropped": 17,
+      "truncation_share": 0.0,
+      "interstate_records": 118317,
+      "interstate_weighted_total": 50207469385.47562,
+      "edge_count": 2323
+    }
+  },
+  "gates": [
+    {
+      "gate": "national_total",
+      "year": 2012,
+      "value": 622484933625.1362,
+      "published": null,
+      "status": "REVIEW",
+      "note": "no published total in thresholds.yaml; check against Census CFS publication"
+    },
+    {
+      "gate": "sctg16_excluded",
+      "year": 2012,
+      "value": 48,
+      "status": "PASS",
+      "note": "48 records dropped before network construction"
+    },
+    {
+      "gate": "grouped_sctg_share",
+      "year": 2012,
+      "value": 0.002705,
+      "threshold": 0.05,
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "gate": "national_total",
+      "year": 2017,
+      "value": 480913654523.5597,
+      "published": null,
+      "status": "REVIEW",
+      "note": "no published total in thresholds.yaml; check against Census CFS publication"
+    },
+    {
+      "gate": "sctg16_excluded",
+      "year": 2017,
+      "value": 41,
+      "status": "PASS",
+      "note": "41 records dropped before network construction"
+    },
+    {
+      "gate": "grouped_sctg_share",
+      "year": 2017,
+      "value": 0.002505,
+      "threshold": 0.05,
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "gate": "national_total",
+      "year": 2022,
+      "value": 94517965758.39052,
+      "published": null,
+      "status": "REVIEW",
+      "note": "no published total in thresholds.yaml; check against Census CFS publication"
+    },
+    {
+      "gate": "sctg16_excluded",
+      "year": 2022,
+      "value": 17,
+      "status": "PASS",
+      "note": "17 records dropped before network construction"
+    },
+    {
+      "gate": "grouped_sctg_share",
+      "year": 2022,
+      "value": 0.00135,
+      "threshold": 0.05,
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "gate": "truncation_share",
+      "year": 2022,
+      "value": 0.0,
+      "threshold": 0.01,
+      "status": "PASS",
+      "note": ""
+    }
+  ],
+  "pairs": [
+    {
+      "pair": "retrodiction",
+      "base_year": 2017,
+      "target_year": 2012,
+      "H1": {
+        "hypothesis": "H1",
+        "measures": {
+          "eigenvector": {
+            "spearman": 0.9613574660633484,
+            "kendall": 0.843137254901961,
+            "forecast": "rho >= 0.9",
+            "holds": true
+          },
+          "out_degree": {
+            "spearman": 0.966606334841629,
+            "kendall": 0.8745098039215687,
+            "forecast": "rho >= 0.9",
+            "holds": true
+          },
+          "betweenness": {
+            "spearman": 0.661039316447649,
+            "kendall": 0.5628306339761645,
+            "forecast": "rho < 0.85",
+            "holds": true
+          }
+        },
+        "top10_overlap": {
+          "count": 9,
+          "min": 8,
+          "holds": true
+        },
+        "holds": true
+      },
+      "H2": {
+        "hypothesis": "H2",
+        "jaccard": 0.6362683438155137,
+        "backbone_sizes": {
+          "base": 778,
+          "target": 783
+        },
+        "forecast": "jaccard >= 0.8",
+        "holds": false
+      },
+      "H3": {
+        "hypothesis": "H3",
+        "pharma_delta": 0.5592611977078386,
+        "agriculture_delta": 0.4778847732962429,
+        "gap": 0.08137642441159565,
+        "forecast": "|delta_pharma - delta_ag| <= 0.1",
+        "holds": true
+      },
+      "H4": {
+        "hypothesis": "H4",
+        "nmi": 0.7651694782400811,
+        "communities": {
+          "base": 5,
+          "target": 4
+        },
+        "forecast": "nmi >= 0.8",
+        "holds": false
+      },
+      "H5": {
+        "hypothesis": "H5",
+        "gini_base": 0.7463302690443314,
+        "gini_target": 0.7574936240822608,
+        "shift": 0.011163355037929423,
+        "forecast": "|gini shift| <= 0.05",
+        "holds": true
+      }
+    },
+    {
+      "pair": "prediction",
+      "base_year": 2017,
+      "target_year": 2022,
+      "H1": {
+        "hypothesis": "H1",
+        "measures": {
+          "eigenvector": {
+            "spearman": 0.936289592760181,
+            "kendall": 0.7960784313725492,
+            "forecast": "rho >= 0.9",
+            "holds": true
+          },
+          "out_degree": {
+            "spearman": 0.95131221719457,
+            "kendall": 0.8258823529411766,
+            "forecast": "rho >= 0.9",
+            "holds": true
+          },
+          "betweenness": {
+            "spearman": 0.7594612958140071,
+            "kendall": 0.6179845549512826,
+            "forecast": "rho < 0.85",
+            "holds": true
+          }
+        },
+        "top10_overlap": {
+          "count": 8,
+          "min": 8,
+          "holds": true
+        },
+        "holds": true
+      },
+      "H2": {
+        "hypothesis": "H2",
+        "jaccard": 0.6144200626959248,
+        "backbone_sizes": {
+          "base": 778,
+          "target": 767
+        },
+        "forecast": "jaccard >= 0.8",
+        "holds": false
+      },
+      "H3": {
+        "hypothesis": "H3",
+        "pharma_delta": 0.736720240163347,
+        "agriculture_delta": 0.7961221336750887,
+        "gap": -0.05940189351174163,
+        "forecast": "delta_pharma > delta_ag",
+        "holds": false
+      },
+      "H4": {
+        "hypothesis": "H4",
+        "nmi": 0.5375289402486254,
+        "communities": {
+          "base": 5,
+          "target": 4
+        },
+        "forecast": "nmi >= 0.8",
+        "holds": false
+      },
+      "H5": {
+        "hypothesis": "H5",
+        "gini_base": 0.7463302690443314,
+        "gini_target": 0.8011951967596013,
+        "shift": 0.05486492771526985,
+        "forecast": "gini growth >= 0.05",
+        "holds": true
+      }
+    }
+  ],
+  "verdicts": [
+    {
+      "id": "H1-R",
+      "arc": "2017 -> 2012",
+      "detail": "eigenvector: rho=0.961 (rho >= 0.9), out_degree: rho=0.967 (rho >= 0.9), betweenness: rho=0.661 (rho < 0.85); top10 9/10",
+      "verdict": "HOLD"
+    },
+    {
+      "id": "H2-R",
+      "arc": "2017 -> 2012",
+      "detail": "jaccard=0.636 (jaccard >= 0.8)",
+      "verdict": "BREAK"
+    },
+    {
+      "id": "H3-R",
+      "arc": "2017 -> 2012",
+      "detail": "pharma=0.559, ag=0.478 (|delta_pharma - delta_ag| <= 0.1)",
+      "verdict": "HOLD"
+    },
+    {
+      "id": "H4-R",
+      "arc": "2017 -> 2012",
+      "detail": "nmi=0.765 (nmi >= 0.8)",
+      "verdict": "BREAK"
+    },
+    {
+      "id": "H5-R",
+      "arc": "2017 -> 2012",
+      "detail": "gini 0.746 -> 0.757 (|gini shift| <= 0.05)",
+      "verdict": "HOLD"
+    },
+    {
+      "id": "H1-P",
+      "arc": "2017 -> 2022",
+      "detail": "eigenvector: rho=0.936 (rho >= 0.9), out_degree: rho=0.951 (rho >= 0.9), betweenness: rho=0.759 (rho < 0.85); top10 8/10",
+      "verdict": "HOLD"
+    },
+    {
+      "id": "H2-P",
+      "arc": "2017 -> 2022",
+      "detail": "jaccard=0.614 (jaccard >= 0.8)",
+      "verdict": "BREAK"
+    },
+    {
+      "id": "H3-P",
+      "arc": "2017 -> 2022",
+      "detail": "pharma=0.737, ag=0.796 (delta_pharma > delta_ag)",
+      "verdict": "BREAK"
+    },
+    {
+      "id": "H4-P",
+      "arc": "2017 -> 2022",
+      "detail": "nmi=0.538 (nmi >= 0.8)",
+      "verdict": "BREAK"
+    },
+    {
+      "id": "H5-P",
+      "arc": "2017 -> 2022",
+      "detail": "gini 0.746 -> 0.801 (gini growth >= 0.05)",
+      "verdict": "HOLD"
+    }
+  ]
+}

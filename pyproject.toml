@@ -1,0 +1,14 @@
+# Repo-level tooling config (lint + test). Packaging lives in cfs-network-toolkit/pyproject.toml.
+# NOTE: evolution/ is a frozen ResearchHub pre-registration — excluded from lint and never run in CI.
+
+[tool.ruff]
+line-length = 100
+extend-exclude = ["evolution", "viz", "paper", "notebooks", ".venv", "venv", "build", "dist"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-q"

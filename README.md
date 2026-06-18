@@ -6,7 +6,7 @@ Master's thesis, Department of Systems Science and Industrial Engineering, Bingh
 
 ## See It Live
 
-- **[Interactive trade network dashboard](https://us-trade.plotly.app/)** — filter by commodity, toggle domestic vs. international, explore state-level centrality rankings
+- **[The Interstate Power Observatory](https://tradeflows.halcyonic.systems/)** is the interactive dashboard: a hand-built SVG map of state centrality. Filter by commodity, toggle domestic vs. international, click a state for its trade profile, and deep-link any view (`?state=TX&measure=betweenness`). Source and design system live in [`web/`](web/) (React + TypeScript; see [`web/DESIGN.md`](web/DESIGN.md)). The earlier Plotly dashboard at `us-trade.plotly.app` is kept as an archive.
 - **Pre-rendered notebooks** — browse results without installing anything:
   - [`companion.html`](notebooks/__marimo__/companion.html) — full exploratory analysis
   - [`replication.html`](notebooks/__marimo__/replication.html) — static replication of thesis figures
@@ -117,11 +117,18 @@ us-trade-centrality/
 ├── paper/                     # Thesis LaTeX and figures
 │   ├── figures/               #   All publication figures (PNG + PDF)
 │   └── references.bib
-├── scripts/                   # Standalone utilities
+├── scripts/                   # Standalone utilities (incl. export_viz_data.py → web/public/data)
 ├── tests/
-│   └── validate_pipeline.py   # End-to-end pipeline validation
-└── viz/                       # Interactive Dash visualization app
+│   ├── validate_pipeline.py   # End-to-end pipeline validation
+│   └── test_export_schema.py  # Web data-contract schema check (zero gated data)
+├── web/                       # The Interstate Power Observatory (React + TS; see web/DESIGN.md)
+├── evolution/                 # Three-survey study (2012/2017/2022) — see note below
+└── viz/                       # Interactive Dash app (archived; still the CSV source for web export)
 ```
+
+> **`evolution/` is frozen.** It holds a ResearchHub pre-registration whose `thresholds.yaml`
+> hash is published. Do not modify or re-run anything under `evolution/` outside a deliberate
+> post-registration run. CI is scoped to skip it.
 
 ## Citation
 

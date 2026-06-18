@@ -1,0 +1,5 @@
+# Declares the PEP 517 build backend. Package metadata (name, version, deps, the `cfs`
+# entry point) is defined in setup.py, which reads ../requirements.txt at build time.
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"

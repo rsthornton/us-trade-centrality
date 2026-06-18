@@ -53,3 +53,6 @@ paper/figures/*.pdf
 # Environment
 .env
 *.env
+
+# Evolution study: cached year bundles are regenerable
+evolution/cache/
