@@ -8,7 +8,7 @@
 #     "plotly==5.24.1",
 # ]
 # [tool.marimo.display]
-# theme = "system"
+# theme = "light"
 # ///
 
 import marimo
@@ -210,10 +210,125 @@ DC,District of Columbia,38.897438,-77.026817
         key=lambda x: x[0],
     )
 
+    # ── Brand chart theming (echoes web/DESIGN.md) ──────────────────────────
+    BRAND_FONT = "Inter, system-ui, sans-serif"
+    INK, INK2, MUTED = "#1a1a2e", "#4a4a6a", "#8888a8"
+    HAIRLINE, BORDER = "#eeecf3", "#e4e1ec"
+    # measure colors (canonical, from web/src/lib/colors.ts)
+    C_EIGEN, C_BETWEEN, C_OUTDEG, C_RED = "#44cc88", "#4488ff", "#ff9944", "#dd3344"
+
+    @alt.theme.register("ipo", enable=True)
+    def _ipo_altair_theme():
+        return {
+            "config": {
+                "font": BRAND_FONT,
+                "background": "transparent",
+                "view": {"stroke": "transparent"},
+                "axis": {
+                    "labelColor": MUTED,
+                    "titleColor": INK2,
+                    "gridColor": HAIRLINE,
+                    "domainColor": BORDER,
+                    "tickColor": BORDER,
+                    "labelFont": BRAND_FONT,
+                    "titleFont": BRAND_FONT,
+                    "titleFontWeight": 500,
+                },
+                "title": {
+                    "color": INK,
+                    "subtitleColor": MUTED,
+                    "font": BRAND_FONT,
+                    "subtitleFont": BRAND_FONT,
+                    "fontWeight": 600,
+                    "anchor": "start",
+                },
+                "legend": {"labelColor": INK2, "titleColor": MUTED, "labelFont": BRAND_FONT},
+            }
+        }
+
+    def style_plotly(fig):
+        """Apply the brand font + transparent surfaces to a Plotly figure."""
+        fig.update_layout(
+            font=dict(family=BRAND_FONT, color=INK2, size=13),
+            hoverlabel=dict(font=dict(family=BRAND_FONT)),
+            geo=dict(bgcolor="rgba(0,0,0,0)", lakecolor="rgba(0,0,0,0)"),
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+        )
+        return fig
+
+
+@app.cell(hide_code=True)
+def _():
+    # Brand stylesheet — injected inline so it travels with the single .py to
+    # molab/WASM (same reasoning as the inlined CSV). Echoes web/DESIGN.md tokens.
+    mo.Html(
+        """
+        <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+        :root { --ipo-ink:#1a1a2e; --ipo-ink2:#4a4a6a; --ipo-muted:#8888a8; --ipo-accent:#2266dd; }
+
+        body {
+            background:
+              radial-gradient(1100px 460px at 50% -160px, rgba(119,68,204,0.08), transparent 70%),
+              radial-gradient(900px 400px at 100% 0%, rgba(34,102,221,0.05), transparent 60%),
+              #f5f5fb !important;
+            background-attachment: fixed;
+        }
+
+        body, .markdown.prose {
+            font-family: "Inter", system-ui, sans-serif;
+            color: var(--ipo-ink);
+        }
+        .markdown.prose { --tw-prose-body: var(--ipo-ink2); --tw-prose-headings: var(--ipo-ink); }
+        .markdown.prose p, .markdown.prose li { color: var(--ipo-ink2); line-height: 1.7; }
+        .markdown.prose strong { color: var(--ipo-ink); }
+
+        .markdown.prose :is(h1,h2,h3,h4) {
+            font-family: "Inter", system-ui, sans-serif;
+            letter-spacing: -0.02em; color: var(--ipo-ink);
+        }
+        .markdown.prose h1 {
+            font-weight: 300; line-height: 1.08;
+            background: linear-gradient(115deg,#1a1a2e 30%,#463080 75%,#6a3aa8 100%);
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+            width: fit-content;
+        }
+        .markdown.prose h2 { font-weight: 500; margin-top: 2.2rem; }
+        .markdown.prose h3 { font-weight: 600; }
+
+        .markdown.prose code, code { font-family: "JetBrains Mono", monospace; }
+        .markdown.prose a { color: var(--ipo-accent); text-decoration: none; }
+        .markdown.prose a:hover { text-decoration: underline; }
+
+        /* tables (state lookup) — lighter, mono numerals */
+        .markdown.prose table { font-size: 0.9rem; }
+        .markdown.prose th { color: var(--ipo-muted); font-weight: 500; }
+        .markdown.prose td { color: var(--ipo-ink2); }
+
+        /* callouts: rounder, softer to match the dashboard cards */
+        marimo-callout-output > * { border-radius: 12px !important; }
+
+        /* mono eyebrow + footer */
+        .ipo-eyebrow {
+            font-family: "JetBrains Mono", monospace; text-transform: uppercase;
+            letter-spacing: 0.18em; font-size: 0.7rem; color: var(--ipo-muted);
+            margin: 0 0 0.4rem 0;
+        }
+        .ipo-footer { font-size: 0.8rem; color: var(--ipo-muted); }
+        .ipo-footer a { color: var(--ipo-accent); }
+        </style>
+        """
+    )
+    return
+
 
 @app.cell(hide_code=True)
 def _():
     mo.md("""
+    <div class="ipo-eyebrow">The Interstate Power Observatory · The Math</div>
+
     # What GDP Misses About Your State's Economy
 
     If someone asked you to rank the 50 states by economic importance,
@@ -253,6 +368,7 @@ def _():
         coloraxis_colorbar=dict(title="GDP ($B)"),
         height=380,
     )
+    style_plotly(_fig)
     mo.vstack([
         mo.md("## The Familiar Map"),
         mo.ui.plotly(_fig),
@@ -408,6 +524,7 @@ def _():
         coloraxis_colorbar=dict(title="Divergence<br>(+ = undervalued<br>by GDP)"),
         height=400,
     )
+    style_plotly(_fig)
     mo.ui.plotly(_fig)
     return
 
@@ -548,28 +665,37 @@ def _(state_picker):
 @app.cell(hide_code=True)
 def _(state_picker):
     _abbr = state_picker.value or "IN"
-    _plot_df = df.copy()
-    _plot_df["is_selected"] = _plot_df["state"] == _abbr
+    _sel = df[df["state"] == _abbr]
 
-    _scatter = alt.Chart(_plot_df).mark_circle().encode(
+    _enc = dict(
         x=alt.X("gdp_rank:Q", title="GDP Rank (1 = largest economy)", scale=alt.Scale(domain=[1, 51])),
         y=alt.Y("rank_eigenvector:Q", title="Network Rank (1 = most central)", scale=alt.Scale(domain=[1, 51])),
-        color=alt.condition(
-            alt.datum.is_selected,
-            alt.value("#dd3344"),
-            alt.Color("divergence:Q", scale=alt.Scale(scheme="purplegreen", domainMid=0), legend=None),
-        ),
-        size=alt.condition(alt.datum.is_selected, alt.value(200), alt.value(60)),
-        tooltip=["state_name:N", "gdp_rank:Q", "rank_eigenvector:Q", "divergence:Q"],
-    ).properties(width=500, height=400)
+    )
 
+    # diagonal reference (y = x: GDP rank == network rank)
     _diag = alt.Chart(pd.DataFrame({"x": [1, 51], "y": [1, 51]})).mark_line(
-        strokeDash=[4, 4], color="gray", opacity=0.5,
+        strokeDash=[5, 5], color=BORDER,
     ).encode(x="x:Q", y="y:Q")
+
+    # all states, colored by divergence (PRGn, centered at 0)
+    _dots = alt.Chart(df).mark_circle(size=90, opacity=0.9, stroke="white", strokeWidth=1).encode(
+        color=alt.Color(
+            "divergence:Q",
+            scale=alt.Scale(scheme="purplegreen", domainMid=0, domain=[-15, 15]),
+            legend=None,
+        ),
+        tooltip=["state_name:N", "gdp_rank:Q", "rank_eigenvector:Q", "divergence:Q"],
+        **_enc,
+    )
+
+    # the selected state, highlighted
+    _highlight = alt.Chart(_sel).mark_point(
+        size=280, color=C_RED, filled=True, stroke="white", strokeWidth=2,
+    ).encode(tooltip=["state_name:N"], **_enc)
 
     mo.vstack([
         mo.md("*Above the diagonal = structurally undervalued by GDP. Below = overvalued.*"),
-        mo.ui.altair_chart(_scatter + _diag),
+        mo.ui.altair_chart((_diag + _dots + _highlight).properties(width=560, height=420)),
     ])
     return
 
@@ -674,12 +800,19 @@ def _():
             widths="equal",
         ),
         mo.md(
-            "---\n\n"
-            "**Data:** U.S. Census Bureau Commodity Flow Survey 2017 | "
-            "**Analysis:** Thornton (2026), *Interstate Commerce Network Centrality*, "
-            "Master's Thesis, Binghamton University | "
-            "**Method:** Eigenvector, betweenness, and weighted out-degree centrality "
-            "on a directed network of 51 nodes with 2,534 edges"
+            '''
+            ---
+
+            <div class="ipo-footer">
+            <strong>Explore the interactive map →</strong>
+            <a href="https://tradeflows.halcyonic.systems/" target="_blank">The Interstate Power Observatory</a>
+
+            <strong>Data:</strong> U.S. Census Bureau Commodity Flow Survey 2017 ·
+            <strong>Analysis:</strong> Thornton (2026), <em>Interstate Commerce Network Centrality</em>, Master's Thesis, Binghamton University ·
+            <strong>Method:</strong> eigenvector, betweenness, and weighted out-degree centrality on a directed network of 51 nodes, 2,534 edges ·
+            Built by Halcyonic Systems
+            </div>
+            '''
         ),
     ])
     return
