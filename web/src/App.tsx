@@ -23,7 +23,7 @@ import type {
 } from "./types";
 
 // Interactive WASM notebook hosted on molab (marimo Cloud).
-const NOTEBOOK_URL = "https://molab.marimo.io/notebooks/nb_ssAp6xhuFRsEaQKP2y7ZjH/app";
+const NOTEBOOK_URL = "https://molab.marimo.io/notebooks/nb_nMExyXbgvNSdHcr7C9EjfZ/app";
 const REPO_URL = "https://github.com/rsthornton/us-trade-centrality";
 
 // DEV-only component gallery (lazy: its chunk is never loaded in production).
