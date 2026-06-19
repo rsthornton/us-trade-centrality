@@ -38,22 +38,34 @@ h3_commodity:
   retrodiction_max_gap: 0.10 # |delta_pharma - delta_ag| in the pre-period
   # prediction holds if delta_pharma > delta_ag
 
-# H4 - Community structure persistence (secondary)
-h4_community:
-  nmi_min: 0.80 # Louvain partitions, seed=42
+# ─── EXPLORATORY (computed and reported, NOT pre-registered forecasts) ───
+# H4 and H5 carry no registered pass/fail threshold. The numbers below are
+# reporting reference points, not forecasts. run_evolution.py must report their
+# metrics WITHOUT emitting a HOLD/BREAK verdict (code TODO before the full run).
+# Each can graduate to a registered hypothesis in a future round.
 
-# H5 - Flow asymmetry growth (secondary)
-# Gini over |net flow| across unordered state pairs
+# Regional bloc stability (community structure) — report NMI between Louvain
+# partitions (seed=42) per year pair.
+h4_community:
+  exploratory: true
+  nmi_min: 0.80 # reference only, not a registered threshold
+
+# Trade-imbalance concentration (flow asymmetry) — report Gini over |net flow|
+# across unordered state pairs and its movement across years.
 h5_asymmetry:
-  retrodiction_max_gini_shift: 0.05
-  prediction_min_gini_growth: 0.05
+  exploratory: true
+  retrodiction_max_gini_shift: 0.05 # reference only, not registered
+  prediction_min_gini_growth: 0.05 # reference only, not registered
 
 # Go/no-go gates (run before any hypothesis test)
 gates:
   national_total_tolerance: 0.05 # computed vs published total, per year
   # Fill from Census CFS publications before the full Saturday run.
   # Units: dollars (weighted national shipment value, all flows).
-  published_totals: { 2012: null, 2017: null, 2022: null }
+  # Published CFS total value of shipments (all flows, all commodities), USD.
+  # Sources: 2012 Census cb14-225 ($13.8T); 2017 Census 2020 release ($14.5T);
+  # 2022 Census 2025 release ($18.0T). Compared against raw_weighted_total (±5%).
+  published_totals: { 2012: 13800000000000, 2017: 14500000000000, 2022: 18000000000000 }
   grouped_sctg_share_max: 0.05
   truncation_share_max: 0.01 # 2022 only; values truncated at $30M
   truncation_value: 30000000
