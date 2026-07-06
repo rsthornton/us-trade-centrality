@@ -1,0 +1,47 @@
+{
+  "generated": "20260610_180649",
+  "sample_size": null,
+  "thresholds_sha256": "a3a6b77b689cb4e0ad370cd94d9d58f587ad01d89e9e06a78135073b6f9a53e4",
+  "years": {
+    "2017": {
+      "year": 2017,
+      "source_file": "/Users/home/Desktop/halcyonic-projects/archive/research/cfs-network-analysis/data/cfs_2017_puf.csv",
+      "sample_size": null,
+      "raw_records": 5978523,
+      "raw_weighted_total": 14517252205728.48,
+      "grouped_sctg_share": 0.0023410464424072634,
+      "sctg16_records_dropped": 1099,
+      "truncation_share": 2.6093401330060953e-05,
+      "interstate_records": 2954350,
+      "interstate_weighted_total": 7595534996462.427,
+      "edge_count": 2534
+    }
+  },
+  "gates": [
+    {
+      "gate": "national_total",
+      "year": 2017,
+      "value": 14517252205728.48,
+      "published": null,
+      "status": "REVIEW",
+      "note": "no published total in thresholds.yaml; check against Census CFS publication"
+    },
+    {
+      "gate": "sctg16_excluded",
+      "year": 2017,
+      "value": 1099,
+      "status": "PASS",
+      "note": "1,099 records dropped before network construction"
+    },
+    {
+      "gate": "grouped_sctg_share",
+      "year": 2017,
+      "value": 0.0023410464424072634,
+      "threshold": 0.05,
+      "status": "PASS",
+      "note": ""
+    }
+  ],
+  "pairs": [],
+  "verdicts": []
+}

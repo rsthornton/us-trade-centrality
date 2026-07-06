@@ -1,0 +1,59 @@
+# Pre-registered thresholds for the three-survey evolution study.
+# Single source of truth: the ResearchHub proposal quotes these numbers
+# verbatim, and run_evolution.py evaluates against this file. If a number
+# changes here before submission, change it in the proposal too.
+#
+# Design: 2017 is the anchor. The retrodiction pair (2017 -> 2012) tests
+# pre-period stability and is expected to hold. The prediction pair
+# (2017 -> 2022) is the live forecast: hold vs break quantifies COVID-era
+# structural disruption.
+
+anchor_year: 2017
+
+pairs:
+  retrodiction: { base: 2017, target: 2012 }
+  prediction: { base: 2017, target: 2022 }
+
+# H1 - Hub centrality stability (primary outcome)
+# Forecast per measure, applied identically to both pairs.
+# Eigenvector and out-degree track production/infrastructure (sticky);
+# betweenness tracks routing structure (sensitive).
+h1_hub_centrality:
+  forecasts:
+    eigenvector: { op: ">=", value: 0.90 } # Spearman rho
+    out_degree: { op: ">=", value: 0.90 }
+    betweenness: { op: "<", value: 0.85 }
+  top10_overlap_min: 8 # states shared in top-10, eigenvector
+
+# H2 - Backbone corridor persistence (primary outcome)
+h2_backbone:
+  top_weight_percentile: 67 # backbone = top third of edges by weight
+  jaccard_min: 0.80
+
+# H3 - Commodity-specific structural sensitivity (secondary)
+# delta = 1 - cosine similarity of the commodity edge-weight vectors
+h3_commodity:
+  pharma_sctg_prefix: "21"
+  agriculture_sctg_codes: ["01", "02", "03", "04", "05", "01-05"]
+  retrodiction_max_gap: 0.10 # |delta_pharma - delta_ag| in the pre-period
+  # prediction holds if delta_pharma > delta_ag
+
+# H4 - Community structure persistence (secondary)
+h4_community:
+  nmi_min: 0.80 # Louvain partitions, seed=42
+
+# H5 - Flow asymmetry growth (secondary)
+# Gini over |net flow| across unordered state pairs
+h5_asymmetry:
+  retrodiction_max_gini_shift: 0.05
+  prediction_min_gini_growth: 0.05
+
+# Go/no-go gates (run before any hypothesis test)
+gates:
+  national_total_tolerance: 0.05 # computed vs published total, per year
+  # Fill from Census CFS publications before the full Saturday run.
+  # Units: dollars (weighted national shipment value, all flows).
+  published_totals: { 2012: null, 2017: null, 2022: null }
+  grouped_sctg_share_max: 0.05
+  truncation_share_max: 0.01 # 2022 only; values truncated at $30M
+  truncation_value: 30000000
