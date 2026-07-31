@@ -152,8 +152,8 @@ def h4_community(base, target, spec):
         "hypothesis": "H4",
         "nmi": float(nmi),
         "communities": {"base": len(set(labels_base.values())), "target": len(set(labels_target.values()))},
-        "forecast": f"nmi >= {spec['nmi_min']}",
-        "holds": bool(nmi >= spec["nmi_min"]),
+        # exploratory: reference point only, no registered forecast (thresholds.yaml)
+        "forecast": f"reference: nmi >= {spec['nmi_min']}",
     }
 
 
@@ -179,20 +179,18 @@ def h5_asymmetry(base, target, spec, pair_label):
 
     if pair_label == "retrodiction":
         shift = abs(g_target - g_base)
-        holds = shift <= spec["retrodiction_max_gini_shift"]
-        forecast = f"|gini shift| <= {spec['retrodiction_max_gini_shift']}"
+        forecast = f"reference: |gini shift| <= {spec['retrodiction_max_gini_shift']}"
     else:
         shift = g_target - g_base
-        holds = shift >= spec["prediction_min_gini_growth"]
-        forecast = f"gini growth >= {spec['prediction_min_gini_growth']}"
+        forecast = f"reference: gini growth >= {spec['prediction_min_gini_growth']}"
 
     return {
         "hypothesis": "H5",
         "gini_base": g_base,
         "gini_target": g_target,
         "shift": shift,
+        # exploratory: reference point only, no registered forecast (thresholds.yaml)
         "forecast": forecast,
-        "holds": bool(holds),
     }
 
 

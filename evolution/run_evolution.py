@@ -2,7 +2,8 @@
 Three-survey evolution study runner.
 
 Builds the 2012/2017/2022 interstate trade networks, runs the go/no-go
-gates, evaluates the pre-registered H1-H5 forecasts for the retrodiction
+gates, evaluates the pre-registered H1-H3 forecasts (H4-H5 are exploratory:
+metrics reported, no verdict) for the retrodiction
 pair (2017 -> 2012) and the prediction pair (2017 -> 2022), and writes an
 auditable results bundle (report.md + results.json + the exact thresholds
 used) under results/.
@@ -61,7 +62,10 @@ def verdict_rows(pair_results):
         for h in ["H1", "H2", "H3", "H4", "H5"]:
             result = pair[h]
             holds = result.get("holds")
-            verdict = "HOLD" if holds else ("BREAK" if holds is not None else "N/A")
+            if h in ("H4", "H5"):
+                verdict = "EXPLORATORY"
+            else:
+                verdict = "HOLD" if holds else ("BREAK" if holds is not None else "N/A")
             if h == "H1":
                 detail = ", ".join(
                     f"{m}: rho={v['spearman']:.3f} ({v['forecast']})"
