@@ -1,4 +1,4 @@
-import { interpolateViridis } from "../lib/colors";
+import { interpolateSequential } from "../lib/colors";
 
 const STEPS = 32;
 
@@ -18,7 +18,7 @@ export default function ColorLegend({
 }: ColorLegendProps) {
   const stops = Array.from({ length: STEPS }, (_, i) => {
     const t = i / (STEPS - 1);
-    return interpolateViridis(t);
+    return interpolateSequential(t);
   });
 
   return (

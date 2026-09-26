@@ -37,10 +37,11 @@ before using them in a component.
 | Motion | `--transition-fast 150ms`, `--transition-base 200ms`, `--transition-slow 300ms` |
 | Fonts | `--font-sans` Inter, `--font-mono` JetBrains Mono (registered in `@theme`) |
 
-**Data-viz palette** (`src/lib/colors.ts`): `VIRIDIS` (32-stop, perceptually uniform and
-**colorblind-safe** — used for centrality choropleth), `PRGN` (17-stop divergence), and
-`MEASURE_COLORS` (eigenvector `#44cc88`, betweenness `#4488ff`, out_degree `#ff9944`). Viridis
-stays; do not swap it for a non-colorblind-safe ramp.
+**Data-viz palette** (`src/lib/colors.ts`): `CIVIDIS` (32-stop, navy to yellow, perceptually
+uniform and **colorblind-safe**, used for the centrality choropleth), `BRBG` (17-stop divergence,
+brown to teal, neutral midpoint), and `MEASURE_COLORS` (eigenvector `#44cc88`, betweenness
+`#4488ff`, out_degree `#ff9944`). Keep both ramps colorblind-safe, and never use red/blue for
+divergence (reads as an election map on US states).
 
 ## UI primitives (`src/components/ui/`)
 
@@ -111,7 +112,7 @@ collapses to a stacked column above the stage. The two views are peers, switched
 ## Do / Don't
 
 - **DO** keep the map zero-dependency SVG. No D3, no Mapbox.
-- **DO** keep Viridis (colorblind-safe) for centrality, PRGn for divergence.
+- **DO** keep Cividis (colorblind-safe) for centrality, BrBG for divergence.
 - **DO** default to light mode. It is the only mode; do not add a dark toggle without sign-off.
 - **DO** add new colors to `index.css` `:root` first, then reference via `var()`.
 - **DON'T** use em dashes in user-facing UI copy. Use commas, periods, or "to". (`strategy/writing-style-guide.md`.)

@@ -2,22 +2,22 @@ import { describe, it, expect } from "vitest";
 import {
   centralityToColor,
   divergenceToColor,
-  interpolateViridis,
+  interpolateSequential,
   interpolateDivergence,
   MEASURE_COLORS,
 } from "./colors";
 
 const HEX = /^#[0-9a-f]{6}$/i;
 
-describe("interpolateViridis", () => {
+describe("interpolateSequential", () => {
   it("clamps to the endpoints", () => {
-    expect(interpolateViridis(-1)).toBe("#440154");
-    expect(interpolateViridis(0)).toBe("#440154");
-    expect(interpolateViridis(1)).toBe("#fde725");
-    expect(interpolateViridis(2)).toBe("#fde725");
+    expect(interpolateSequential(-1)).toBe("#00224e");
+    expect(interpolateSequential(0)).toBe("#00224e");
+    expect(interpolateSequential(1)).toBe("#fee838");
+    expect(interpolateSequential(2)).toBe("#fee838");
   });
   it("returns a hex color mid-scale", () => {
-    expect(interpolateViridis(0.5)).toMatch(HEX);
+    expect(interpolateSequential(0.5)).toMatch(HEX);
   });
 });
 
@@ -26,8 +26,8 @@ describe("centralityToColor", () => {
     expect(centralityToColor(5, 5, 5)).toMatch(HEX);
   });
   it("maps min to the low end and max to the high end", () => {
-    expect(centralityToColor(0, 0, 1)).toBe("#440154");
-    expect(centralityToColor(1, 0, 1)).toBe("#fde725");
+    expect(centralityToColor(0, 0, 1)).toBe("#00224e");
+    expect(centralityToColor(1, 0, 1)).toBe("#fee838");
   });
 });
 

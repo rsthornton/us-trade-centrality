@@ -1,44 +1,45 @@
 /**
  * Color scales for centrality visualization.
- * Viridis is perceptually uniform and colorblind-safe; PRGn is the divergence scale.
+ * Cividis is perceptually uniform and colorblind-safe; BrBG is the divergence scale.
  */
 
 import type { Measure } from "../types";
 
-const VIRIDIS = [
-  "#440154", "#46085c", "#471164", "#481a6c", "#482273", "#472a7a",
-  "#453282", "#433a83", "#404387", "#3d4d8a", "#39558c", "#355e8d",
-  "#31688e", "#2d708e", "#29798e", "#26818e", "#228a8d", "#1f938c",
-  "#1f9d89", "#20a486", "#25ab82", "#2eb37c", "#3bbb75", "#4cc26c",
-  "#5ec962", "#73d056", "#88d44a", "#9dd93a", "#b5de2b", "#cce11f",
-  "#e5e419", "#fde725",
+const CIVIDIS = [
+  "#00224e", "#00285b", "#002e6a", "#053371", "#1c396f", "#293f6e",
+  "#33446d", "#3c4a6c", "#45506c", "#4d556c", "#555b6d", "#5c616e",
+  "#646770", "#6b6d72", "#727274", "#787877", "#807f78", "#888578",
+  "#908b78", "#979177", "#a09875", "#a89e73", "#b0a571", "#b9ab6d",
+  "#c2b369", "#cbb965", "#d3c05f", "#dcc859", "#e6d051", "#efd748",
+  "#f8df3c", "#fee838",
 ];
 
-const PRGN = [
-  "#40004b", "#5e0066", "#762a83", "#8e4ca0", "#9f73ab", "#b8a5c9",
-  "#d2c7df", "#e8e0ef", "#f7f7f7",
-  "#d5ecd4", "#a6dba0", "#73c378", "#4dac26", "#2d8e00", "#1b7837",
-  "#00641a", "#005000",
+const BRBG = [
+  "#543005", "#774508", "#995d13", "#b97b29", "#cfa256", "#e2c787",
+  "#f1dfb3", "#f6edd7",
+  "#f4f5f5",
+  "#d7eeeb", "#b4e2db", "#87d0c5", "#58b0a7", "#2d8f87", "#0c7169",
+  "#01554b", "#003c30",
 ];
 
-export function interpolateViridis(t: number): string {
-  const i = Math.max(0, Math.min(VIRIDIS.length - 1, Math.floor(t * (VIRIDIS.length - 1))));
-  return VIRIDIS[i];
+export function interpolateSequential(t: number): string {
+  const i = Math.max(0, Math.min(CIVIDIS.length - 1, Math.floor(t * (CIVIDIS.length - 1))));
+  return CIVIDIS[i];
 }
 
 export function interpolateDivergence(t: number): string {
-  const i = Math.max(0, Math.min(PRGN.length - 1, Math.floor(t * (PRGN.length - 1))));
-  return PRGN[i];
+  const i = Math.max(0, Math.min(BRBG.length - 1, Math.floor(t * (BRBG.length - 1))));
+  return BRBG[i];
 }
 
 export function centralityToColor(value: number, min: number, max: number): string {
-  if (max === min) return VIRIDIS[VIRIDIS.length >> 1];
+  if (max === min) return CIVIDIS[CIVIDIS.length >> 1];
   const t = (value - min) / (max - min);
-  return interpolateViridis(t);
+  return interpolateSequential(t);
 }
 
 export function divergenceToColor(rankDiff: number, maxAbs: number): string {
-  if (maxAbs === 0) return PRGN[PRGN.length >> 1];
+  if (maxAbs === 0) return BRBG[BRBG.length >> 1];
   const t = (rankDiff / maxAbs + 1) / 2;
   return interpolateDivergence(t);
 }
