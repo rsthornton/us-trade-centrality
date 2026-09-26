@@ -6,7 +6,7 @@ Master's thesis, Department of Systems Science and Industrial Engineering, Bingh
 
 ## See It Live
 
-- **[The Interstate Power Observatory](https://tradeflows.halcyonic.systems/)** is the interactive dashboard: a hand-built SVG map of state centrality. Filter by commodity, toggle domestic vs. international, click a state for its trade profile, and deep-link any view (`?state=TX&measure=betweenness`). Source and design system live in [`web/`](web/) (React + TypeScript; see [`web/DESIGN.md`](web/DESIGN.md)). The earlier Plotly dashboard at `us-trade.plotly.app` is kept as an archive.
+- **[The Interstate Power Observatory](https://ustradeflow.systems/)** is the interactive dashboard: a hand-built SVG map of state centrality. Filter by commodity, toggle domestic vs. international, click a state for its trade profile, and deep-link any view (`?state=TX&measure=betweenness`). Source and design system live in [`web/`](web/) (React + TypeScript; see [`web/DESIGN.md`](web/DESIGN.md)). The earlier Plotly dashboard at `us-trade.plotly.app` is kept as an archive.
 - **Pre-rendered notebooks** — browse results without installing anything:
   - [`companion.html`](notebooks/__marimo__/companion.html) — full exploratory analysis
   - [`replication.html`](notebooks/__marimo__/replication.html) — static replication of thesis figures
