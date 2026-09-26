@@ -7,35 +7,34 @@
  * Mirror any change in web/DESIGN.md.
  */
 :root {
-  /* surface + text — a faint cool/indigo tint, not flat grey */
-  --bg-primary: #f5f5fb;
+  /* surface + text: neutral white/grey/near-black */
+  --bg-primary: #fafafa;
   --bg-secondary: #ffffff;
-  --bg-surface: #ececf6;
+  --bg-surface: #f2f2f2;
   /* canvas "stage" gradient behind the map + divergence panels */
-  --canvas-from: #f6f5fd;
-  --canvas-to: #eeedf8;
-  --text-primary: #1a1a2e;
-  --text-secondary: #4a4a6a;
-  --text-muted: #8888a8;
+  --canvas-from: #fafafa;
+  --canvas-to: #f2f2f2;
+  --text-primary: #111111;
+  --text-secondary: #4a4a4a;
+  --text-muted: #8a8a8a;
 
   /* accents */
   --accent-blue: #2266dd;
   --accent-green: #1a9960;
   --accent-red: #dd3344;
   --accent-orange: #dd7722;
-  --accent-purple: #7744cc;
   /* Two border weights: a soft default for interactive elements, a fainter
      hairline for dividers. Lighter than before so the chrome recedes. */
-  --border: #e4e1ec;
-  --hairline: #eeecf3;
+  --border: #e5e5e5;
+  --hairline: #efefef;
 
-  /* map viz palette (lavender-tinted to sit on the canvas stage) */
+  /* map viz palette (neutral greys to sit on the canvas stage) */
   --map-selection: #ffa94d;
-  --map-dim: #a6a3bd;
-  --map-empty: #e7e5f1;
-  --map-wash: #e3e1ee;
-  --map-stroke: #d4d1e2;
-  --map-hover: #7a7790;
+  --map-dim: #a3a3a3;
+  --map-empty: #ececec;
+  --map-wash: #e6e6e6;
+  --map-stroke: #d6d6d6;
+  --map-hover: #737373;
 
   /* radius — control = 8, card = 12, pill = full */
   --radius-sm: 4px;
@@ -71,12 +70,7 @@
 
 body {
   margin: 0;
-  /* soft violet glow behind the hero, fading into the tinted page */
-  background:
-    radial-gradient(1100px 460px at 50% -160px, rgba(119, 68, 204, 0.08), transparent 70%),
-    radial-gradient(900px 400px at 100% 0%, rgba(34, 102, 221, 0.05), transparent 60%),
-    var(--bg-primary);
-  background-attachment: fixed;
+  background: var(--bg-primary);
   color: var(--text-primary);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;

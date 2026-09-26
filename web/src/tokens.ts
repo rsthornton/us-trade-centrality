@@ -7,14 +7,14 @@
  * Keep the two in sync; both are documented in web/DESIGN.md.
  */
 
-// Map neutrals are lavender-tinted so dimmed/empty states recede into the canvas stage.
+// Map neutrals are plain greys so dimmed/empty states recede into the canvas stage.
 export const mapColors = {
   selection: "#ffa94d",
-  dim: "#a6a3bd", // dimmed edges / states
-  empty: "#e7e5f1", // no-data fill
-  wash: "#e3e1ee", // washed (non-selected) state fill
-  stroke: "#d4d1e2", // default state outline
-  hover: "#7a7790", // hover outline
+  dim: "#a3a3a3", // dimmed edges / states
+  empty: "#ececec", // no-data fill
+  wash: "#e6e6e6", // washed (non-selected) state fill
+  stroke: "#d6d6d6", // default state outline
+  hover: "#737373", // hover outline
 } as const;
 
 export const radius = {

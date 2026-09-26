@@ -50,7 +50,7 @@ export default function HeroFinding({ centralities }: HeroFindingProps) {
   return (
     <div className="mt-3 text-sm min-h-5" style={{ color: "var(--text-secondary)" }}>
       <span key={i} style={{ animation: "ipo-finding-in 0.6s ease", display: "inline-block" }}>
-        <span className="font-mono text-xs mr-2" style={{ color: "var(--accent-purple)" }}>
+        <span className="font-mono text-xs mr-2" style={{ color: "var(--text-primary)" }}>
           FINDING
         </span>
         {findings[i % findings.length]}

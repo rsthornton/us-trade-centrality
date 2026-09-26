@@ -39,7 +39,7 @@ export default function DivergenceView({
         border: "1px solid var(--hairline)",
         borderTop: `2.5px solid ${accent}`,
         borderRadius: "var(--radius-card)",
-        boxShadow: "0 1px 2px rgba(26, 26, 46, 0.05)",
+        boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
       }}
     >
         <div className="flex items-baseline justify-between gap-4 flex-wrap mb-1">

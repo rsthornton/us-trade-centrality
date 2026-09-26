@@ -114,7 +114,7 @@ export default function App() {
     border: "1px solid var(--hairline)",
     borderTop: `2.5px solid ${measureColor}`,
     borderRadius: "var(--radius-card)",
-    boxShadow: "0 1px 2px rgba(26, 26, 46, 0.05)",
+    boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
   };
 
   if (Gallery && location.hash === "#/components") {
@@ -181,13 +181,7 @@ export default function App() {
           </div>
           <h1
             className="text-3xl sm:text-4xl font-light tracking-tight"
-            style={{
-              backgroundImage: "linear-gradient(115deg, #1a1a2e 30%, #463080 75%, #6a3aa8 100%)",
-              WebkitBackgroundClip: "text",
-              backgroundClip: "text",
-              color: "transparent",
-              width: "fit-content",
-            }}
+            style={{ color: "var(--text-primary)" }}
           >
             The Interstate Power Observatory
           </h1>

@@ -25,12 +25,12 @@ before using them in a component.
 
 | Group | Tokens |
 |---|---|
-| Surface | `--bg-primary #f5f5fb` (faint indigo tint), `--bg-secondary #ffffff` (cards pop), `--bg-surface #ececf6` |
-| Canvas stage | `--canvas-from #f6f5fd` → `--canvas-to #eeedf8` (gradient behind map + divergence panels) |
-| Text | `--text-primary #1a1a2e`, `--text-secondary #4a4a6a`, `--text-muted #8888a8` |
-| Accents | `--accent-blue #2266dd`, `--accent-green #1a9960`, `--accent-red #dd3344`, `--accent-orange #dd7722`, `--accent-purple #7744cc` |
+| Surface | `--bg-primary #fafafa` (neutral off-white), `--bg-secondary #ffffff` (cards pop), `--bg-surface #f2f2f2` |
+| Canvas stage | `--canvas-from #fafafa` → `--canvas-to #f2f2f2` (gradient behind map + divergence panels) |
+| Text | `--text-primary #111111`, `--text-secondary #4a4a4a`, `--text-muted #8a8a8a` |
+| Accents | `--accent-blue #2266dd`, `--accent-green #1a9960`, `--accent-red #dd3344`, `--accent-orange #dd7722` |
 | Borders | `--border #e4e1ec` (interactive elements), `--hairline #eeecf3` (faint dividers) |
-| Map viz | `--map-selection #ffa94d`, `--map-dim #9ca3af`, `--map-empty #e8e8f0`, `--map-stroke #d0d0d8` |
+| Map viz | `--map-selection #ffa94d`, `--map-dim #a3a3a3`, `--map-empty #ececec`, `--map-wash #e6e6e6`, `--map-stroke #d6d6d6`, `--map-hover #737373` |
 | Radius | `--radius-sm 4`, `--radius-md 6`, `--radius-lg 8` (controls), `--radius-card 12` (cards/panels/drawer), `--radius-pill 9999` |
 | Shadow | `--shadow-card`, `--shadow-card-hover`, `--shadow-drawer` |
 | Z-index | `--z-drawer 10`, `--z-tooltip 20`, `--z-hint 30` |
@@ -89,9 +89,9 @@ collapses to a stacked column above the stage. The two views are peers, switched
 ## Craft principles (the polish rules)
 
 - **Quiet chrome, loud data, colored surfaces.** Controls stay near-monochrome (greys + one blue
-  for links). The *data* (map ramp, divergence green/red) owns saturated color. *Surfaces* carry
-  tasteful low-saturation tint: a tinted page + soft violet glow, and a lavender "canvas stage"
-  gradient behind the map and divergence panels. Tint ≠ chrome noise; don't accent-fill controls.
+  for links). The *data* (map ramp, divergence green/red) owns saturated color. *Surfaces* stay
+  neutral: an off-white page, white cards, and a faint grey "canvas stage" gradient behind the map
+  and divergence panels. No tinted page or glow; don't accent-fill controls.
 - **The active measure's hue threads the UI.** The canvas stage's 2.5px top accent and the measure
   selector dot use the active measure's color (eigenvector green / betweenness blue / out-degree
   orange). Switching measures retints the stage.
