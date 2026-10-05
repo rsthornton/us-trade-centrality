@@ -190,7 +190,7 @@ def export_commodity_data():
     edges_dir.mkdir(exist_ok=True)
     count = 0
     for code in sorted(comm_edges["commodity_code"].unique()):
-        code_edges = comm_edges[comm_edges["commodity_code"] == code].nlargest(50, "weight")
+        code_edges = comm_edges[comm_edges["commodity_code"] == code].nlargest(100, "weight")
         records = []
         for _, row in code_edges.iterrows():
             src, tgt = row["source"], row["target"]
@@ -296,6 +296,38 @@ def export_state_trade_totals(top_n=8):
     print(f"  state_trade_totals.json: {len(records)} states")
 
 
+def export_commodity_state_totals(top_n=8):
+    """Export each state's true inbound/outbound totals and top partners per commodity.
+
+    Reads every commodity edge (not the top-100 display slice), so the state panel
+    shows real per-commodity totals when a commodity is selected.
+    """
+    edges = pd.read_csv(VIZ_DATA / "commodity_edges.csv", dtype={"commodity_code": str})
+    states = sorted(pd.read_csv(VIZ_DATA / "state_coords.csv")["state_abbr"])
+    out_dir = OUT_DIR / "commodity_totals"
+    out_dir.mkdir(exist_ok=True)
+    for code, df in edges.groupby("commodity_code"):
+        records = []
+        for st in states:
+            out_df = df[df["source"] == st].sort_values("weight", ascending=False)
+            in_df = df[df["target"] == st].sort_values("weight", ascending=False)
+            records.append({
+                "state": st,
+                "out_total": round(float(out_df["weight"].sum()), 2),
+                "in_total": round(float(in_df["weight"].sum()), 2),
+                "top_out": [
+                    {"partner": r.target, "weight": round(float(r.weight), 2)}
+                    for r in out_df.head(top_n).itertuples()
+                ],
+                "top_in": [
+                    {"partner": r.source, "weight": round(float(r.weight), 2)}
+                    for r in in_df.head(top_n).itertuples()
+                ],
+            })
+        with open(out_dir / f"{code}.json", "w") as f:
+            json.dump(records, f)
+    print(f"  commodity_totals/: {edges['commodity_code'].nunique()} commodity files")
+
 def main():
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     (OUT_DIR / "commodity_edges").mkdir(exist_ok=True)
@@ -310,6 +342,7 @@ def main():
     export_network_stats()
     export_metadata()
     export_state_trade_totals()
+    export_commodity_state_totals()
     print(f"\nDone. Output: {OUT_DIR}")
 
 

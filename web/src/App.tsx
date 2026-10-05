@@ -1,5 +1,10 @@
 import { useState, useEffect, useMemo, lazy, Suspense } from "react";
-import { loadAllCore, loadCommodityCentralities, loadCommodityEdges } from "./data/loader";
+import {
+  loadAllCore,
+  loadCommodityCentralities,
+  loadCommodityEdges,
+  loadCommodityTotals,
+} from "./data/loader";
 import { topoFeature } from "./lib/topo";
 import { MEASURE_COLORS } from "./lib/colors";
 import TradeMap from "./components/TradeMap";
@@ -20,6 +25,7 @@ import type {
   CoreData,
   Edge,
   Measure,
+  StateTotals,
 } from "./types";
 
 // Interactive WASM notebook hosted on molab (marimo Cloud).
@@ -32,6 +38,10 @@ const Gallery = import.meta.env.DEV ? lazy(() => import("./dev/Gallery")) : null
 type NetworkType = "51" | "52";
 type FlowDirection = "both" | "in" | "out";
 type View = "map" | "divergence";
+
+const ENERGY_CODES = new Set(["15", "16", "17", "18", "19", "15-19"]);
+const ENERGY_SCOPE_NOTE =
+  "Energy dependence is understated here. Crude oil is absent from the public 2017 survey file, and pipeline transmission, electricity, and foreign imports are outside the survey.";
 
 export default function App() {
   const [data, setData] = useState<CoreData | null>(null);
@@ -51,6 +61,7 @@ export default function App() {
     CommodityCentralityRow[] | null
   >(null);
   const [commodityEdges, setCommodityEdges] = useState<Edge[] | null>(null);
+  const [commodityTotals, setCommodityTotals] = useState<StateTotals[] | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -64,6 +75,7 @@ export default function App() {
     if (commodity === "all") {
       setCommodityCentralities(null);
       setCommodityEdges(null);
+      setCommodityTotals(null);
       return;
     }
     loadCommodityCentralities().then((all) => {
@@ -71,6 +83,7 @@ export default function App() {
       setCommodityCentralities(filtered);
     });
     loadCommodityEdges(commodity).then(setCommodityEdges);
+    loadCommodityTotals(commodity).then(setCommodityTotals);
   }, [commodity]);
 
   const geojson = useMemo(() => {
@@ -98,12 +111,12 @@ export default function App() {
     return centralities.find((r) => r.state === selectedState) ?? null;
   }, [selectedState, centralities]);
 
-  // True per-state totals (all-commodity view only); commodity view falls back to
-  // the visible commodity edges inside the drawer.
+  // True per-state totals from the full flow matrix, for the active commodity.
   const selectedTotals = useMemo(() => {
-    if (!selectedState || commodity !== "all" || !data) return null;
-    return data.stateTotals.find((t) => t.state === selectedState) ?? null;
-  }, [selectedState, commodity, data]);
+    if (!selectedState || !data) return null;
+    const source = commodity === "all" ? data.stateTotals : commodityTotals;
+    return source?.find((t) => t.state === selectedState) ?? null;
+  }, [selectedState, commodity, data, commodityTotals]);
 
   useSyncUrlState(selectedState, measure);
 
@@ -331,6 +344,7 @@ export default function App() {
               data={selectedData}
               edges={edges}
               totals={selectedTotals}
+              scopeNote={ENERGY_CODES.has(commodity) ? ENERGY_SCOPE_NOTE : undefined}
               accent={measureColor}
               onClose={() => setSelectedState(null)}
             />

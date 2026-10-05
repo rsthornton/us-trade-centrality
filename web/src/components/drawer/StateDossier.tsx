@@ -3,7 +3,7 @@ import { MEASURE_COLORS } from "../../lib/colors";
 import Badge from "../ui/Badge";
 import TradeCard from "./TradeCard";
 import PartnersList from "./PartnersList";
-import { type Partner } from "./format";
+import { formatDollars, type Partner } from "./format";
 import type { BaseCentralityRow, Edge, Measure, StateTotals } from "../../types";
 
 const MEASURES: { key: Measure; label: string }[] = [
@@ -84,6 +84,8 @@ interface StateDossierProps {
   data: BaseCentralityRow;
   edges: Edge[];
   totals?: StateTotals | null;
+  /** Caveat shown under trade volume when the data cannot see part of this commodity. */
+  scopeNote?: string;
   /** Active measure hue for the top accent + watermark. */
   accent: string;
   onClose: () => void;
@@ -95,6 +97,7 @@ export default function StateDossier({
   data,
   edges,
   totals,
+  scopeNote,
   accent,
   onClose,
 }: StateDossierProps) {
@@ -200,6 +203,17 @@ export default function StateDossier({
               <TradeCard label="Outbound" value={outbound} />
               <TradeCard label="Inbound" value={inbound} />
             </div>
+            {Math.abs(inbound - outbound) > 0 && (
+              <p className="text-xs mt-2" style={{ color: "var(--text-secondary)" }}>
+                {inbound > outbound ? "Net importer" : "Net exporter"}{" "}
+                <span className="font-mono">{formatDollars(Math.abs(inbound - outbound))}</span>
+              </p>
+            )}
+            {scopeNote && (
+              <p className="text-xs mt-1 max-w-[260px] leading-snug" style={{ color: "var(--text-muted)" }}>
+                {scopeNote}
+              </p>
+            )}
           </div>
         )}
 

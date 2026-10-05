@@ -52,6 +52,10 @@ export function loadCommodityEdges(code: string): Promise<Edge[]> {
   return fetchJSON(`/data/commodity_edges/${code}.json`);
 }
 
+export function loadCommodityTotals(code: string): Promise<StateTotals[]> {
+  return fetchJSON(`/data/commodity_totals/${code}.json`);
+}
+
 export function loadTopoJSON(): Promise<TopoTopology> {
   return fetchJSON("/data/us-states-10m.json");
 }
