@@ -1,0 +1,580 @@
+{
+ "note": "Post-hoc exploratory analysis, not pre-registered. See README.md.",
+ "seed": 42,
+ "years": {
+  "2012": {
+   "kmeans_sweep": {
+    "4": {
+     "silhouette": 0.264,
+     "ari_vs_rules": 0.157
+    },
+    "5": {
+     "silhouette": 0.23,
+     "ari_vs_rules": 0.132
+    },
+    "6": {
+     "silhouette": 0.273,
+     "ari_vs_rules": 0.228
+    },
+    "7": {
+     "silhouette": 0.26,
+     "ari_vs_rules": 0.149
+    },
+    "8": {
+     "silhouette": 0.281,
+     "ari_vs_rules": 0.1
+    }
+   },
+   "ari_vs_rules": {
+    "kmeans_k6": 0.228,
+    "ward_k6": 0.156,
+    "structural_equivalence_k6": -0.033
+   },
+   "kmeans_k6_vs_rules": {
+    "0": {
+     "Generalist": 2,
+     "Market": 1,
+     "Sustainer": 7
+    },
+    "1": {
+     "Generalist": 6,
+     "Market": 4,
+     "Specialist": 3,
+     "Sustainer": 1
+    },
+    "2": {
+     "Engine": 6,
+     "Generalist": 2,
+     "Router": 1
+    },
+    "3": {
+     "Market": 2
+    },
+    "4": {
+     "Generalist": 7,
+     "Market": 1,
+     "Router": 4
+    },
+    "5": {
+     "Specialist": 2,
+     "Sustainer": 2
+    }
+   },
+   "kmeans_k6_members": {
+    "0": [
+     "FL",
+     "IA",
+     "IN",
+     "KY",
+     "LA",
+     "MI",
+     "MS",
+     "OK",
+     "TN",
+     "WI"
+    ],
+    "1": [
+     "AK",
+     "AR",
+     "AZ",
+     "DE",
+     "ID",
+     "ME",
+     "ND",
+     "NE",
+     "NH",
+     "NM",
+     "RI",
+     "SC",
+     "SD",
+     "VT"
+    ],
+    "2": [
+     "CA",
+     "GA",
+     "IL",
+     "NC",
+     "NJ",
+     "NY",
+     "OH",
+     "PA",
+     "TX"
+    ],
+    "3": [
+     "DC",
+     "HI"
+    ],
+    "4": [
+     "AL",
+     "CO",
+     "CT",
+     "KS",
+     "MA",
+     "MD",
+     "MN",
+     "MO",
+     "OR",
+     "UT",
+     "VA",
+     "WA"
+    ],
+    "5": [
+     "MT",
+     "NV",
+     "WV",
+     "WY"
+    ]
+   },
+   "structural_equivalence_k6_members": {
+    "0": [
+     "IA",
+     "IL",
+     "IN",
+     "KY",
+     "MI",
+     "MN",
+     "MO",
+     "ND",
+     "NE",
+     "OH",
+     "SD",
+     "WI"
+    ],
+    "1": [
+     "DC",
+     "DE",
+     "MA",
+     "MD",
+     "NJ",
+     "NY",
+     "PA",
+     "VA",
+     "WV"
+    ],
+    "2": [
+     "AK",
+     "AZ",
+     "CO",
+     "HI",
+     "ID",
+     "MT",
+     "NV",
+     "OR",
+     "UT"
+    ],
+    "3": [
+     "AR",
+     "CA",
+     "KS",
+     "LA",
+     "NM",
+     "OK",
+     "WA",
+     "WY"
+    ],
+    "4": [
+     "CT",
+     "ME",
+     "NH",
+     "RI",
+     "VT"
+    ],
+    "5": [
+     "AL",
+     "FL",
+     "GA",
+     "MS",
+     "NC",
+     "SC",
+     "TN",
+     "TX"
+    ]
+   }
+  },
+  "2017": {
+   "kmeans_sweep": {
+    "4": {
+     "silhouette": 0.307,
+     "ari_vs_rules": 0.252
+    },
+    "5": {
+     "silhouette": 0.311,
+     "ari_vs_rules": 0.308
+    },
+    "6": {
+     "silhouette": 0.338,
+     "ari_vs_rules": 0.161
+    },
+    "7": {
+     "silhouette": 0.336,
+     "ari_vs_rules": 0.278
+    },
+    "8": {
+     "silhouette": 0.331,
+     "ari_vs_rules": 0.264
+    }
+   },
+   "ari_vs_rules": {
+    "kmeans_k6": 0.161,
+    "ward_k6": 0.194,
+    "structural_equivalence_k6": 0.005
+   },
+   "kmeans_k6_vs_rules": {
+    "0": {
+     "Generalist": 7,
+     "Market": 3,
+     "Specialist": 3,
+     "Sustainer": 2
+    },
+    "1": {
+     "Engine": 6,
+     "Generalist": 1,
+     "Router": 2,
+     "Sustainer": 3
+    },
+    "2": {
+     "Generalist": 4,
+     "Market": 1,
+     "Sustainer": 5
+    },
+    "3": {
+     "Generalist": 3,
+     "Market": 1,
+     "Router": 4
+    },
+    "4": {
+     "Specialist": 2,
+     "Sustainer": 1
+    },
+    "5": {
+     "Market": 3
+    }
+   },
+   "kmeans_k6_members": {
+    "0": [
+     "AR",
+     "DE",
+     "ID",
+     "KS",
+     "ME",
+     "MT",
+     "ND",
+     "NE",
+     "NH",
+     "NM",
+     "OR",
+     "RI",
+     "SD",
+     "UT",
+     "VT"
+    ],
+    "1": [
+     "CA",
+     "GA",
+     "IL",
+     "IN",
+     "MI",
+     "MO",
+     "NC",
+     "NY",
+     "OH",
+     "PA",
+     "TN",
+     "TX"
+    ],
+    "2": [
+     "AL",
+     "AZ",
+     "FL",
+     "KY",
+     "LA",
+     "MS",
+     "NJ",
+     "OK",
+     "SC",
+     "WI"
+    ],
+    "3": [
+     "CO",
+     "CT",
+     "IA",
+     "MA",
+     "MD",
+     "MN",
+     "VA",
+     "WA"
+    ],
+    "4": [
+     "NV",
+     "WV",
+     "WY"
+    ],
+    "5": [
+     "AK",
+     "DC",
+     "HI"
+    ]
+   },
+   "structural_equivalence_k6_members": {
+    "0": [
+     "AL",
+     "AR",
+     "FL",
+     "GA",
+     "LA",
+     "MS",
+     "NC",
+     "NM",
+     "OK",
+     "SC",
+     "TN",
+     "WY"
+    ],
+    "1": [
+     "CT",
+     "MA",
+     "ME",
+     "NH",
+     "NJ",
+     "PA",
+     "RI",
+     "VT"
+    ],
+    "2": [
+     "DC",
+     "DE",
+     "MD",
+     "NY",
+     "VA",
+     "WV"
+    ],
+    "3": [
+     "AK",
+     "ID",
+     "MT",
+     "OR"
+    ],
+    "4": [
+     "CA",
+     "IA",
+     "IL",
+     "IN",
+     "KS",
+     "KY",
+     "MI",
+     "MN",
+     "MO",
+     "ND",
+     "NE",
+     "OH",
+     "SD",
+     "TX",
+     "WI"
+    ],
+    "5": [
+     "AZ",
+     "CO",
+     "HI",
+     "NV",
+     "UT",
+     "WA"
+    ]
+   }
+  },
+  "2022": {
+   "kmeans_sweep": {
+    "4": {
+     "silhouette": 0.372,
+     "ari_vs_rules": 0.104
+    },
+    "5": {
+     "silhouette": 0.327,
+     "ari_vs_rules": 0.114
+    },
+    "6": {
+     "silhouette": 0.28,
+     "ari_vs_rules": 0.273
+    },
+    "7": {
+     "silhouette": 0.306,
+     "ari_vs_rules": 0.274
+    },
+    "8": {
+     "silhouette": 0.316,
+     "ari_vs_rules": 0.277
+    }
+   },
+   "ari_vs_rules": {
+    "kmeans_k6": 0.273,
+    "ward_k6": 0.164,
+    "structural_equivalence_k6": 0.016
+   },
+   "kmeans_k6_vs_rules": {
+    "0": {
+     "Market": 2,
+     "Specialist": 4
+    },
+    "1": {
+     "Engine": 5,
+     "Generalist": 3,
+     "Market": 1,
+     "Router": 6
+    },
+    "2": {
+     "Router": 1,
+     "Specialist": 1,
+     "Sustainer": 1
+    },
+    "3": {
+     "Generalist": 2,
+     "Market": 1,
+     "Sustainer": 7
+    },
+    "4": {
+     "Market": 3
+    },
+    "5": {
+     "Generalist": 9,
+     "Market": 2,
+     "Specialist": 1,
+     "Sustainer": 2
+    }
+   },
+   "kmeans_k6_members": {
+    "0": [
+     "ID",
+     "ME",
+     "MT",
+     "ND",
+     "NM",
+     "WY"
+    ],
+    "1": [
+     "CA",
+     "GA",
+     "IL",
+     "MA",
+     "MD",
+     "NC",
+     "NJ",
+     "NY",
+     "OH",
+     "OR",
+     "PA",
+     "TX",
+     "UT",
+     "VA",
+     "WA"
+    ],
+    "2": [
+     "MN",
+     "VT",
+     "WV"
+    ],
+    "3": [
+     "AL",
+     "FL",
+     "IA",
+     "IN",
+     "KY",
+     "LA",
+     "MI",
+     "MO",
+     "TN",
+     "WI"
+    ],
+    "4": [
+     "AK",
+     "DC",
+     "HI"
+    ],
+    "5": [
+     "AR",
+     "AZ",
+     "CO",
+     "CT",
+     "DE",
+     "KS",
+     "MS",
+     "NE",
+     "NH",
+     "NV",
+     "OK",
+     "RI",
+     "SC",
+     "SD"
+    ]
+   },
+   "structural_equivalence_k6_members": {
+    "0": [
+     "AK",
+     "AZ",
+     "HI",
+     "ID",
+     "MT",
+     "NV",
+     "OR",
+     "UT",
+     "WA",
+     "WY"
+    ],
+    "1": [
+     "IA",
+     "IL",
+     "IN",
+     "KY",
+     "MI",
+     "MN",
+     "MO",
+     "ND",
+     "NE",
+     "OH",
+     "SD",
+     "WI"
+    ],
+    "2": [
+     "AR",
+     "CA",
+     "CO",
+     "KS",
+     "LA",
+     "NM",
+     "OK"
+    ],
+    "3": [
+     "CT",
+     "ME",
+     "NH",
+     "RI",
+     "VT"
+    ],
+    "4": [
+     "DC",
+     "DE",
+     "MA",
+     "MD",
+     "NJ",
+     "NY",
+     "PA",
+     "VA",
+     "WV"
+    ],
+    "5": [
+     "AL",
+     "FL",
+     "GA",
+     "MS",
+     "NC",
+     "SC",
+     "TN",
+     "TX"
+    ]
+   }
+  }
+ },
+ "kmeans_k6_ari_across_years": {
+  "2012-2017": 0.411,
+  "2017-2022": 0.199,
+  "2012-2022": 0.343
+ }
+}
