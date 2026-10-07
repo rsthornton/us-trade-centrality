@@ -713,9 +713,9 @@ def _():
             number is independent — California's GDP doesn't affect Kentucky's GDP.
 
             **Network centrality** works differently. Your score depends on the scores of
-            the states you trade with. If Kentucky trades heavily with Ohio (a major hub),
-            Kentucky's centrality goes up. If Ohio also trades with Texas (another giant),
-            that *indirectly* raises Kentucky's centrality too.
+            the states that ship to you. If Kentucky receives large shipments from Ohio (a
+            major hub), Kentucky's centrality goes up. If Ohio in turn receives heavily from
+            Texas (another giant), that *indirectly* raises Kentucky's centrality too.
 
             It's recursive: importance flows through the network.
 
@@ -727,11 +727,17 @@ def _():
             {
                 "A bit more formally...": mo.md(
                     "A state's eigenvector centrality is proportional to the weighted "
-                    "sum of its neighbors' centralities. If you trade with important "
-                    "states, you become important. If those states trade with other "
-                    "important states, your importance compounds. GDP has no such "
-                    "feedback loop — it's a simple aggregate, while centrality is a "
-                    "fixed-point solution to a system of simultaneous equations."
+                    "sum of the centralities of the states that ship to it. If you "
+                    "receive heavily from important states, you become important. If "
+                    "they receive from other important states, your importance "
+                    "compounds. GDP has no such feedback loop: it's a simple aggregate, "
+                    "while centrality is a fixed-point solution to a system of "
+                    "simultaneous equations.\n\n"
+                    "Direction matters on a directed network. This is the in-flow "
+                    "version (NetworkX's default, the left eigenvector of the "
+                    "origin-by-destination flow matrix). The same calculation on "
+                    "outgoing flows agrees closely overall (Spearman 0.95) but moves "
+                    "some states: Florida ranks 5th on in-flow and 17th on out-flow."
                 ),
             }
         ),
