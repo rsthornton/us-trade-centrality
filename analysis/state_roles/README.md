@@ -24,7 +24,7 @@ Q4 files listed in `run_state_roles.py`.
 
 | Measure | Definition |
 |---|---|
-| Embeddedness | eigenvector centrality rank (1 = highest) |
+| Embeddedness | in-flow eigenvector centrality rank (1 = highest); see `analysis/eigenvector_direction/` |
 | Supply reach | weighted out-degree rank |
 | Brokerage | betweenness rank, among states with nonzero betweenness |
 | Places above GDP | GDP rank minus eigenvector rank |

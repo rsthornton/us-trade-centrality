@@ -115,3 +115,14 @@ as an interpretive classification.
 map with per-year codes, role-by-year grid. Fonts fall back to Helvetica Neue
 when IBM Plex is not installed. The draft-a canvas board stays as a design
 reference.
+
+## 2026-10-07: eigenvector direction
+
+Prompted by the committee's left-versus-right eigenvector question. Every
+eigenvector in the repo (thesis, dashboard, evolution caches) is the in-flow
+version, NetworkX's default on a DiGraph; thesis Equation 3.2 writes the
+out-flow version. Spearman between the two is 0.95; 15 to 18 states move 5+
+ranks. For the roles: embeddedness and the Sustainer gap use the in-flow
+version. Under out-flow, Louisiana's 2017 gap goes from +7 to −1 and Montana's
+from +8 to +1; KY, MS, IN, TN, MI and SC stay 5+ places above GDP either way.
+Details: `analysis/eigenvector_direction/README.md`.
