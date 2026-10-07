@@ -80,3 +80,28 @@ def test_assign_roles_priority_and_generalist():
         "SPE": "Specialist", "GEN": "Generalist",
     }
     assert "Sustainer" in also["ENG"]
+
+
+def test_sensitivity_steps_stay_small():
+    data = json.loads((ROLES_DIR / "output" / "sensitivity.json").read_text())
+    assert len(data["variants"]) == 12
+    for v in data["variants"]:
+        assert v["of"] == 153
+        assert v["changed"] <= 10, v["threshold"]
+    gaps = data["undervalued_min_gap"]
+    assert all(gaps[s] >= 5 for s in ("KY", "MS", "IN", "LA", "TN", "MI"))
+    assert gaps["MT"] < 5
+
+
+def test_clusters_recover_roles_only_weakly():
+    data = json.loads((ROLES_DIR / "output" / "cluster_check.json").read_text())
+    assert set(data["years"]) == set(YEARS)
+    for year in YEARS:
+        ari = data["years"][year]["ari_vs_rules"]
+        assert all(-0.1 < value < 0.4 for value in ari.values()), (year, ari)
+        clusters = data["years"][year]["kmeans_k6_members"]
+        core = [c for c, members in clusters.items() if {"DC", "HI"} <= set(members)]
+        assert core, year
+        assert data["years"][year]["kmeans_k6_vs_rules"][core[0]] == {
+            "Market": len(clusters[core[0]])
+        }
