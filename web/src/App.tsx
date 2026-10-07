@@ -178,7 +178,15 @@ export default function App() {
           className="flex items-center justify-between gap-4 pb-4"
           style={{ borderBottom: "1px solid var(--border)" }}
         >
-          <Wordmark />
+          <div className="flex items-center gap-3 min-w-0">
+            <Wordmark />
+            <span
+              className="hidden sm:inline pl-3 text-sm whitespace-nowrap"
+              style={{ color: "var(--text-muted)", borderLeft: "1px solid var(--border)" }}
+            >
+              Commodity flows, 2017
+            </span>
+          </div>
           <nav className="flex items-center gap-4 sm:gap-6 text-[13px] sm:text-sm whitespace-nowrap">
             <a
               href={NOTEBOOK_URL}
@@ -202,26 +210,19 @@ export default function App() {
           </nav>
         </div>
 
-        <div className="pt-7 pb-1">
-          <div
-            className="text-[11px] font-mono uppercase tracking-[0.12em] mb-3"
-            style={{ color: "var(--text-muted)" }}
-          >
-            U.S. interstate shipments · Commodity Flow Survey 2017
-          </div>
+        <div className="pt-8 pb-1">
           <h1
             className="font-serif text-[30px] sm:text-[38px] font-semibold leading-[1.15] tracking-[-0.01em]"
             style={{ color: "var(--text-primary)" }}
           >
-            Network position is not economic size
+            Economic weight is more than GDP
           </h1>
           <p
             className="text-base sm:text-[17px] mt-3 max-w-[64ch] leading-relaxed"
             style={{ color: "var(--text-secondary)" }}
           >
-            Three network measures for each state, computed on{" "}
-            {interstateTrillions > 0 ? `$${interstateTrillions.toFixed(1)} trillion of ` : ""}
-            interstate commodity shipments among the 50 states and DC, compared with its GDP rank.
+            How each state supplies, buys and brokers the goods moving between states, set
+            against the size of its economy.
           </p>
           <div className="hidden lg:block">
             <ClaimStrip>
@@ -326,7 +327,13 @@ export default function App() {
               value={view}
               onChange={setView}
             />
-            <span className="text-xs" style={{ color: "var(--text-muted)" }}>
+            <span className="text-xs text-right" style={{ color: "var(--text-muted)" }}>
+              <span style={{ color: "var(--text-secondary)" }}>
+                Commodity Flow Survey 2017
+                {interstateTrillions > 0 ? ` · $${interstateTrillions.toFixed(1)}T interstate shipments` : ""}
+                {" · 50 states and DC"}
+              </span>
+              <br />
               {MEASURE_NAMES[measure].plain} ·{" "}
               {commodity === "all"
                 ? "all commodities"
