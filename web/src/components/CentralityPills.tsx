@@ -2,9 +2,9 @@ import { MEASURE_COLORS } from "../lib/colors";
 import type { Measure } from "../types";
 
 const MEASURES: { key: Measure; label: string; description: string }[] = [
-  { key: "eigenvector", label: "Eigenvector", description: "Trade prestige" },
-  { key: "betweenness", label: "Betweenness", description: "Bridge position" },
-  { key: "out_degree", label: "Out-Degree", description: "Export reach" },
+  { key: "eigenvector", label: "Trade prestige", description: "eigenvector" },
+  { key: "betweenness", label: "Bridge position", description: "betweenness" },
+  { key: "out_degree", label: "Export reach", description: "weighted out-degree" },
 ];
 
 interface CentralityPillsProps {
@@ -34,23 +34,23 @@ export default function CentralityPills({ selected, onSelect, vertical }: Centra
               boxShadow: active ? "var(--shadow-card)" : "none",
             }}
           >
-            <span className="flex items-center gap-1.5">
+            <span className="flex items-center gap-2">
               <span
-                className="inline-block w-1.5 h-1.5 rounded-full"
-                style={{ backgroundColor: MEASURE_COLORS[key], opacity: active ? 1 : 0.4 }}
+                className="inline-block w-2 h-2 rounded-full"
+                style={{ backgroundColor: MEASURE_COLORS[key], opacity: active ? 1 : 0.45 }}
               />
               <span
-                className="text-[10px] uppercase tracking-wider"
-                style={{ color: "var(--text-muted)" }}
+                className="text-sm font-medium"
+                style={{ color: active ? "var(--text-primary)" : "var(--text-secondary)" }}
               >
-                {description}
+                {label}
               </span>
             </span>
             <span
-              className="block text-sm font-medium mt-0.5"
-              style={{ color: active ? "var(--text-primary)" : "var(--text-secondary)" }}
+              className="block font-mono text-[11px] mt-0.5 pl-4"
+              style={{ color: "var(--text-muted)" }}
             >
-              {label}
+              {description}
             </span>
           </button>
         );

@@ -44,8 +44,10 @@ export function divergenceToColor(rankDiff: number, maxAbs: number): string {
   return interpolateDivergence(t);
 }
 
+/** Okabe-Ito hues: colorblind-safe, off the cividis navy-to-yellow axis, and
+ *  dark enough to read as text on white. */
 export const MEASURE_COLORS: Record<Measure, string> = {
-  eigenvector: "#44cc88",
-  betweenness: "#4488ff",
-  out_degree: "#ff9944",
+  eigenvector: "#009e73",
+  betweenness: "#0072b2",
+  out_degree: "#d55e00",
 };

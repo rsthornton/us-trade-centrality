@@ -16,13 +16,17 @@
   --canvas-to: #f2f2f2;
   --text-primary: #111111;
   --text-secondary: #4a4a4a;
-  --text-muted: #8a8a8a;
+  --text-muted: #6b6b6b;
 
   /* accents */
-  --accent-blue: #2266dd;
+  --accent-blue: #0a5cb8;
   --accent-green: #1a9960;
   --accent-red: #dd3344;
   --accent-orange: #dd7722;
+  /* rank gap vs GDP: teal above, ochre below. Not green/red, which reads as
+     good/bad and merges for deuteranopes; the sign always rides along. */
+  --gap-above: #0e7c86;
+  --gap-below: #a15c00;
   /* Two border weights: a soft default for interactive elements, a fainter
      hairline for dividers. Lighter than before so the chrome recedes. */
   --border: #e5e5e5;
@@ -65,6 +69,7 @@
    in inline styles, which is this app's dominant styling pattern. */
 @theme {
   --font-sans: "Inter", system-ui, sans-serif;
+  --font-serif: "Source Serif 4", Georgia, serif;
   --font-mono: "JetBrains Mono", monospace;
 }
 
@@ -74,6 +79,7 @@ body {
   color: var(--text-primary);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  font-variant-numeric: tabular-nums;
 }
 
 #root {

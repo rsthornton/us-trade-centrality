@@ -16,8 +16,8 @@ import StateDossier from "./components/drawer/StateDossier";
 import Wordmark from "./components/brand/Wordmark";
 import Footer from "./components/Footer";
 import { Button, SegmentedControl, Slider } from "./components/ui";
-import OrientationHint from "./components/OrientationHint";
 import HeroFinding from "./components/HeroFinding";
+import ClaimStrip from "./components/ClaimStrip";
 import { readInitialUrlState, useSyncUrlState } from "./hooks/useUrlState";
 import type {
   BaseCentralityRow,
@@ -41,7 +41,13 @@ type View = "map" | "divergence";
 
 const ENERGY_CODES = new Set(["15", "16", "17", "18", "19", "15-19"]);
 const ENERGY_SCOPE_NOTE =
-  "Energy dependence is understated here. Crude oil is absent from the public 2017 survey file, and pipeline transmission, electricity, and foreign imports are outside the survey.";
+  "Crude oil is absent from the public 2017 survey file, and pipeline transmission, electricity and foreign imports are outside the survey, so energy dependence is understated here.";
+
+const MEASURE_NAMES: Record<Measure, { plain: string; technical: string }> = {
+  eigenvector: { plain: "Trade prestige", technical: "eigenvector" },
+  betweenness: { plain: "Bridge position", technical: "betweenness" },
+  out_degree: { plain: "Export reach", technical: "weighted out-degree" },
+};
 
 export default function App() {
   const [data, setData] = useState<CoreData | null>(null);
@@ -106,6 +112,17 @@ export default function App() {
   // Top-N slice actually drawn / explored.
   const edges = useMemo(() => allEdges.slice(0, topN), [allEdges, topN]);
 
+  const stateNames = useMemo(
+    () => Object.fromEntries((data?.centralities51 ?? []).map((r) => [r.state, r.state_name])),
+    [data],
+  );
+
+  // Interstate shipment value from the full flow matrix, for the subtitle.
+  const interstateTrillions = useMemo(() => {
+    const total = (data?.stateTotals ?? []).reduce((sum, t) => sum + t.out_total, 0);
+    return total / 1e12;
+  }, [data]);
+
   const selectedData = useMemo(() => {
     if (!selectedState || !centralities.length) return null;
     return centralities.find((r) => r.state === selectedState) ?? null;
@@ -120,15 +137,14 @@ export default function App() {
 
   useSyncUrlState(selectedState, measure);
 
-  // The active measure's hue threads through the UI (canvas top accent, etc.).
+  // The active measure's hue marks hover outlines and the legend dot.
   const measureColor = MEASURE_COLORS[measure];
   const stageStyle: React.CSSProperties = {
-    background: "linear-gradient(180deg, var(--canvas-from), var(--canvas-to))",
-    border: "1px solid var(--hairline)",
-    borderTop: `2.5px solid ${measureColor}`,
+    background: "var(--bg-secondary)",
+    border: "1px solid var(--border)",
     borderRadius: "var(--radius-card)",
-    boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
   };
+  const isEnergy = ENERGY_CODES.has(commodity);
 
   if (Gallery && location.hash === "#/components") {
     return (
@@ -157,13 +173,13 @@ export default function App() {
   return (
     <div className="min-h-screen">
      <div className="mx-auto w-full max-w-[1240px]">
-      <header className="px-6 pt-5">
+      <header className="px-4 sm:px-6 pt-5">
         <div
           className="flex items-center justify-between gap-4 pb-4"
           style={{ borderBottom: "1px solid var(--border)" }}
         >
           <Wordmark />
-          <nav className="flex items-center gap-5 text-sm">
+          <nav className="flex items-center gap-4 sm:gap-6 text-[13px] sm:text-sm whitespace-nowrap">
             <a
               href={NOTEBOOK_URL}
               target="_blank"
@@ -171,60 +187,58 @@ export default function App() {
               className="font-medium transition-opacity hover:opacity-70"
               style={{ color: "var(--accent-blue)" }}
             >
-              Explore the math →
+              Methods
             </a>
             <a
               href={REPO_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="transition-opacity hover:opacity-70"
-              style={{ color: "var(--text-secondary)" }}
+              className="font-medium transition-opacity hover:opacity-70"
+              style={{ color: "var(--accent-blue)" }}
             >
-              Source
+              <span className="sm:hidden">Code</span>
+              <span className="hidden sm:inline">Data and code</span>
             </a>
           </nav>
         </div>
 
-        <div className="pt-6 pb-1">
+        <div className="pt-7 pb-1">
           <div
-            className="text-xs font-mono uppercase tracking-[0.18em] mb-2"
+            className="text-[11px] font-mono uppercase tracking-[0.12em] mb-3"
             style={{ color: "var(--text-muted)" }}
           >
-            Structural power in U.S. interstate trade · CFS 2017
+            U.S. interstate shipments · Commodity Flow Survey 2017
           </div>
           <h1
-            className="text-3xl sm:text-4xl font-light tracking-tight"
+            className="font-serif text-[30px] sm:text-[38px] font-semibold leading-[1.15] tracking-[-0.01em]"
             style={{ color: "var(--text-primary)" }}
           >
-            The Interstate Power Observatory
+            Network position is not economic size
           </h1>
           <p
-            className="text-sm sm:text-base mt-2 max-w-2xl leading-relaxed"
+            className="text-base sm:text-[17px] mt-3 max-w-[64ch] leading-relaxed"
             style={{ color: "var(--text-secondary)" }}
           >
-            GDP measures what a state produces. Network centrality reveals the leverage it holds.
-            Explore which states are the true hubs, bridges, and exporters of America's $4 trillion
-            interstate commerce network.
+            Three network measures for each state, computed on{" "}
+            {interstateTrillions > 0 ? `$${interstateTrillions.toFixed(1)} trillion of ` : ""}
+            interstate commodity shipments among the 50 states and DC, compared with its GDP rank.
           </p>
-          <HeroFinding centralities={data.centralities51} />
+          <div className="hidden lg:block">
+            <ClaimStrip>
+              <HeroFinding centralities={data.centralities51} measure={measure} />
+            </ClaimStrip>
+          </div>
         </div>
       </header>
 
-      <div className="px-6 pt-5 flex flex-col lg:flex-row gap-5 items-start">
-        {/* Control rail */}
-        <aside className="w-full lg:w-[300px] lg:shrink-0 flex flex-col gap-4">
-          <SegmentedControl
-            size="lg"
-            options={[
-              { value: "map", label: "Map" },
-              { value: "divergence", label: "Divergence" },
-            ]}
-            value={view}
-            onChange={setView}
-          />
+      <div className="px-4 sm:px-6 pt-6 flex flex-col lg:flex-row gap-5 items-start">
+        {/* Control rail: filters only. Below lg it follows the stage, so the map comes first. */}
+        <aside className="order-2 lg:order-none w-full lg:w-[280px] lg:shrink-0 flex flex-col gap-5">
+          <RailSection title="Measure">
+            <CentralityPills vertical selected={measure} onSelect={setMeasure} />
+          </RailSection>
 
-          <CentralityPills vertical selected={measure} onSelect={setMeasure} />
-
+          <RailSection title="Commodity">
           <CommodityFilter
             selected={commodity}
             onSelect={(code) => {
@@ -233,10 +247,12 @@ export default function App() {
             }}
             metadata={data.metadata}
           />
+          </RailSection>
 
           {view === "map" && (
-            <div className="flex flex-col gap-3 pt-1">
-              <div className="flex items-center gap-1">
+            <RailSection title="Flows">
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center gap-1 flex-wrap">
                 <Button
                   variant="ghost"
                   size="sm"
@@ -244,7 +260,7 @@ export default function App() {
                   disabled={commodity !== "all"}
                   onClick={() => setNetworkType(networkType === "51" ? "52" : "51")}
                 >
-                  {networkType === "51" ? "51×51 Domestic" : "52×52 + Intl"}
+                  {networkType === "51" ? "Domestic network" : "With foreign trade"}
                 </Button>
                 <Button
                   variant="ghost"
@@ -253,15 +269,15 @@ export default function App() {
                   active={showEdges}
                   onClick={() => setShowEdges(!showEdges)}
                 >
-                  {showEdges ? "Flows On" : "Flows Off"}
+                  {showEdges ? "Flows shown" : "Flows hidden"}
                 </Button>
               </div>
 
               {showEdges && (
                 <div className="flex flex-col gap-3 text-xs" style={{ color: "var(--text-secondary)" }}>
                   <label className="flex items-center gap-2">
-                    <span className="font-mono uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
-                      Top flows
+                    <span className="whitespace-nowrap" style={{ color: "var(--text-secondary)" }}>
+                      Largest
                     </span>
                     <Slider
                       min={Math.min(10, allEdges.length || 10)}
@@ -270,19 +286,17 @@ export default function App() {
                       value={Math.min(topN, allEdges.length)}
                       onChange={setTopN}
                     />
-                    <span className="font-mono tabular-nums" style={{ color: "var(--accent-blue)" }}>
+                    <span className="font-mono tabular-nums" style={{ color: "var(--text-primary)" }}>
                       {Math.min(topN, allEdges.length)}
                     </span>
                   </label>
 
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="font-mono uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
-                      Direction
-                    </span>
+                    <span style={{ color: "var(--text-secondary)" }}>Direction</span>
                     <SegmentedControl
                       size="sm"
                       options={[
-                        { value: "both", label: "Both" },
+                        { value: "both", label: "All" },
                         { value: "in", label: "Inbound" },
                         { value: "out", label: "Outbound" },
                       ]}
@@ -296,15 +310,36 @@ export default function App() {
                 </div>
               )}
             </div>
+            </RailSection>
           )}
         </aside>
 
         {/* Stage */}
-        <div className="flex-1 min-w-0 w-full">
+        <div className="order-1 lg:order-none flex-1 min-w-0 w-full">
+          <div className="flex items-center justify-between gap-3 mb-3 flex-wrap">
+            <SegmentedControl
+              size="lg"
+              options={[
+                { value: "map", label: "Map" },
+                { value: "divergence", label: "GDP comparison" },
+              ]}
+              value={view}
+              onChange={setView}
+            />
+            <span className="text-xs" style={{ color: "var(--text-muted)" }}>
+              {MEASURE_NAMES[measure].plain} ·{" "}
+              {commodity === "all"
+                ? "all commodities"
+                : (data.metadata?.sctg_names?.[commodity] ??
+                  Object.keys(data.metadata?.commodity_groups ?? {}).find(
+                    (g) => (data.metadata?.commodity_groups?.[g] ?? []).includes(commodity),
+                  ) ??
+                  commodity)}
+            </span>
+          </div>
           {view === "map" ? (
             <div className="px-4 pt-4 pb-3" style={stageStyle}>
               <div className="relative">
-                {!selectedState && <OrientationHint />}
                 <TradeMap
                   geojson={geojson}
                   centralities={centralities}
@@ -321,11 +356,31 @@ export default function App() {
 
               <div className="mt-2 pt-2" style={{ borderTop: "1px solid var(--hairline)" }}>
                 <ColorLegend
-                  label={measure.replace("_", " ")}
+                  label={`${MEASURE_NAMES[measure].plain} (${MEASURE_NAMES[measure].technical})`}
                   color={measureColor}
                   min={centralities.length ? Math.min(...centralities.map((r) => r[measure])) : 0}
                   max={centralities.length ? Math.max(...centralities.map((r) => r[measure])) : 1}
                 />
+                <p className="text-xs mt-2" style={{ color: "var(--text-muted)" }}>
+                  {selectedState
+                    ? "Select another state, or press Esc to clear."
+                    : "Select a state for its ranks and trade partners."}{" "}
+                  Lines show the largest shipment links, not routes.
+                </p>
+                {isEnergy && (
+                  <p
+                    role="note"
+                    className="text-xs mt-2 px-3 py-2 rounded-md max-w-2xl leading-snug"
+                    style={{
+                      color: "var(--text-primary)",
+                      background: "var(--bg-surface)",
+                      border: "1px solid var(--border)",
+                    }}
+                  >
+                    <span className="font-semibold">Coverage limit. </span>
+                    {ENERGY_SCOPE_NOTE}
+                  </p>
+                )}
               </div>
             </div>
           ) : (
@@ -341,27 +396,33 @@ export default function App() {
           {selectedState && selectedData && (
             <StateDossier
               state={selectedState}
+              stateName={stateNames[selectedState] ?? selectedState}
+              measure={measure}
               data={selectedData}
               edges={edges}
               totals={selectedTotals}
-              scopeNote={ENERGY_CODES.has(commodity) ? ENERGY_SCOPE_NOTE : undefined}
-              accent={measureColor}
+              scopeNote={isEnergy && view !== "map" ? ENERGY_SCOPE_NOTE : undefined}
               onClose={() => setSelectedState(null)}
             />
           )}
         </div>
       </div>
 
-      <div className="px-6">
+      <div className="px-4 sm:px-6 lg:hidden">
+        <ClaimStrip>
+          <HeroFinding centralities={data.centralities51} measure={measure} />
+        </ClaimStrip>
+      </div>
+
+      <div className="px-4 sm:px-6">
         <div
-          className="flex items-center justify-between flex-wrap gap-2 mt-5 pt-3 text-xs font-mono"
+          className="flex items-center justify-between flex-wrap gap-2 mt-6 pt-3 text-xs font-mono"
           style={{ borderTop: "1px solid var(--hairline)", color: "var(--text-muted)" }}
         >
-          <span className="tracking-wide uppercase">U.S. interstate commerce · CFS 2017</span>
+          <span>U.S. interstate shipments · CFS 2017</span>
           {data.stats && (
             <span>
-              {data.stats.nodes} nodes · {data.stats.edges.toLocaleString()} edges · density{" "}
-              {data.stats.density}
+              50 states and DC · {data.stats.edges.toLocaleString()} weighted links
             </span>
           )}
         </div>
@@ -370,5 +431,16 @@ export default function App() {
       <Footer />
      </div>
     </div>
+  );
+}
+
+function RailSection({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="flex flex-col gap-2">
+      <h2 className="text-[13px] font-medium" style={{ color: "var(--text-secondary)" }}>
+        {title}
+      </h2>
+      {children}
+    </section>
   );
 }

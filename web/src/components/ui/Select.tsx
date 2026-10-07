@@ -29,11 +29,11 @@ export default function Select({
   className = "",
 }: SelectProps) {
   return (
-    <div className={`relative inline-flex items-center ${className}`}>
+    <div className={`relative flex items-center min-w-0 ${className}`}>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="appearance-none text-xs rounded border pl-2.5 pr-7 py-1.5 cursor-pointer min-w-[180px]"
+        className="appearance-none text-[13px] rounded-md border pl-2.5 pr-7 py-1.5 cursor-pointer w-full min-w-0 truncate"
         style={{
           backgroundColor: "var(--bg-surface)",
           borderColor: "var(--border)",

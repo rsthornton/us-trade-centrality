@@ -1,104 +1,93 @@
 import { useMemo } from "react";
 import { MEASURE_COLORS } from "../../lib/colors";
-import Badge from "../ui/Badge";
+import { hasRank, rankGap } from "../../lib/ranks";
+import { formatScore } from "../../lib/format";
 import TradeCard from "./TradeCard";
 import PartnersList from "./PartnersList";
 import { formatDollars, type Partner } from "./format";
 import type { BaseCentralityRow, Edge, Measure, StateTotals } from "../../types";
 
 const MEASURES: { key: Measure; label: string }[] = [
-  { key: "eigenvector", label: "Eigenvector" },
-  { key: "betweenness", label: "Betweenness" },
-  { key: "out_degree", label: "Out-Degree" },
+  { key: "eigenvector", label: "Trade prestige" },
+  { key: "betweenness", label: "Bridge position" },
+  { key: "out_degree", label: "Export reach" },
 ];
 
-function interpret(key: Measure, diff: number): string {
-  if (diff > 0) {
-    const phrase =
-      key === "betweenness"
-        ? "a critical bridge"
-        : key === "eigenvector"
-          ? "trades with powerful partners"
-          : "an outsized exporter";
-    return `Punches above its weight: ${phrase}, ${diff} ranks more central than its economy.`;
-  }
-  const plain =
-    key === "betweenness"
-      ? "bridge position"
-      : key === "eigenvector"
-        ? "trade prestige"
-        : "export reach";
-  return `Below its economic weight: ${Math.abs(diff)} ranks lower in ${plain} than its size.`;
-}
-
-function rankColor(rank: number, total = 51): string {
-  const pct = rank / total;
-  return pct <= 0.2
-    ? "var(--accent-green)"
-    : pct <= 0.5
-      ? "var(--accent-blue)"
-      : "var(--text-muted)";
+function interpret(name: string, key: Measure, diff: number): string {
+  const label = MEASURES.find((m) => m.key === key)?.label.toLowerCase() ?? key;
+  const direction = diff > 0 ? "higher" : "lower";
+  return `${name}'s ${label} rank is ${Math.abs(diff)} places ${direction} than its GDP rank.`;
 }
 
 interface RankPillProps {
   label: string;
   value: string;
-  rank: number;
+  rank: number | null;
   color?: string;
   delta?: number;
 }
 
 function RankPill({ label, value, rank, color, delta }: RankPillProps) {
   return (
-    <div className="min-w-[104px]">
+    <div className="min-w-[112px]">
       <div
-        className="text-[10px] uppercase tracking-wider mb-1 flex items-center gap-1.5"
-        style={{ color: "var(--text-muted)" }}
+        className="text-[11px] font-medium mb-1 flex items-center gap-1.5"
+        style={{ color: "var(--text-secondary)" }}
       >
         {color && (
-          <span className="inline-block w-1.5 h-1.5 rounded-full" style={{ backgroundColor: color }} />
+          <span className="inline-block w-2 h-2 rounded-full" style={{ backgroundColor: color }} />
         )}
         {label}
       </div>
-      <div className="flex items-baseline gap-2">
-        <span className="font-mono text-sm" style={{ color: color ?? "var(--text-primary)" }}>
-          {value}
-        </span>
-        <Badge color={rankColor(rank)}>#{rank}</Badge>
-        {delta !== undefined && delta !== 0 && (
-          <span
-            className="text-xs font-medium"
-            style={{ color: delta > 0 ? "var(--accent-green)" : "var(--accent-red)" }}
-          >
-            {delta > 0 ? "▲+" : "▼"}
-            {delta > 0 ? delta : delta}
+      {rank === null ? (
+        <div className="text-sm" style={{ color: "var(--text-muted)" }}>
+          {label === "Bridge position" ? "No brokerage" : "None"}
+        </div>
+      ) : (
+        <div className="flex items-baseline gap-2 font-mono tabular-nums">
+          <span className="text-sm" style={{ color: "var(--text-primary)" }}>
+            #{rank}
           </span>
-        )}
-      </div>
+          <span className="text-xs" style={{ color: "var(--text-muted)" }}>
+            {value}
+          </span>
+          {delta !== undefined && delta !== 0 && (
+            <span
+              className="text-xs font-semibold"
+              style={{ color: delta > 0 ? "var(--gap-above)" : "var(--gap-below)" }}
+            >
+              {delta > 0 ? `+${delta}` : `−${Math.abs(delta)}`}
+            </span>
+          )}
+        </div>
+      )}
     </div>
   );
 }
 
 interface StateDossierProps {
   state: string;
+  /** Full state name (commodity rows carry only the code). */
+  stateName: string;
+  /** The measure selected in the rail; the interpretation follows it. */
+  measure: Measure;
   data: BaseCentralityRow;
   edges: Edge[];
   totals?: StateTotals | null;
   /** Caveat shown under trade volume when the data cannot see part of this commodity. */
   scopeNote?: string;
-  /** Active measure hue for the top accent + watermark. */
-  accent: string;
   onClose: () => void;
 }
 
 /** Horizontal state detail panel that sits below the stage (map/divergence). */
 export default function StateDossier({
   state,
+  stateName,
+  measure,
   data,
   edges,
   totals,
   scopeNote,
-  accent,
   onClose,
 }: StateDossierProps) {
   const fromEdges = useMemo(() => {
@@ -132,11 +121,7 @@ export default function StateDossier({
   const topOutbound = totals ? totals.top_out.slice(0, 5) : fromEdges.topOutbound;
   const topInbound = totals ? totals.top_in.slice(0, 5) : fromEdges.topInbound;
 
-  const divergences = MEASURES.map(({ key }) => ({
-    key,
-    diff: (data.gdp_rank || 0) - (data[`rank_${key}`] || 0),
-  }));
-  const standout = divergences.reduce((a, b) => (Math.abs(b.diff) > Math.abs(a.diff) ? b : a));
+  const gap = hasRank(data, measure) ? rankGap(data, measure) : 0;
   const hasVolume = totals != null || edges.length > 0;
 
   return (
@@ -145,31 +130,20 @@ export default function StateDossier({
       className="mt-3 p-5 relative overflow-hidden"
       style={{
         background: "linear-gradient(180deg, var(--canvas-from), var(--canvas-to))",
-        border: "1px solid var(--hairline)",
-        borderTop: `2.5px solid ${accent}`,
+        border: "1px solid var(--border)",
         borderRadius: "var(--radius-card)",
         boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
         animation: "ipo-finding-in 0.3s ease",
       }}
     >
-      <span
-        aria-hidden
-        className="absolute pointer-events-none select-none font-bold tracking-tighter"
-        style={{ right: 18, top: -18, fontSize: 130, lineHeight: 1, color: accent, opacity: 0.07 }}
-      >
-        {state}
-      </span>
       <div className="relative flex flex-wrap items-start gap-x-8 gap-y-5">
         {/* Identity + interpretation */}
         <div className="min-w-[200px] max-w-[260px]">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
-              <h3 className="text-xl font-bold truncate" style={{ color: "var(--text-primary)" }}>
-                {data.state_name || state}
+              <h3 className="text-xl font-semibold truncate" style={{ color: "var(--text-primary)" }}>
+                {stateName}
               </h3>
-              <span className="text-xs font-mono" style={{ color: "var(--text-muted)" }}>
-                {state}
-              </span>
             </div>
             <button
               onClick={onClose}
@@ -180,12 +154,9 @@ export default function StateDossier({
               ✕
             </button>
           </div>
-          {Math.abs(standout.diff) >= 5 && (
-            <p
-              className="text-xs mt-2 leading-snug"
-              style={{ color: MEASURE_COLORS[standout.key] }}
-            >
-              {interpret(standout.key, standout.diff)}
+          {Math.abs(gap) >= 5 && (
+            <p className="text-sm mt-2 leading-snug" style={{ color: "var(--text-secondary)" }}>
+              {interpret(stateName, measure, gap)}
             </p>
           )}
         </div>
@@ -193,11 +164,25 @@ export default function StateDossier({
         {/* Trade volume */}
         {hasVolume && (
           <div>
+            {scopeNote && (
+              <p
+                className="text-xs mb-3 max-w-[300px] leading-snug px-3 py-2 rounded-md"
+                role="note"
+                style={{
+                  color: "var(--text-primary)",
+                  background: "var(--bg-surface)",
+                  border: "1px solid var(--border)",
+                }}
+              >
+                <span className="font-semibold">Coverage limit. </span>
+                {scopeNote}
+              </p>
+            )}
             <div
-              className="text-[10px] uppercase tracking-wider mb-2"
-              style={{ color: "var(--text-muted)" }}
+              className="text-[11px] font-medium mb-2"
+              style={{ color: "var(--text-secondary)" }}
             >
-              Trade volume
+              Shipment value
             </div>
             <div className="flex gap-2">
               <TradeCard label="Outbound" value={outbound} />
@@ -209,32 +194,27 @@ export default function StateDossier({
                 <span className="font-mono">{formatDollars(Math.abs(inbound - outbound))}</span>
               </p>
             )}
-            {scopeNote && (
-              <p className="text-xs mt-1 max-w-[260px] leading-snug" style={{ color: "var(--text-muted)" }}>
-                {scopeNote}
-              </p>
-            )}
           </div>
         )}
 
         {/* GDP + network ranks */}
         <div>
           <div
-            className="text-[10px] uppercase tracking-wider mb-2"
-            style={{ color: "var(--text-muted)" }}
+            className="text-[11px] font-medium mb-2"
+            style={{ color: "var(--text-secondary)" }}
           >
-            GDP vs network rank
+            GDP rank and network ranks
           </div>
           <div className="flex gap-4 flex-wrap">
-            <RankPill label="GDP" value={`$${data.gdp_billions?.toFixed(0)}B`} rank={data.gdp_rank} />
+            <RankPill label="GDP" value={formatDollars(data.gdp_billions * 1e9)} rank={data.gdp_rank} />
             {MEASURES.map(({ key, label }) => (
               <RankPill
                 key={key}
                 label={label}
-                value={data[key]?.toFixed(3)}
-                rank={data[`rank_${key}`]}
+                value={formatScore(data[key])}
+                rank={hasRank(data, key) ? data[`rank_${key}`] : null}
                 color={MEASURE_COLORS[key]}
-                delta={data.gdp_rank - data[`rank_${key}`]}
+                delta={rankGap(data, key)}
               />
             ))}
           </div>
@@ -244,10 +224,10 @@ export default function StateDossier({
         {(topOutbound.length > 0 || topInbound.length > 0) && (
           <div className="flex gap-6">
             <div className="-mt-4">
-              <PartnersList title="Top Outbound →" partners={topOutbound} />
+              <PartnersList title="Top destinations" partners={topOutbound} />
             </div>
             <div className="-mt-4">
-              <PartnersList title="Top Inbound ←" partners={topInbound} />
+              <PartnersList title="Top origins" partners={topInbound} />
             </div>
           </div>
         )}
