@@ -1,0 +1,34 @@
+# State role taxonomy: thresholds (first pass, chosen for discussion, not fitted).
+# A state takes the first role in `priority` whose rule it meets; states meeting
+# none are Generalists. Ranks are 1 = highest. Read by run_state_roles.py.
+
+version: 1
+priority: [Engine, Sustainer, Router, Specialist, Market]
+
+engine:
+  max_eigenvector_rank: 7
+  max_out_degree_rank: 7
+
+sustainer:
+  # network (eigenvector) rank at least this many places above GDP rank
+  min_places_above_gdp: 5
+
+router:
+  # top-k betweenness in the year; states with zero betweenness never qualify
+  max_betweenness_rank: 12
+  # decade summary flag: router in at least this many of the three survey years
+  min_years_for_decade_flag: 2
+
+specialist:
+  min_location_quotient: 15
+  min_national_share: 0.05
+
+market:
+  # inflow / outflow, interstate shipments by value
+  min_pull: 1.3
+
+signature:
+  # commodity with the highest location quotient among those where the state
+  # ships at least this share of national interstate value; fallback if none
+  min_national_share: 0.03
+  fallback_min_national_share: 0.01
