@@ -48,3 +48,28 @@ state roles, a tile map, an element key); see `figures/`.
 
 **Next.** Threshold sensitivity; clustering check against the rule-based roles;
 script-generated figures; a Roles view on the dashboard.
+
+## 2026-10-07: threshold sensitivity (quick pass)
+
+Each threshold moved one step either way, all else fixed; count of the 153
+state-years (51 states × 3 years) whose role changes:
+
+| Threshold | Lower | Higher |
+|---|---|---|
+| Engine ranks (7) | 4 (6: NY, PA drop to Router) | 1 (8) |
+| Sustainer places (5) | 8 (4) | 10 (6) |
+| Router rank (12) | 5 (10) | 6 (14) |
+| Specialist LQ (15) | 1 (12) | 3 (18) |
+| Specialist share (5%) | 0 (4%) | 1 (6%) |
+| Market pull (1.3) | 4 (1.2) | 4 (1.4) |
+
+No single step changes more than 10 of 153 (6.5%). The Sustainer cutoff is the
+most sensitive. Engines are stable at the top (TX, CA, IL, OH) but NY and PA
+depend on the cutoff.
+
+Undervalued states, years as Sustainer by cutoff: at 4 or 5 places, KY, MS,
+IN, LA, TN and MI qualify in all three years; at 6, only KY and MS do; at 7,
+only KY. The threshold-free statement: all six stay at least 5 places above
+their GDP rank in every survey year (minimum gaps KY 11, MS 6, IN 5, LA 5,
+TN 5, MI 5). Claims about individual states should cite the gaps, not the
+role label.
