@@ -1,0 +1,476 @@
+{
+ "note": "Post-hoc exploratory analysis, not pre-registered. See README.md.",
+ "variants": [
+  {
+   "threshold": "engine ranks",
+   "value": 6,
+   "changed": 4,
+   "of": 153,
+   "changes": [
+    {
+     "state": "NY",
+     "year": 2012,
+     "from": "Engine",
+     "to": "Router"
+    },
+    {
+     "state": "NY",
+     "year": 2017,
+     "from": "Engine",
+     "to": "Router"
+    },
+    {
+     "state": "PA",
+     "year": 2017,
+     "from": "Engine",
+     "to": "Router"
+    },
+    {
+     "state": "PA",
+     "year": 2022,
+     "from": "Engine",
+     "to": "Router"
+    }
+   ]
+  },
+  {
+   "threshold": "engine ranks",
+   "value": 8,
+   "changed": 1,
+   "of": 153,
+   "changes": [
+    {
+     "state": "NY",
+     "year": 2022,
+     "from": "Router",
+     "to": "Engine"
+    }
+   ]
+  },
+  {
+   "threshold": "sustainer places",
+   "value": 4,
+   "changed": 8,
+   "of": 153,
+   "changes": [
+    {
+     "state": "ND",
+     "year": 2012,
+     "from": "Specialist",
+     "to": "Sustainer"
+    },
+    {
+     "state": "MO",
+     "year": 2017,
+     "from": "Generalist",
+     "to": "Sustainer"
+    },
+    {
+     "state": "VT",
+     "year": 2017,
+     "from": "Specialist",
+     "to": "Sustainer"
+    },
+    {
+     "state": "WI",
+     "year": 2017,
+     "from": "Generalist",
+     "to": "Sustainer"
+    },
+    {
+     "state": "AK",
+     "year": 2022,
+     "from": "Market",
+     "to": "Sustainer"
+    },
+    {
+     "state": "IA",
+     "year": 2022,
+     "from": "Generalist",
+     "to": "Sustainer"
+    },
+    {
+     "state": "ND",
+     "year": 2022,
+     "from": "Specialist",
+     "to": "Sustainer"
+    },
+    {
+     "state": "OK",
+     "year": 2022,
+     "from": "Generalist",
+     "to": "Sustainer"
+    }
+   ]
+  },
+  {
+   "threshold": "sustainer places",
+   "value": 6,
+   "changed": 10,
+   "of": 153,
+   "changes": [
+    {
+     "state": "MI",
+     "year": 2012,
+     "from": "Sustainer",
+     "to": "Generalist"
+    },
+    {
+     "state": "TN",
+     "year": 2012,
+     "from": "Sustainer",
+     "to": "Generalist"
+    },
+    {
+     "state": "WV",
+     "year": 2012,
+     "from": "Sustainer",
+     "to": "Specialist"
+    },
+    {
+     "state": "IN",
+     "year": 2017,
+     "from": "Sustainer",
+     "to": "Generalist"
+    },
+    {
+     "state": "LA",
+     "year": 2017,
+     "from": "Sustainer",
+     "to": "Generalist"
+    },
+    {
+     "state": "OK",
+     "year": 2017,
+     "from": "Sustainer",
+     "to": "Market"
+    },
+    {
+     "state": "WV",
+     "year": 2017,
+     "from": "Sustainer",
+     "to": "Specialist"
+    },
+    {
+     "state": "AL",
+     "year": 2022,
+     "from": "Sustainer",
+     "to": "Generalist"
+    },
+    {
+     "state": "AR",
+     "year": 2022,
+     "from": "Sustainer",
+     "to": "Generalist"
+    },
+    {
+     "state": "TN",
+     "year": 2022,
+     "from": "Sustainer",
+     "to": "Generalist"
+    }
+   ]
+  },
+  {
+   "threshold": "router rank",
+   "value": 10,
+   "changed": 5,
+   "of": 153,
+   "changes": [
+    {
+     "state": "GA",
+     "year": 2012,
+     "from": "Router",
+     "to": "Generalist"
+    },
+    {
+     "state": "CO",
+     "year": 2017,
+     "from": "Router",
+     "to": "Generalist"
+    },
+    {
+     "state": "NC",
+     "year": 2017,
+     "from": "Router",
+     "to": "Generalist"
+    },
+    {
+     "state": "GA",
+     "year": 2022,
+     "from": "Router",
+     "to": "Generalist"
+    },
+    {
+     "state": "UT",
+     "year": 2022,
+     "from": "Router",
+     "to": "Generalist"
+    }
+   ]
+  },
+  {
+   "threshold": "router rank",
+   "value": 14,
+   "changed": 6,
+   "of": 153,
+   "changes": [
+    {
+     "state": "NJ",
+     "year": 2012,
+     "from": "Generalist",
+     "to": "Router"
+    },
+    {
+     "state": "NC",
+     "year": 2012,
+     "from": "Generalist",
+     "to": "Router"
+    },
+    {
+     "state": "IA",
+     "year": 2017,
+     "from": "Generalist",
+     "to": "Router"
+    },
+    {
+     "state": "VA",
+     "year": 2017,
+     "from": "Generalist",
+     "to": "Router"
+    },
+    {
+     "state": "NC",
+     "year": 2022,
+     "from": "Generalist",
+     "to": "Router"
+    },
+    {
+     "state": "WA",
+     "year": 2022,
+     "from": "Market",
+     "to": "Router"
+    }
+   ]
+  },
+  {
+   "threshold": "specialist LQ",
+   "value": 12,
+   "changed": 1,
+   "of": 153,
+   "changes": [
+    {
+     "state": "ID",
+     "year": 2012,
+     "from": "Generalist",
+     "to": "Specialist"
+    }
+   ]
+  },
+  {
+   "threshold": "specialist LQ",
+   "value": 18,
+   "changed": 3,
+   "of": 153,
+   "changes": [
+    {
+     "state": "ID",
+     "year": 2017,
+     "from": "Specialist",
+     "to": "Generalist"
+    },
+    {
+     "state": "CO",
+     "year": 2022,
+     "from": "Specialist",
+     "to": "Generalist"
+    },
+    {
+     "state": "ND",
+     "year": 2022,
+     "from": "Specialist",
+     "to": "Market"
+    }
+   ]
+  },
+  {
+   "threshold": "specialist share",
+   "value": 0.04,
+   "changed": 0,
+   "of": 153,
+   "changes": []
+  },
+  {
+   "threshold": "specialist share",
+   "value": 0.06,
+   "changed": 1,
+   "of": 153,
+   "changes": [
+    {
+     "state": "ND",
+     "year": 2022,
+     "from": "Specialist",
+     "to": "Market"
+    }
+   ]
+  },
+  {
+   "threshold": "market pull",
+   "value": 1.2,
+   "changed": 4,
+   "of": 153,
+   "changes": [
+    {
+     "state": "AZ",
+     "year": 2017,
+     "from": "Generalist",
+     "to": "Market"
+    },
+    {
+     "state": "VA",
+     "year": 2017,
+     "from": "Generalist",
+     "to": "Market"
+    },
+    {
+     "state": "NV",
+     "year": 2022,
+     "from": "Generalist",
+     "to": "Market"
+    },
+    {
+     "state": "VA",
+     "year": 2022,
+     "from": "Generalist",
+     "to": "Market"
+    }
+   ]
+  },
+  {
+   "threshold": "market pull",
+   "value": 1.4,
+   "changed": 4,
+   "of": 153,
+   "changes": [
+    {
+     "state": "NH",
+     "year": 2017,
+     "from": "Market",
+     "to": "Generalist"
+    },
+    {
+     "state": "AZ",
+     "year": 2022,
+     "from": "Market",
+     "to": "Generalist"
+    },
+    {
+     "state": "NH",
+     "year": 2022,
+     "from": "Market",
+     "to": "Generalist"
+    },
+    {
+     "state": "WA",
+     "year": 2022,
+     "from": "Market",
+     "to": "Generalist"
+    }
+   ]
+  }
+ ],
+ "undervalued_sustainer_years_by_cutoff": {
+  "4": {
+   "KY": 3,
+   "MS": 3,
+   "IN": 3,
+   "LA": 3,
+   "TN": 3,
+   "MI": 3,
+   "MT": 2,
+   "SC": 1
+  },
+  "5": {
+   "KY": 3,
+   "MS": 3,
+   "IN": 3,
+   "LA": 3,
+   "TN": 3,
+   "MI": 3,
+   "MT": 2,
+   "SC": 1
+  },
+  "6": {
+   "KY": 3,
+   "MS": 3,
+   "IN": 2,
+   "LA": 2,
+   "TN": 1,
+   "MI": 2,
+   "MT": 2,
+   "SC": 1
+  },
+  "7": {
+   "KY": 3,
+   "MS": 2,
+   "IN": 2,
+   "LA": 2,
+   "TN": 0,
+   "MI": 0,
+   "MT": 2,
+   "SC": 1
+  }
+ },
+ "undervalued_gaps": {
+  "KY": {
+   "2012": 11,
+   "2017": 14,
+   "2022": 14
+  },
+  "MS": {
+   "2012": 8,
+   "2017": 10,
+   "2022": 6
+  },
+  "IN": {
+   "2012": 7,
+   "2017": 5,
+   "2022": 10
+  },
+  "LA": {
+   "2012": 12,
+   "2017": 5,
+   "2022": 9
+  },
+  "TN": {
+   "2012": 5,
+   "2017": 6,
+   "2022": 5
+  },
+  "MI": {
+   "2012": 5,
+   "2017": 6,
+   "2022": 6
+  },
+  "MT": {
+   "2012": 12,
+   "2017": 8,
+   "2022": 3
+  },
+  "SC": {
+   "2012": 1,
+   "2017": 9,
+   "2022": 3
+  }
+ },
+ "undervalued_min_gap": {
+  "KY": 11,
+  "MS": 6,
+  "IN": 5,
+  "LA": 5,
+  "TN": 5,
+  "MI": 5,
+  "MT": 3,
+  "SC": 1
+ }
+}
