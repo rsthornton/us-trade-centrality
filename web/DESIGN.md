@@ -26,21 +26,21 @@ before using them in a component.
 | Group | Tokens |
 |---|---|
 | Surface | `--bg-primary #fafafa` (neutral off-white), `--bg-secondary #ffffff` (cards pop), `--bg-surface #f2f2f2` |
-| Canvas stage | `--canvas-from #fafafa` → `--canvas-to #f2f2f2` (gradient behind map + divergence panels) |
-| Text | `--text-primary #111111`, `--text-secondary #4a4a4a`, `--text-muted #8a8a8a` |
-| Accents | `--accent-blue #2266dd`, `--accent-green #1a9960`, `--accent-red #dd3344`, `--accent-orange #dd7722` |
-| Borders | `--border #e4e1ec` (interactive elements), `--hairline #eeecf3` (faint dividers) |
+| Canvas stage | `--canvas-from #fafafa` → `--canvas-to #f2f2f2` (state panel only; the map and comparison cards are flat white) |
+| Text | `--text-primary #111111`, `--text-secondary #4a4a4a`, `--text-muted #6b6b6b` (AA on the page background) |
+| Accents | `--accent-blue #0a5cb8` (links), `--accent-green #1a9960`, `--accent-red #dd3344`, `--accent-orange #dd7722`; rank gap vs GDP `--gap-above #0e7c86` (teal), `--gap-below #a15c00` (ochre), always with a sign |
+| Borders | `--border #e5e5e5` (interactive elements, cards), `--hairline #efefef` (faint dividers) |
 | Map viz | `--map-selection #ffa94d`, `--map-dim #a3a3a3`, `--map-empty #ececec`, `--map-wash #e6e6e6`, `--map-stroke #d6d6d6`, `--map-hover #737373` |
 | Radius | `--radius-sm 4`, `--radius-md 6`, `--radius-lg 8` (controls), `--radius-card 12` (cards/panels/drawer), `--radius-pill 9999` |
 | Shadow | `--shadow-card`, `--shadow-card-hover`, `--shadow-drawer` |
 | Z-index | `--z-drawer 10`, `--z-tooltip 20`, `--z-hint 30` |
 | Motion | `--transition-fast 150ms`, `--transition-base 200ms`, `--transition-slow 300ms` |
-| Fonts | `--font-sans` Inter, `--font-mono` JetBrains Mono (registered in `@theme`) |
+| Fonts | `--font-sans` Inter (UI, body), `--font-serif` Source Serif 4 600 (H1 and claim titles only), `--font-mono` JetBrains Mono (numbers, codes); tabular numerals on `body` |
 
 **Data-viz palette** (`src/lib/colors.ts`): `CIVIDIS` (32-stop, navy to yellow, perceptually
 uniform and **colorblind-safe**, used for the centrality choropleth), `BRBG` (17-stop divergence,
-brown to teal, neutral midpoint), and `MEASURE_COLORS` (eigenvector `#44cc88`, betweenness
-`#4488ff`, out_degree `#ff9944`). Keep both ramps colorblind-safe, and never use red/blue for
+brown to teal, neutral midpoint), and `MEASURE_COLORS` (Okabe-Ito: eigenvector `#009e73`, betweenness
+`#0072b2`, out_degree `#d55e00`; markers and dots, not large fills). Keep both ramps colorblind-safe, and never use red/blue for
 divergence (reads as an election map on US states).
 
 ## UI primitives (`src/components/ui/`)
@@ -133,3 +133,16 @@ the export script, the consuming component, and `src/types.ts` together.
 `npm run typecheck && npm run lint && npm run build`, then screenshot the preview at desktop
 (1440) and mobile (390). Frozen pipeline note: never touch `../evolution/` — it is a registered
 pre-registration artifact.
+
+## Copy and data rules (UI review, October 2026)
+
+- Lead with plain measure names (trade prestige, bridge position, export reach); the method name
+  follows in mono.
+- A zero score has no meaningful rank (about 30 states tie at zero betweenness): show "No
+  brokerage" or "none", never the tied rank, and leave those states out of counts and findings
+  (`src/lib/ranks.ts`).
+- Rank gaps are positions, not performance: no "overperforms", "punches above its weight" or
+  red/green. Use a signed number (`+14`, `−15`, true minus sign) in the gap colors.
+- Numbers: `$2.80T`, `$206B`; scores to three decimals, `<0.001` for small positive values.
+- Claims on the page must trace to a file in the repo (the subtitle total is computed from
+  `state_trade_totals.json`; the durability claim links the evolution report).
