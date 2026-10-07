@@ -1,6 +1,6 @@
 # Measuring Structural Power in U.S. Interstate Commerce
 
-GDP is how we rank state economies. But GDP tells you nothing about structural position — which states sit on critical trade routes, which ones trade with powerful partners, which ones are essential to the network even though their output is modest. This project applies network centrality to the 2017 Commodity Flow Survey to find out. 40% of states diverge significantly from their GDP rankings. Florida, the 4th largest economy, lies on zero shortest trade paths.
+GDP is how we rank state economies. But GDP tells you nothing about structural position — which states sit on critical trade routes, which ones draw heavily from well-connected suppliers, which ones are essential to the network even though their output is modest. This project applies network centrality to the 2017 Commodity Flow Survey to find out. 40% of states diverge significantly from their GDP rankings. Florida, the 4th largest economy, lies on zero shortest trade paths.
 
 Master's thesis, Department of Systems Science and Industrial Engineering, Binghamton University.
 
@@ -18,6 +18,10 @@ Three centrality measures applied to a 51-node interstate trade network (50 stat
 - **40% of states diverge ≥5 rank positions** between GDP and eigenvector centrality. The pattern tracks industry composition: manufacturing and energy states overperform, service economies underperform.
 - **Betweenness centrality reshuffles under boundary change** (ρ = 0.816 when international trade is added) while eigenvector and out-degree remain stable (ρ > 0.98). Boundary specification is not a trivial methodological choice.
 - **All measures survive 33% graph filtration** with ρ = 1.000. Rankings are driven by the high-value trade backbone, not low-weight noise.
+
+## Corrections
+
+- **Eigenvector direction (October 2026).** Thesis Equation 3.2 writes the out-flow eigenvector; every reported value is the in-flow version (NetworkX's default on a directed graph). The numbers are correct for the in-flow version, and six of the eight structurally undervalued states hold under either direction; Louisiana and Montana do not. Details and the full comparison: [`paper/ERRATA.md`](paper/ERRATA.md).
 
 ## Explore the Data
 

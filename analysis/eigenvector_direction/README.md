@@ -1,7 +1,8 @@
 # Eigenvector direction
 
-**Post-hoc check, not pre-registered.** Answers the committee question (S. Kojaku,
-defense, April 2026) on left versus right eigenvector on a directed network.
+**Post-hoc check, not pre-registered.** Answers a question from the thesis
+defense (April 2026) on left versus right eigenvectors in a directed network.
+Corrections to the thesis text: `paper/ERRATA.md`.
 
 With `A[i, j]` the flow from state i to state j there are two eigenvector
 centralities:
