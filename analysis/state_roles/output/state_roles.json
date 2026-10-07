@@ -1,0 +1,2926 @@
+{
+ "meta": {
+  "note": "Post-hoc exploratory analysis, not pre-registered. See README.md.",
+  "years": [
+   2012,
+   2017,
+   2022
+  ],
+  "source": "evolution/cache (CFS 2012 PUMF, 2017 PUF, 2022 PUMS; SCTG 16 excluded)",
+  "thresholds": {
+   "version": 1,
+   "priority": [
+    "Engine",
+    "Sustainer",
+    "Router",
+    "Specialist",
+    "Market"
+   ],
+   "engine": {
+    "max_eigenvector_rank": 7,
+    "max_out_degree_rank": 7
+   },
+   "sustainer": {
+    "min_places_above_gdp": 5
+   },
+   "router": {
+    "max_betweenness_rank": 12,
+    "min_years_for_decade_flag": 2
+   },
+   "specialist": {
+    "min_location_quotient": 15,
+    "min_national_share": 0.05
+   },
+   "market": {
+    "min_pull": 1.3
+   },
+   "signature": {
+    "min_national_share": 0.03,
+    "fallback_min_national_share": 0.01
+   }
+  }
+ },
+ "states": [
+  {
+   "state": "AK",
+   "name": "Alaska",
+   "years": {
+    "2012": {
+     "role": "Market",
+     "also": [],
+     "rank_eigenvector": 50,
+     "rank_out_degree": 49,
+     "rank_betweenness": null,
+     "rank_gdp": 44,
+     "places_above_gdp": -6,
+     "pull": 2.891,
+     "signature_sctg": null,
+     "signature": null,
+     "signature_lq": null,
+     "signature_share": null
+    },
+    "2017": {
+     "role": "Market",
+     "also": [],
+     "rank_eigenvector": 51,
+     "rank_out_degree": 49,
+     "rank_betweenness": null,
+     "rank_gdp": 47,
+     "places_above_gdp": -4,
+     "pull": 4.88,
+     "signature_sctg": null,
+     "signature": null,
+     "signature_lq": null,
+     "signature_share": null
+    },
+    "2022": {
+     "role": "Market",
+     "also": [],
+     "rank_eigenvector": 45,
+     "rank_out_degree": 49,
+     "rank_betweenness": null,
+     "rank_gdp": 49,
+     "places_above_gdp": 4,
+     "pull": 8.288,
+     "signature_sctg": null,
+     "signature": null,
+     "signature_lq": null,
+     "signature_share": null
+    }
+   },
+   "decade": {
+    "role": "Market",
+    "consistent": true,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 6
+   }
+  },
+  {
+   "state": "AL",
+   "name": "Alabama",
+   "years": {
+    "2012": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 24,
+     "rank_out_degree": 25,
+     "rank_betweenness": 20,
+     "rank_gdp": 25,
+     "places_above_gdp": 1,
+     "pull": 1.053,
+     "signature_sctg": "01",
+     "signature": "Live Animals and Fish",
+     "signature_lq": 6.25,
+     "signature_share": 0.1088
+    },
+    "2017": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 25,
+     "rank_out_degree": 23,
+     "rank_betweenness": null,
+     "rank_gdp": 27,
+     "places_above_gdp": 2,
+     "pull": 0.875,
+     "signature_sctg": "12",
+     "signature": "Gravel and Crushed Stone",
+     "signature_lq": 6.17,
+     "signature_share": 0.1136
+    },
+    "2022": {
+     "role": "Sustainer",
+     "also": [],
+     "rank_eigenvector": 22,
+     "rank_out_degree": 19,
+     "rank_betweenness": 23,
+     "rank_gdp": 27,
+     "places_above_gdp": 5,
+     "pull": 0.816,
+     "signature_sctg": "27",
+     "signature": "Newsprint/Paper",
+     "signature_lq": 3.39,
+     "signature_share": 0.0735
+    }
+   },
+   "decade": {
+    "role": "Generalist",
+    "consistent": false,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 3
+   }
+  },
+  {
+   "state": "AR",
+   "name": "Arkansas",
+   "years": {
+    "2012": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 33,
+     "rank_out_degree": 35,
+     "rank_betweenness": null,
+     "rank_gdp": 35,
+     "places_above_gdp": 2,
+     "pull": 1.176,
+     "signature_sctg": "25",
+     "signature": "Logs and Wood",
+     "signature_lq": 10.31,
+     "signature_share": 0.0977
+    },
+    "2017": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 35,
+     "rank_out_degree": 34,
+     "rank_betweenness": null,
+     "rank_gdp": 35,
+     "places_above_gdp": 0,
+     "pull": 1.034,
+     "signature_sctg": "25",
+     "signature": "Logs and Wood",
+     "signature_lq": 9.15,
+     "signature_share": 0.0841
+    },
+    "2022": {
+     "role": "Sustainer",
+     "also": [],
+     "rank_eigenvector": 29,
+     "rank_out_degree": 31,
+     "rank_betweenness": null,
+     "rank_gdp": 34,
+     "places_above_gdp": 5,
+     "pull": 1.046,
+     "signature_sctg": "22",
+     "signature": "Fertilizers",
+     "signature_lq": 7.65,
+     "signature_share": 0.0879
+    }
+   },
+   "decade": {
+    "role": "Generalist",
+    "consistent": false,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 6
+   }
+  },
+  {
+   "state": "AZ",
+   "name": "Arizona",
+   "years": {
+    "2012": {
+     "role": "Market",
+     "also": [],
+     "rank_eigenvector": 23,
+     "rank_out_degree": 32,
+     "rank_betweenness": null,
+     "rank_gdp": 22,
+     "places_above_gdp": -1,
+     "pull": 1.481,
+     "signature_sctg": "14",
+     "signature": "Metallic Ores",
+     "signature_lq": 9.23,
+     "signature_share": 0.0962
+    },
+    "2017": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 23,
+     "rank_out_degree": 29,
+     "rank_betweenness": null,
+     "rank_gdp": 21,
+     "places_above_gdp": -2,
+     "pull": 1.201,
+     "signature_sctg": "37",
+     "signature": "Transportation Equipment",
+     "signature_lq": 4.23,
+     "signature_share": 0.0511
+    },
+    "2022": {
+     "role": "Market",
+     "also": [],
+     "rank_eigenvector": 18,
+     "rank_out_degree": 30,
+     "rank_betweenness": null,
+     "rank_gdp": 17,
+     "places_above_gdp": -1,
+     "pull": 1.33,
+     "signature_sctg": "11",
+     "signature": "Natural Sands",
+     "signature_lq": 3.02,
+     "signature_share": 0.0395
+    }
+   },
+   "decade": {
+    "role": "Market",
+    "consistent": false,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 5
+   }
+  },
+  {
+   "state": "CA",
+   "name": "California",
+   "years": {
+    "2012": {
+     "role": "Engine",
+     "also": [
+      "Router"
+     ],
+     "rank_eigenvector": 3,
+     "rank_out_degree": 1,
+     "rank_betweenness": 1,
+     "rank_gdp": 1,
+     "places_above_gdp": -2,
+     "pull": 0.76,
+     "signature_sctg": "08",
+     "signature": "Alcoholic Beverages",
+     "signature_lq": 2.72,
+     "signature_share": 0.208
+    },
+    "2017": {
+     "role": "Engine",
+     "also": [
+      "Router"
+     ],
+     "rank_eigenvector": 2,
+     "rank_out_degree": 1,
+     "rank_betweenness": 1,
+     "rank_gdp": 1,
+     "places_above_gdp": -1,
+     "pull": 0.787,
+     "signature_sctg": "08",
+     "signature": "Alcoholic Beverages",
+     "signature_lq": 3.0,
+     "signature_share": 0.2422
+    },
+    "2022": {
+     "role": "Engine",
+     "also": [
+      "Router"
+     ],
+     "rank_eigenvector": 2,
+     "rank_out_degree": 1,
+     "rank_betweenness": 1,
+     "rank_gdp": 1,
+     "places_above_gdp": -1,
+     "pull": 0.875,
+     "signature_sctg": "35",
+     "signature": "Electronic Equipment",
+     "signature_lq": 2.12,
+     "signature_share": 0.1644
+    }
+   },
+   "decade": {
+    "role": "Engine",
+    "consistent": true,
+    "router_years": 3,
+    "router_decade": true,
+    "eigenvector_rank_range": 1
+   }
+  },
+  {
+   "state": "CO",
+   "name": "Colorado",
+   "years": {
+    "2012": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 27,
+     "rank_out_degree": 31,
+     "rank_betweenness": 15,
+     "rank_gdp": 19,
+     "places_above_gdp": -8,
+     "pull": 1.059,
+     "signature_sctg": "14",
+     "signature": "Metallic Ores",
+     "signature_lq": 7.3,
+     "signature_share": 0.0885
+    },
+    "2017": {
+     "role": "Router",
+     "also": [],
+     "rank_eigenvector": 28,
+     "rank_out_degree": 31,
+     "rank_betweenness": 11,
+     "rank_gdp": 19,
+     "places_above_gdp": -9,
+     "pull": 1.161,
+     "signature_sctg": "19",
+     "signature": "Coal and Petroleum Products",
+     "signature_lq": 4.2,
+     "signature_share": 0.0448
+    },
+    "2022": {
+     "role": "Specialist",
+     "also": [],
+     "rank_eigenvector": 28,
+     "rank_out_degree": 34,
+     "rank_betweenness": null,
+     "rank_gdp": 15,
+     "places_above_gdp": -13,
+     "pull": 1.294,
+     "signature_sctg": "10",
+     "signature": "Building Stone",
+     "signature_lq": 16.34,
+     "signature_share": 0.1685
+    }
+   },
+   "decade": {
+    "role": "Router",
+    "consistent": false,
+    "router_years": 1,
+    "router_decade": false,
+    "eigenvector_rank_range": 1
+   }
+  },
+  {
+   "state": "CT",
+   "name": "Connecticut",
+   "years": {
+    "2012": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 31,
+     "rank_out_degree": 21,
+     "rank_betweenness": null,
+     "rank_gdp": 23,
+     "places_above_gdp": -8,
+     "pull": 0.613,
+     "signature_sctg": "19",
+     "signature": "Coal and Petroleum Products",
+     "signature_lq": 3.9,
+     "signature_share": 0.0752
+    },
+    "2017": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 29,
+     "rank_out_degree": 24,
+     "rank_betweenness": null,
+     "rank_gdp": 23,
+     "places_above_gdp": -6,
+     "pull": 0.74,
+     "signature_sctg": "01",
+     "signature": "Live Animals and Fish",
+     "signature_lq": 3.45,
+     "signature_share": 0.0573
+    },
+    "2022": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 33,
+     "rank_out_degree": 28,
+     "rank_betweenness": null,
+     "rank_gdp": 23,
+     "places_above_gdp": -10,
+     "pull": 0.755,
+     "signature_sctg": "37",
+     "signature": "Transportation Equipment",
+     "signature_lq": 8.95,
+     "signature_share": 0.1254
+    }
+   },
+   "decade": {
+    "role": "Generalist",
+    "consistent": true,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 4
+   }
+  },
+  {
+   "state": "DC",
+   "name": "District of Columbia",
+   "years": {
+    "2012": {
+     "role": "Market",
+     "also": [],
+     "rank_eigenvector": 51,
+     "rank_out_degree": 51,
+     "rank_betweenness": null,
+     "rank_gdp": 34,
+     "places_above_gdp": -17,
+     "pull": 7.982,
+     "signature_sctg": "41",
+     "signature": "Waste/Scrap",
+     "signature_lq": 63.44,
+     "signature_share": 0.0117
+    },
+    "2017": {
+     "role": "Market",
+     "also": [],
+     "rank_eigenvector": 49,
+     "rank_out_degree": 50,
+     "rank_betweenness": null,
+     "rank_gdp": 34,
+     "places_above_gdp": -15,
+     "pull": 17.224,
+     "signature_sctg": null,
+     "signature": null,
+     "signature_lq": null,
+     "signature_share": null
+    },
+    "2022": {
+     "role": "Market",
+     "also": [],
+     "rank_eigenvector": 51,
+     "rank_out_degree": 51,
+     "rank_betweenness": null,
+     "rank_gdp": 36,
+     "places_above_gdp": -15,
+     "pull": 4.652,
+     "signature_sctg": null,
+     "signature": null,
+     "signature_lq": null,
+     "signature_share": null
+    }
+   },
+   "decade": {
+    "role": "Market",
+    "consistent": true,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 2
+   }
+  },
+  {
+   "state": "DE",
+   "name": "Delaware",
+   "years": {
+    "2012": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 42,
+     "rank_out_degree": 42,
+     "rank_betweenness": null,
+     "rank_gdp": 42,
+     "places_above_gdp": 0,
+     "pull": 1.024,
+     "signature_sctg": "20",
+     "signature": "Basic Chemicals",
+     "signature_lq": 9.3,
+     "signature_share": 0.0371
+    },
+    "2017": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 42,
+     "rank_out_degree": 36,
+     "rank_betweenness": null,
+     "rank_gdp": 42,
+     "places_above_gdp": 0,
+     "pull": 0.71,
+     "signature_sctg": "20",
+     "signature": "Basic Chemicals",
+     "signature_lq": 5.59,
+     "signature_share": 0.0287
+    },
+    "2022": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 42,
+     "rank_out_degree": 37,
+     "rank_betweenness": null,
+     "rank_gdp": 42,
+     "places_above_gdp": 0,
+     "pull": 0.753,
+     "signature_sctg": "18",
+     "signature": "Fuel Oils",
+     "signature_lq": 8.09,
+     "signature_share": 0.0413
+    }
+   },
+   "decade": {
+    "role": "Generalist",
+    "consistent": true,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 0
+   }
+  },
+  {
+   "state": "FL",
+   "name": "Florida",
+   "years": {
+    "2012": {
+     "role": "Market",
+     "also": [],
+     "rank_eigenvector": 7,
+     "rank_out_degree": 18,
+     "rank_betweenness": null,
+     "rank_gdp": 4,
+     "places_above_gdp": -3,
+     "pull": 1.903,
+     "signature_sctg": "01",
+     "signature": "Live Animals and Fish",
+     "signature_lq": 10.71,
+     "signature_share": 0.2164
+    },
+    "2017": {
+     "role": "Market",
+     "also": [],
+     "rank_eigenvector": 5,
+     "rank_out_degree": 19,
+     "rank_betweenness": null,
+     "rank_gdp": 4,
+     "places_above_gdp": -1,
+     "pull": 2.251,
+     "signature_sctg": "25",
+     "signature": "Logs and Wood",
+     "signature_lq": 5.72,
+     "signature_share": 0.1185
+    },
+    "2022": {
+     "role": "Market",
+     "also": [],
+     "rank_eigenvector": 3,
+     "rank_out_degree": 16,
+     "rank_betweenness": 23,
+     "rank_gdp": 4,
+     "places_above_gdp": 1,
+     "pull": 1.894,
+     "signature_sctg": "09",
+     "signature": "Tobacco Products",
+     "signature_lq": 6.85,
+     "signature_share": 0.167
+    }
+   },
+   "decade": {
+    "role": "Market",
+    "consistent": true,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 4
+   }
+  },
+  {
+   "state": "GA",
+   "name": "Georgia",
+   "years": {
+    "2012": {
+     "role": "Router",
+     "also": [],
+     "rank_eigenvector": 11,
+     "rank_out_degree": 10,
+     "rank_betweenness": 11,
+     "rank_gdp": 9,
+     "places_above_gdp": -2,
+     "pull": 0.994,
+     "signature_sctg": "13",
+     "signature": "Nonmetallic Minerals",
+     "signature_lq": 5.87,
+     "signature_share": 0.196
+    },
+    "2017": {
+     "role": "Router",
+     "also": [],
+     "rank_eigenvector": 10,
+     "rank_out_degree": 10,
+     "rank_betweenness": 10,
+     "rank_gdp": 9,
+     "places_above_gdp": -1,
+     "pull": 1.009,
+     "signature_sctg": "25",
+     "signature": "Logs and Wood",
+     "signature_lq": 3.2,
+     "signature_share": 0.1215
+    },
+    "2022": {
+     "role": "Router",
+     "also": [],
+     "rank_eigenvector": 10,
+     "rank_out_degree": 9,
+     "rank_betweenness": 12,
+     "rank_gdp": 8,
+     "places_above_gdp": -2,
+     "pull": 0.935,
+     "signature_sctg": "13",
+     "signature": "Nonmetallic Minerals",
+     "signature_lq": 4.11,
+     "signature_share": 0.1496
+    }
+   },
+   "decade": {
+    "role": "Router",
+    "consistent": true,
+    "router_years": 3,
+    "router_decade": true,
+    "eigenvector_rank_range": 1
+   }
+  },
+  {
+   "state": "HI",
+   "name": "Hawaii",
+   "years": {
+    "2012": {
+     "role": "Market",
+     "also": [],
+     "rank_eigenvector": 49,
+     "rank_out_degree": 50,
+     "rank_betweenness": null,
+     "rank_gdp": 39,
+     "places_above_gdp": -10,
+     "pull": 6.457,
+     "signature_sctg": "18",
+     "signature": "Fuel Oils",
+     "signature_lq": 80.35,
+     "signature_share": 0.0161
+    },
+    "2017": {
+     "role": "Market",
+     "also": [],
+     "rank_eigenvector": 45,
+     "rank_out_degree": 51,
+     "rank_betweenness": null,
+     "rank_gdp": 39,
+     "places_above_gdp": -6,
+     "pull": 18.815,
+     "signature_sctg": null,
+     "signature": null,
+     "signature_lq": null,
+     "signature_share": null
+    },
+    "2022": {
+     "role": "Market",
+     "also": [],
+     "rank_eigenvector": 50,
+     "rank_out_degree": 50,
+     "rank_betweenness": null,
+     "rank_gdp": 41,
+     "places_above_gdp": -9,
+     "pull": 4.23,
+     "signature_sctg": null,
+     "signature": null,
+     "signature_lq": null,
+     "signature_share": null
+    }
+   },
+   "decade": {
+    "role": "Market",
+    "consistent": true,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 5
+   }
+  },
+  {
+   "state": "IA",
+   "name": "Iowa",
+   "years": {
+    "2012": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 28,
+     "rank_out_degree": 24,
+     "rank_betweenness": null,
+     "rank_gdp": 30,
+     "places_above_gdp": 2,
+     "pull": 0.87,
+     "signature_sctg": "04",
+     "signature": "Animal Feed",
+     "signature_lq": 6.0,
+     "signature_share": 0.1061
+    },
+    "2017": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 31,
+     "rank_out_degree": 22,
+     "rank_betweenness": 13,
+     "rank_gdp": 30,
+     "places_above_gdp": -1,
+     "pull": 0.727,
+     "signature_sctg": "04",
+     "signature": "Animal Feed",
+     "signature_lq": 6.09,
+     "signature_share": 0.1136
+    },
+    "2022": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 27,
+     "rank_out_degree": 23,
+     "rank_betweenness": 22,
+     "rank_gdp": 31,
+     "places_above_gdp": 4,
+     "pull": 0.838,
+     "signature_sctg": "04",
+     "signature": "Animal Feed",
+     "signature_lq": 6.45,
+     "signature_share": 0.1139
+    }
+   },
+   "decade": {
+    "role": "Generalist",
+    "consistent": true,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 4
+   }
+  },
+  {
+   "state": "ID",
+   "name": "Idaho",
+   "years": {
+    "2012": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 44,
+     "rank_out_degree": 43,
+     "rank_betweenness": null,
+     "rank_gdp": 43,
+     "places_above_gdp": -1,
+     "pull": 1.198,
+     "signature_sctg": "22",
+     "signature": "Fertilizers",
+     "signature_lq": 14.61,
+     "signature_share": 0.051
+    },
+    "2017": {
+     "role": "Specialist",
+     "also": [],
+     "rank_eigenvector": 43,
+     "rank_out_degree": 41,
+     "rank_betweenness": null,
+     "rank_gdp": 43,
+     "places_above_gdp": 0,
+     "pull": 1.235,
+     "signature_sctg": "22",
+     "signature": "Fertilizers",
+     "signature_lq": 17.49,
+     "signature_share": 0.0623
+    },
+    "2022": {
+     "role": "Specialist",
+     "also": [
+      "Market"
+     ],
+     "rank_eigenvector": 39,
+     "rank_out_degree": 40,
+     "rank_betweenness": null,
+     "rank_gdp": 39,
+     "places_above_gdp": 0,
+     "pull": 1.829,
+     "signature_sctg": "14",
+     "signature": "Metallic Ores",
+     "signature_lq": 24.42,
+     "signature_share": 0.1038
+    }
+   },
+   "decade": {
+    "role": "Specialist",
+    "consistent": false,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 5
+   }
+  },
+  {
+   "state": "IL",
+   "name": "Illinois",
+   "years": {
+    "2012": {
+     "role": "Engine",
+     "also": [
+      "Router"
+     ],
+     "rank_eigenvector": 6,
+     "rank_out_degree": 2,
+     "rank_betweenness": 3,
+     "rank_gdp": 5,
+     "places_above_gdp": -1,
+     "pull": 0.72,
+     "signature_sctg": "22",
+     "signature": "Fertilizers",
+     "signature_lq": 4.08,
+     "signature_share": 0.2784
+    },
+    "2017": {
+     "role": "Engine",
+     "also": [
+      "Router"
+     ],
+     "rank_eigenvector": 6,
+     "rank_out_degree": 3,
+     "rank_betweenness": 5,
+     "rank_gdp": 5,
+     "places_above_gdp": -1,
+     "pull": 0.835,
+     "signature_sctg": "11",
+     "signature": "Natural Sands",
+     "signature_lq": 3.32,
+     "signature_share": 0.196
+    },
+    "2022": {
+     "role": "Engine",
+     "also": [
+      "Router"
+     ],
+     "rank_eigenvector": 4,
+     "rank_out_degree": 3,
+     "rank_betweenness": 5,
+     "rank_gdp": 5,
+     "places_above_gdp": 1,
+     "pull": 0.85,
+     "signature_sctg": "11",
+     "signature": "Natural Sands",
+     "signature_lq": 3.66,
+     "signature_share": 0.2034
+    }
+   },
+   "decade": {
+    "role": "Engine",
+    "consistent": true,
+    "router_years": 3,
+    "router_decade": true,
+    "eigenvector_rank_range": 2
+   }
+  },
+  {
+   "state": "IN",
+   "name": "Indiana",
+   "years": {
+    "2012": {
+     "role": "Sustainer",
+     "also": [],
+     "rank_eigenvector": 10,
+     "rank_out_degree": 8,
+     "rank_betweenness": null,
+     "rank_gdp": 17,
+     "places_above_gdp": 7,
+     "pull": 0.888,
+     "signature_sctg": "32",
+     "signature": "Base Metals",
+     "signature_lq": 2.95,
+     "signature_share": 0.1052
+    },
+    "2017": {
+     "role": "Sustainer",
+     "also": [],
+     "rank_eigenvector": 11,
+     "rank_out_degree": 8,
+     "rank_betweenness": 19,
+     "rank_gdp": 16,
+     "places_above_gdp": 5,
+     "pull": 0.837,
+     "signature_sctg": "17",
+     "signature": "Gasoline",
+     "signature_lq": 2.68,
+     "signature_share": 0.1041
+    },
+    "2022": {
+     "role": "Sustainer",
+     "also": [],
+     "rank_eigenvector": 9,
+     "rank_out_degree": 6,
+     "rank_betweenness": 18,
+     "rank_gdp": 19,
+     "places_above_gdp": 10,
+     "pull": 0.778,
+     "signature_sctg": "04",
+     "signature": "Animal Feed",
+     "signature_lq": 2.75,
+     "signature_share": 0.1221
+    }
+   },
+   "decade": {
+    "role": "Sustainer",
+    "consistent": true,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 2
+   }
+  },
+  {
+   "state": "KS",
+   "name": "Kansas",
+   "years": {
+    "2012": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 30,
+     "rank_out_degree": 22,
+     "rank_betweenness": 17,
+     "rank_gdp": 31,
+     "places_above_gdp": 1,
+     "pull": 0.686,
+     "signature_sctg": "02",
+     "signature": "Cereal Grains",
+     "signature_lq": 10.83,
+     "signature_share": 0.2011
+    },
+    "2017": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 34,
+     "rank_out_degree": 26,
+     "rank_betweenness": null,
+     "rank_gdp": 32,
+     "places_above_gdp": -2,
+     "pull": 0.769,
+     "signature_sctg": "02",
+     "signature": "Cereal Grains",
+     "signature_lq": 5.08,
+     "signature_share": 0.0752
+    },
+    "2022": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 34,
+     "rank_out_degree": 26,
+     "rank_betweenness": null,
+     "rank_gdp": 33,
+     "places_above_gdp": -1,
+     "pull": 0.736,
+     "signature_sctg": "18",
+     "signature": "Fuel Oils",
+     "signature_lq": 7.21,
+     "signature_share": 0.107
+    }
+   },
+   "decade": {
+    "role": "Generalist",
+    "consistent": true,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 4
+   }
+  },
+  {
+   "state": "KY",
+   "name": "Kentucky",
+   "years": {
+    "2012": {
+     "role": "Sustainer",
+     "also": [],
+     "rank_eigenvector": 16,
+     "rank_out_degree": 13,
+     "rank_betweenness": 20,
+     "rank_gdp": 27,
+     "places_above_gdp": 11,
+     "pull": 0.816,
+     "signature_sctg": "15",
+     "signature": "Coal",
+     "signature_lq": 6.19,
+     "signature_share": 0.1641
+    },
+    "2017": {
+     "role": "Sustainer",
+     "also": [],
+     "rank_eigenvector": 14,
+     "rank_out_degree": 15,
+     "rank_betweenness": null,
+     "rank_gdp": 28,
+     "places_above_gdp": 14,
+     "pull": 0.973,
+     "signature_sctg": "15",
+     "signature": "Coal",
+     "signature_lq": 5.42,
+     "signature_share": 0.1256
+    },
+    "2022": {
+     "role": "Sustainer",
+     "also": [],
+     "rank_eigenvector": 14,
+     "rank_out_degree": 14,
+     "rank_betweenness": 20,
+     "rank_gdp": 28,
+     "places_above_gdp": 14,
+     "pull": 0.936,
+     "signature_sctg": "15",
+     "signature": "Coal",
+     "signature_lq": 3.75,
+     "signature_share": 0.0971
+    }
+   },
+   "decade": {
+    "role": "Sustainer",
+    "consistent": true,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 2
+   }
+  },
+  {
+   "state": "LA",
+   "name": "Louisiana",
+   "years": {
+    "2012": {
+     "role": "Sustainer",
+     "also": [
+      "Router"
+     ],
+     "rank_eigenvector": 12,
+     "rank_out_degree": 17,
+     "rank_betweenness": 12,
+     "rank_gdp": 24,
+     "places_above_gdp": 12,
+     "pull": 1.298,
+     "signature_sctg": "18",
+     "signature": "Fuel Oils",
+     "signature_lq": 11.78,
+     "signature_share": 0.2333
+    },
+    "2017": {
+     "role": "Sustainer",
+     "also": [],
+     "rank_eigenvector": 19,
+     "rank_out_degree": 25,
+     "rank_betweenness": null,
+     "rank_gdp": 24,
+     "places_above_gdp": 5,
+     "pull": 1.087,
+     "signature_sctg": "17",
+     "signature": "Gasoline",
+     "signature_lq": 12.27,
+     "signature_share": 0.183
+    },
+    "2022": {
+     "role": "Sustainer",
+     "also": [
+      "Market"
+     ],
+     "rank_eigenvector": 16,
+     "rank_out_degree": 29,
+     "rank_betweenness": 17,
+     "rank_gdp": 25,
+     "places_above_gdp": 9,
+     "pull": 1.321,
+     "signature_sctg": "17",
+     "signature": "Gasoline",
+     "signature_lq": 10.82,
+     "signature_share": 0.1491
+    }
+   },
+   "decade": {
+    "role": "Sustainer",
+    "consistent": true,
+    "router_years": 1,
+    "router_decade": false,
+    "eigenvector_rank_range": 7
+   }
+  },
+  {
+   "state": "MA",
+   "name": "Massachusetts",
+   "years": {
+    "2012": {
+     "role": "Router",
+     "also": [],
+     "rank_eigenvector": 22,
+     "rank_out_degree": 19,
+     "rank_betweenness": 6,
+     "rank_gdp": 12,
+     "places_above_gdp": -10,
+     "pull": 1.103,
+     "signature_sctg": "38",
+     "signature": "Precision Instruments",
+     "signature_lq": 3.29,
+     "signature_share": 0.065
+    },
+    "2017": {
+     "role": "Router",
+     "also": [],
+     "rank_eigenvector": 22,
+     "rank_out_degree": 17,
+     "rank_betweenness": 6,
+     "rank_gdp": 11,
+     "places_above_gdp": -11,
+     "pull": 0.938,
+     "signature_sctg": "17",
+     "signature": "Gasoline",
+     "signature_lq": 5.0,
+     "signature_share": 0.1116
+    },
+    "2022": {
+     "role": "Router",
+     "also": [],
+     "rank_eigenvector": 23,
+     "rank_out_degree": 17,
+     "rank_betweenness": 4,
+     "rank_gdp": 12,
+     "places_above_gdp": -11,
+     "pull": 0.804,
+     "signature_sctg": "27",
+     "signature": "Newsprint/Paper",
+     "signature_lq": 3.83,
+     "signature_share": 0.0931
+    }
+   },
+   "decade": {
+    "role": "Router",
+    "consistent": true,
+    "router_years": 3,
+    "router_decade": true,
+    "eigenvector_rank_range": 1
+   }
+  },
+  {
+   "state": "MD",
+   "name": "Maryland",
+   "years": {
+    "2012": {
+     "role": "Router",
+     "also": [],
+     "rank_eigenvector": 20,
+     "rank_out_degree": 27,
+     "rank_betweenness": 10,
+     "rank_gdp": 15,
+     "places_above_gdp": -5,
+     "pull": 1.211,
+     "signature_sctg": "31",
+     "signature": "Nonmetallic Mineral Products",
+     "signature_lq": 3.55,
+     "signature_share": 0.0535
+    },
+    "2017": {
+     "role": "Market",
+     "also": [],
+     "rank_eigenvector": 20,
+     "rank_out_degree": 28,
+     "rank_betweenness": 15,
+     "rank_gdp": 15,
+     "places_above_gdp": -5,
+     "pull": 1.477,
+     "signature_sctg": "39",
+     "signature": "Furniture",
+     "signature_lq": 2.16,
+     "signature_share": 0.0286
+    },
+    "2022": {
+     "role": "Router",
+     "also": [],
+     "rank_eigenvector": 25,
+     "rank_out_degree": 27,
+     "rank_betweenness": 10,
+     "rank_gdp": 18,
+     "places_above_gdp": -7,
+     "pull": 1.131,
+     "signature_sctg": "06",
+     "signature": "Milled Grain Products",
+     "signature_lq": 4.01,
+     "signature_share": 0.0581
+    }
+   },
+   "decade": {
+    "role": "Router",
+    "consistent": false,
+    "router_years": 2,
+    "router_decade": true,
+    "eigenvector_rank_range": 5
+   }
+  },
+  {
+   "state": "ME",
+   "name": "Maine",
+   "years": {
+    "2012": {
+     "role": "Market",
+     "also": [],
+     "rank_eigenvector": 43,
+     "rank_out_degree": 45,
+     "rank_betweenness": null,
+     "rank_gdp": 46,
+     "places_above_gdp": 3,
+     "pull": 1.589,
+     "signature_sctg": "27",
+     "signature": "Newsprint/Paper",
+     "signature_lq": 13.77,
+     "signature_share": 0.0395
+    },
+    "2017": {
+     "role": "Market",
+     "also": [],
+     "rank_eigenvector": 44,
+     "rank_out_degree": 44,
+     "rank_betweenness": null,
+     "rank_gdp": 44,
+     "places_above_gdp": 0,
+     "pull": 1.524,
+     "signature_sctg": "01",
+     "signature": "Live Animals and Fish",
+     "signature_lq": 10.49,
+     "signature_share": 0.0288
+    },
+    "2022": {
+     "role": "Market",
+     "also": [],
+     "rank_eigenvector": 43,
+     "rank_out_degree": 44,
+     "rank_betweenness": null,
+     "rank_gdp": 44,
+     "places_above_gdp": 1,
+     "pull": 1.747,
+     "signature_sctg": "25",
+     "signature": "Logs and Wood",
+     "signature_lq": 11.77,
+     "signature_share": 0.034
+    }
+   },
+   "decade": {
+    "role": "Market",
+    "consistent": true,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 1
+   }
+  },
+  {
+   "state": "MI",
+   "name": "Michigan",
+   "years": {
+    "2012": {
+     "role": "Sustainer",
+     "also": [],
+     "rank_eigenvector": 8,
+     "rank_out_degree": 12,
+     "rank_betweenness": null,
+     "rank_gdp": 13,
+     "places_above_gdp": 5,
+     "pull": 1.017,
+     "signature_sctg": "36",
+     "signature": "Motorized Vehicles",
+     "signature_lq": 4.03,
+     "signature_share": 0.1329
+    },
+    "2017": {
+     "role": "Sustainer",
+     "also": [],
+     "rank_eigenvector": 8,
+     "rank_out_degree": 11,
+     "rank_betweenness": 18,
+     "rank_gdp": 14,
+     "places_above_gdp": 6,
+     "pull": 0.992,
+     "signature_sctg": "36",
+     "signature": "Motorized Vehicles",
+     "signature_lq": 4.09,
+     "signature_share": 0.1503
+    },
+    "2022": {
+     "role": "Sustainer",
+     "also": [],
+     "rank_eigenvector": 8,
+     "rank_out_degree": 10,
+     "rank_betweenness": null,
+     "rank_gdp": 14,
+     "places_above_gdp": 6,
+     "pull": 1.137,
+     "signature_sctg": "36",
+     "signature": "Motorized Vehicles",
+     "signature_lq": 3.68,
+     "signature_share": 0.1284
+    }
+   },
+   "decade": {
+    "role": "Sustainer",
+    "consistent": true,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 0
+   }
+  },
+  {
+   "state": "MN",
+   "name": "Minnesota",
+   "years": {
+    "2012": {
+     "role": "Router",
+     "also": [],
+     "rank_eigenvector": 26,
+     "rank_out_degree": 15,
+     "rank_betweenness": 8,
+     "rank_gdp": 16,
+     "places_above_gdp": -10,
+     "pull": 0.816,
+     "signature_sctg": "14",
+     "signature": "Metallic Ores",
+     "signature_lq": 7.13,
+     "signature_share": 0.1633
+    },
+    "2017": {
+     "role": "Router",
+     "also": [],
+     "rank_eigenvector": 26,
+     "rank_out_degree": 16,
+     "rank_betweenness": 9,
+     "rank_gdp": 17,
+     "places_above_gdp": -9,
+     "pull": 0.777,
+     "signature_sctg": "01",
+     "signature": "Live Animals and Fish",
+     "signature_lq": 7.52,
+     "signature_share": 0.1696
+    },
+    "2022": {
+     "role": "Router",
+     "also": [
+      "Specialist"
+     ],
+     "rank_eigenvector": 24,
+     "rank_out_degree": 15,
+     "rank_betweenness": 8,
+     "rank_gdp": 20,
+     "places_above_gdp": -4,
+     "pull": 0.705,
+     "signature_sctg": "14",
+     "signature": "Metallic Ores",
+     "signature_lq": 29.38,
+     "signature_share": 0.7384
+    }
+   },
+   "decade": {
+    "role": "Router",
+    "consistent": true,
+    "router_years": 3,
+    "router_decade": true,
+    "eigenvector_rank_range": 2
+   }
+  },
+  {
+   "state": "MO",
+   "name": "Missouri",
+   "years": {
+    "2012": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 18,
+     "rank_out_degree": 16,
+     "rank_betweenness": 19,
+     "rank_gdp": 21,
+     "places_above_gdp": 3,
+     "pull": 1.038,
+     "signature_sctg": "04",
+     "signature": "Animal Feed",
+     "signature_lq": 2.93,
+     "signature_share": 0.0611
+    },
+    "2017": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 18,
+     "rank_out_degree": 14,
+     "rank_betweenness": 17,
+     "rank_gdp": 22,
+     "places_above_gdp": 4,
+     "pull": 0.839,
+     "signature_sctg": "14",
+     "signature": "Metallic Ores",
+     "signature_lq": 5.59,
+     "signature_share": 0.1375
+    },
+    "2022": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 20,
+     "rank_out_degree": 18,
+     "rank_betweenness": 19,
+     "rank_gdp": 22,
+     "places_above_gdp": 2,
+     "pull": 0.934,
+     "signature_sctg": "12",
+     "signature": "Gravel and Crushed Stone",
+     "signature_lq": 3.93,
+     "signature_share": 0.0925
+    }
+   },
+   "decade": {
+    "role": "Generalist",
+    "consistent": true,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 2
+   }
+  },
+  {
+   "state": "MS",
+   "name": "Mississippi",
+   "years": {
+    "2012": {
+     "role": "Sustainer",
+     "also": [],
+     "rank_eigenvector": 29,
+     "rank_out_degree": 29,
+     "rank_betweenness": 23,
+     "rank_gdp": 37,
+     "places_above_gdp": 8,
+     "pull": 0.961,
+     "signature_sctg": "31",
+     "signature": "Nonmetallic Mineral Products",
+     "signature_lq": 4.56,
+     "signature_share": 0.06
+    },
+    "2017": {
+     "role": "Sustainer",
+     "also": [],
+     "rank_eigenvector": 27,
+     "rank_out_degree": 27,
+     "rank_betweenness": null,
+     "rank_gdp": 37,
+     "places_above_gdp": 10,
+     "pull": 0.958,
+     "signature_sctg": "21",
+     "signature": "Pharmaceutical Products",
+     "signature_lq": 3.49,
+     "signature_share": 0.0488
+    },
+    "2022": {
+     "role": "Sustainer",
+     "also": [],
+     "rank_eigenvector": 31,
+     "rank_out_degree": 32,
+     "rank_betweenness": null,
+     "rank_gdp": 37,
+     "places_above_gdp": 6,
+     "pull": 1.079,
+     "signature_sctg": "19",
+     "signature": "Coal and Petroleum Products",
+     "signature_lq": 8.95,
+     "signature_share": 0.1016
+    }
+   },
+   "decade": {
+    "role": "Sustainer",
+    "consistent": true,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 4
+   }
+  },
+  {
+   "state": "MT",
+   "name": "Montana",
+   "years": {
+    "2012": {
+     "role": "Sustainer",
+     "also": [
+      "Specialist",
+      "Market"
+     ],
+     "rank_eigenvector": 37,
+     "rank_out_degree": 48,
+     "rank_betweenness": null,
+     "rank_gdp": 49,
+     "places_above_gdp": 12,
+     "pull": 3.927,
+     "signature_sctg": "14",
+     "signature": "Metallic Ores",
+     "signature_lq": 50.6,
+     "signature_share": 0.0937
+    },
+    "2017": {
+     "role": "Sustainer",
+     "also": [
+      "Market"
+     ],
+     "rank_eigenvector": 41,
+     "rank_out_degree": 48,
+     "rank_betweenness": null,
+     "rank_gdp": 49,
+     "places_above_gdp": 8,
+     "pull": 3.744,
+     "signature_sctg": "02",
+     "signature": "Cereal Grains",
+     "signature_lq": 37.27,
+     "signature_share": 0.0498
+    },
+    "2022": {
+     "role": "Specialist",
+     "also": [
+      "Market"
+     ],
+     "rank_eigenvector": 44,
+     "rank_out_degree": 45,
+     "rank_betweenness": null,
+     "rank_gdp": 47,
+     "places_above_gdp": 3,
+     "pull": 2.664,
+     "signature_sctg": "14",
+     "signature": "Metallic Ores",
+     "signature_lq": 60.75,
+     "signature_share": 0.1078
+    }
+   },
+   "decade": {
+    "role": "Sustainer",
+    "consistent": false,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 7
+   }
+  },
+  {
+   "state": "NC",
+   "name": "North Carolina",
+   "years": {
+    "2012": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 15,
+     "rank_out_degree": 9,
+     "rank_betweenness": 13,
+     "rank_gdp": 11,
+     "places_above_gdp": -4,
+     "pull": 0.723,
+     "signature_sctg": "09",
+     "signature": "Tobacco Products",
+     "signature_lq": 7.71,
+     "signature_share": 0.2732
+    },
+    "2017": {
+     "role": "Router",
+     "also": [],
+     "rank_eigenvector": 13,
+     "rank_out_degree": 12,
+     "rank_betweenness": 12,
+     "rank_gdp": 10,
+     "places_above_gdp": -3,
+     "pull": 0.796,
+     "signature_sctg": "09",
+     "signature": "Tobacco Products",
+     "signature_lq": 8.34,
+     "signature_share": 0.2929
+    },
+    "2022": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 13,
+     "rank_out_degree": 11,
+     "rank_betweenness": 13,
+     "rank_gdp": 11,
+     "places_above_gdp": -2,
+     "pull": 0.882,
+     "signature_sctg": "23",
+     "signature": "Chemical Products",
+     "signature_lq": 2.89,
+     "signature_share": 0.0983
+    }
+   },
+   "decade": {
+    "role": "Generalist",
+    "consistent": false,
+    "router_years": 1,
+    "router_decade": false,
+    "eigenvector_rank_range": 2
+   }
+  },
+  {
+   "state": "ND",
+   "name": "North Dakota",
+   "years": {
+    "2012": {
+     "role": "Specialist",
+     "also": [
+      "Market"
+     ],
+     "rank_eigenvector": 41,
+     "rank_out_degree": 44,
+     "rank_betweenness": null,
+     "rank_gdp": 45,
+     "places_above_gdp": 4,
+     "pull": 1.679,
+     "signature_sctg": "02",
+     "signature": "Cereal Grains",
+     "signature_lq": 22.5,
+     "signature_share": 0.0685
+    },
+    "2017": {
+     "role": "Sustainer",
+     "also": [
+      "Specialist",
+      "Market"
+     ],
+     "rank_eigenvector": 40,
+     "rank_out_degree": 42,
+     "rank_betweenness": null,
+     "rank_gdp": 46,
+     "places_above_gdp": 6,
+     "pull": 1.538,
+     "signature_sctg": "02",
+     "signature": "Cereal Grains",
+     "signature_lq": 21.53,
+     "signature_share": 0.0733
+    },
+    "2022": {
+     "role": "Specialist",
+     "also": [
+      "Market"
+     ],
+     "rank_eigenvector": 41,
+     "rank_out_degree": 42,
+     "rank_betweenness": null,
+     "rank_gdp": 45,
+     "places_above_gdp": 4,
+     "pull": 1.735,
+     "signature_sctg": "02",
+     "signature": "Cereal Grains",
+     "signature_lq": 16.09,
+     "signature_share": 0.0511
+    }
+   },
+   "decade": {
+    "role": "Specialist",
+    "consistent": false,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 1
+   }
+  },
+  {
+   "state": "NE",
+   "name": "Nebraska",
+   "years": {
+    "2012": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 39,
+     "rank_out_degree": 33,
+     "rank_betweenness": null,
+     "rank_gdp": 36,
+     "places_above_gdp": -3,
+     "pull": 0.832,
+     "signature_sctg": "02",
+     "signature": "Cereal Grains",
+     "signature_lq": 10.25,
+     "signature_share": 0.0993
+    },
+    "2017": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 37,
+     "rank_out_degree": 35,
+     "rank_betweenness": null,
+     "rank_gdp": 36,
+     "places_above_gdp": -1,
+     "pull": 0.861,
+     "signature_sctg": "05",
+     "signature": "Meat/Seafood",
+     "signature_lq": 9.96,
+     "signature_share": 0.083
+    },
+    "2022": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 37,
+     "rank_out_degree": 35,
+     "rank_betweenness": null,
+     "rank_gdp": 35,
+     "places_above_gdp": -2,
+     "pull": 0.758,
+     "signature_sctg": "05",
+     "signature": "Meat/Seafood",
+     "signature_lq": 8.48,
+     "signature_share": 0.0814
+    }
+   },
+   "decade": {
+    "role": "Generalist",
+    "consistent": true,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 2
+   }
+  },
+  {
+   "state": "NH",
+   "name": "New Hampshire",
+   "years": {
+    "2012": {
+     "role": "Market",
+     "also": [],
+     "rank_eigenvector": 40,
+     "rank_out_degree": 41,
+     "rank_betweenness": null,
+     "rank_gdp": 40,
+     "places_above_gdp": 0,
+     "pull": 1.513,
+     "signature_sctg": "18",
+     "signature": "Fuel Oils",
+     "signature_lq": 3.95,
+     "signature_share": 0.017
+    },
+    "2017": {
+     "role": "Market",
+     "also": [],
+     "rank_eigenvector": 39,
+     "rank_out_degree": 38,
+     "rank_betweenness": null,
+     "rank_gdp": 40,
+     "places_above_gdp": 1,
+     "pull": 1.303,
+     "signature_sctg": "18",
+     "signature": "Fuel Oils",
+     "signature_lq": 6.01,
+     "signature_share": 0.0307
+    },
+    "2022": {
+     "role": "Market",
+     "also": [],
+     "rank_eigenvector": 40,
+     "rank_out_degree": 39,
+     "rank_betweenness": null,
+     "rank_gdp": 40,
+     "places_above_gdp": 0,
+     "pull": 1.328,
+     "signature_sctg": "09",
+     "signature": "Tobacco Products",
+     "signature_lq": 2.14,
+     "signature_share": 0.0105
+    }
+   },
+   "decade": {
+    "role": "Market",
+    "consistent": true,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 1
+   }
+  },
+  {
+   "state": "NJ",
+   "name": "New Jersey",
+   "years": {
+    "2012": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 9,
+     "rank_out_degree": 6,
+     "rank_betweenness": 14,
+     "rank_gdp": 8,
+     "places_above_gdp": -1,
+     "pull": 0.731,
+     "signature_sctg": "10",
+     "signature": "Building Stone",
+     "signature_lq": 2.66,
+     "signature_share": 0.1158
+    },
+    "2017": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 9,
+     "rank_out_degree": 6,
+     "rank_betweenness": null,
+     "rank_gdp": 8,
+     "places_above_gdp": -1,
+     "pull": 0.822,
+     "signature_sctg": "10",
+     "signature": "Building Stone",
+     "signature_lq": 2.23,
+     "signature_share": 0.0936
+    },
+    "2022": {
+     "role": "Router",
+     "also": [],
+     "rank_eigenvector": 12,
+     "rank_out_degree": 7,
+     "rank_betweenness": 9,
+     "rank_gdp": 9,
+     "places_above_gdp": -3,
+     "pull": 0.769,
+     "signature_sctg": "11",
+     "signature": "Natural Sands",
+     "signature_lq": 2.04,
+     "signature_share": 0.0815
+    }
+   },
+   "decade": {
+    "role": "Generalist",
+    "consistent": false,
+    "router_years": 1,
+    "router_decade": false,
+    "eigenvector_rank_range": 3
+   }
+  },
+  {
+   "state": "NM",
+   "name": "New Mexico",
+   "years": {
+    "2012": {
+     "role": "Specialist",
+     "also": [],
+     "rank_eigenvector": 38,
+     "rank_out_degree": 40,
+     "rank_betweenness": null,
+     "rank_gdp": 38,
+     "places_above_gdp": 0,
+     "pull": 1.279,
+     "signature_sctg": "14",
+     "signature": "Metallic Ores",
+     "signature_lq": 18.81,
+     "signature_share": 0.0822
+    },
+    "2017": {
+     "role": "Market",
+     "also": [],
+     "rank_eigenvector": 38,
+     "rank_out_degree": 46,
+     "rank_betweenness": null,
+     "rank_gdp": 38,
+     "places_above_gdp": 0,
+     "pull": 2.498,
+     "signature_sctg": "22",
+     "signature": "Fertilizers",
+     "signature_lq": 14.27,
+     "signature_share": 0.027
+    },
+    "2022": {
+     "role": "Market",
+     "also": [],
+     "rank_eigenvector": 38,
+     "rank_out_degree": 46,
+     "rank_betweenness": null,
+     "rank_gdp": 38,
+     "places_above_gdp": 0,
+     "pull": 3.0,
+     "signature_sctg": "22",
+     "signature": "Fertilizers",
+     "signature_lq": 7.48,
+     "signature_share": 0.0134
+    }
+   },
+   "decade": {
+    "role": "Market",
+    "consistent": false,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 0
+   }
+  },
+  {
+   "state": "NV",
+   "name": "Nevada",
+   "years": {
+    "2012": {
+     "role": "Specialist",
+     "also": [],
+     "rank_eigenvector": 35,
+     "rank_out_degree": 36,
+     "rank_betweenness": null,
+     "rank_gdp": 33,
+     "places_above_gdp": -2,
+     "pull": 1.097,
+     "signature_sctg": "14",
+     "signature": "Metallic Ores",
+     "signature_lq": 34.6,
+     "signature_share": 0.2529
+    },
+    "2017": {
+     "role": "Specialist",
+     "also": [
+      "Market"
+     ],
+     "rank_eigenvector": 32,
+     "rank_out_degree": 37,
+     "rank_betweenness": null,
+     "rank_gdp": 33,
+     "places_above_gdp": 1,
+     "pull": 1.786,
+     "signature_sctg": "14",
+     "signature": "Metallic Ores",
+     "signature_lq": 55.35,
+     "signature_share": 0.2813
+    },
+    "2022": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 32,
+     "rank_out_degree": 36,
+     "rank_betweenness": null,
+     "rank_gdp": 32,
+     "places_above_gdp": 0,
+     "pull": 1.27,
+     "signature_sctg": "39",
+     "signature": "Furniture",
+     "signature_lq": 4.39,
+     "signature_share": 0.0303
+    }
+   },
+   "decade": {
+    "role": "Specialist",
+    "consistent": false,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 3
+   }
+  },
+  {
+   "state": "NY",
+   "name": "New York",
+   "years": {
+    "2012": {
+     "role": "Engine",
+     "also": [
+      "Router",
+      "Market"
+     ],
+     "rank_eigenvector": 2,
+     "rank_out_degree": 7,
+     "rank_betweenness": 4,
+     "rank_gdp": 3,
+     "places_above_gdp": 1,
+     "pull": 1.565,
+     "signature_sctg": "30",
+     "signature": "Textiles/Leather",
+     "signature_lq": 2.5,
+     "signature_share": 0.1
+    },
+    "2017": {
+     "role": "Engine",
+     "also": [
+      "Router",
+      "Market"
+     ],
+     "rank_eigenvector": 3,
+     "rank_out_degree": 7,
+     "rank_betweenness": 3,
+     "rank_gdp": 3,
+     "places_above_gdp": 0,
+     "pull": 1.351,
+     "signature_sctg": "30",
+     "signature": "Textiles/Leather",
+     "signature_lq": 2.31,
+     "signature_share": 0.0943
+    },
+    "2022": {
+     "role": "Router",
+     "also": [],
+     "rank_eigenvector": 6,
+     "rank_out_degree": 8,
+     "rank_betweenness": 7,
+     "rank_gdp": 3,
+     "places_above_gdp": -3,
+     "pull": 1.201,
+     "signature_sctg": "40",
+     "signature": "Misc. Manufactured Products",
+     "signature_lq": 2.35,
+     "signature_share": 0.0885
+    }
+   },
+   "decade": {
+    "role": "Engine",
+    "consistent": false,
+    "router_years": 3,
+    "router_decade": true,
+    "eigenvector_rank_range": 4
+   }
+  },
+  {
+   "state": "OH",
+   "name": "Ohio",
+   "years": {
+    "2012": {
+     "role": "Engine",
+     "also": [
+      "Router"
+     ],
+     "rank_eigenvector": 4,
+     "rank_out_degree": 4,
+     "rank_betweenness": 7,
+     "rank_gdp": 7,
+     "places_above_gdp": 3,
+     "pull": 0.898,
+     "signature_sctg": "32",
+     "signature": "Base Metals",
+     "signature_lq": 1.97,
+     "signature_share": 0.0985
+    },
+    "2017": {
+     "role": "Engine",
+     "also": [
+      "Router"
+     ],
+     "rank_eigenvector": 4,
+     "rank_out_degree": 5,
+     "rank_betweenness": 7,
+     "rank_gdp": 7,
+     "places_above_gdp": 3,
+     "pull": 0.963,
+     "signature_sctg": "06",
+     "signature": "Milled Grain Products",
+     "signature_lq": 2.69,
+     "signature_share": 0.127
+    },
+    "2022": {
+     "role": "Engine",
+     "also": [
+      "Router"
+     ],
+     "rank_eigenvector": 5,
+     "rank_out_degree": 4,
+     "rank_betweenness": 6,
+     "rank_gdp": 7,
+     "places_above_gdp": 2,
+     "pull": 0.844,
+     "signature_sctg": "32",
+     "signature": "Base Metals",
+     "signature_lq": 1.72,
+     "signature_share": 0.0909
+    }
+   },
+   "decade": {
+    "role": "Engine",
+    "consistent": true,
+    "router_years": 3,
+    "router_decade": true,
+    "eigenvector_rank_range": 1
+   }
+  },
+  {
+   "state": "OK",
+   "name": "Oklahoma",
+   "years": {
+    "2012": {
+     "role": "Sustainer",
+     "also": [],
+     "rank_eigenvector": 21,
+     "rank_out_degree": 30,
+     "rank_betweenness": null,
+     "rank_gdp": 28,
+     "places_above_gdp": 7,
+     "pull": 1.169,
+     "signature_sctg": "19",
+     "signature": "Coal and Petroleum Products",
+     "signature_lq": 12.56,
+     "signature_share": 0.151
+    },
+    "2017": {
+     "role": "Sustainer",
+     "also": [
+      "Market"
+     ],
+     "rank_eigenvector": 24,
+     "rank_out_degree": 33,
+     "rank_betweenness": null,
+     "rank_gdp": 29,
+     "places_above_gdp": 5,
+     "pull": 1.387,
+     "signature_sctg": "22",
+     "signature": "Fertilizers",
+     "signature_lq": 7.85,
+     "signature_share": 0.0761
+    },
+    "2022": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 26,
+     "rank_out_degree": 33,
+     "rank_betweenness": null,
+     "rank_gdp": 30,
+     "places_above_gdp": 4,
+     "pull": 1.104,
+     "signature_sctg": "22",
+     "signature": "Fertilizers",
+     "signature_lq": 11.29,
+     "signature_share": 0.1213
+    }
+   },
+   "decade": {
+    "role": "Sustainer",
+    "consistent": false,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 5
+   }
+  },
+  {
+   "state": "OR",
+   "name": "Oregon",
+   "years": {
+    "2012": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 32,
+     "rank_out_degree": 28,
+     "rank_betweenness": 22,
+     "rank_gdp": 29,
+     "places_above_gdp": -3,
+     "pull": 1.004,
+     "signature_sctg": "26",
+     "signature": "Wood Products",
+     "signature_lq": 5.24,
+     "signature_share": 0.0689
+    },
+    "2017": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 30,
+     "rank_out_degree": 30,
+     "rank_betweenness": null,
+     "rank_gdp": 25,
+     "places_above_gdp": -5,
+     "pull": 1.09,
+     "signature_sctg": "26",
+     "signature": "Wood Products",
+     "signature_lq": 6.91,
+     "signature_share": 0.0807
+    },
+    "2022": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 30,
+     "rank_out_degree": 20,
+     "rank_betweenness": 16,
+     "rank_gdp": 26,
+     "places_above_gdp": -4,
+     "pull": 0.664,
+     "signature_sctg": "30",
+     "signature": "Textiles/Leather",
+     "signature_lq": 3.68,
+     "signature_share": 0.0706
+    }
+   },
+   "decade": {
+    "role": "Generalist",
+    "consistent": true,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 2
+   }
+  },
+  {
+   "state": "PA",
+   "name": "Pennsylvania",
+   "years": {
+    "2012": {
+     "role": "Engine",
+     "also": [
+      "Router"
+     ],
+     "rank_eigenvector": 5,
+     "rank_out_degree": 5,
+     "rank_betweenness": 5,
+     "rank_gdp": 6,
+     "places_above_gdp": 1,
+     "pull": 0.93,
+     "signature_sctg": "15",
+     "signature": "Coal",
+     "signature_lq": 2.3,
+     "signature_share": 0.1106
+    },
+    "2017": {
+     "role": "Engine",
+     "also": [
+      "Router"
+     ],
+     "rank_eigenvector": 7,
+     "rank_out_degree": 4,
+     "rank_betweenness": 4,
+     "rank_gdp": 6,
+     "places_above_gdp": -1,
+     "pull": 0.796,
+     "signature_sctg": "25",
+     "signature": "Logs and Wood",
+     "signature_lq": 2.93,
+     "signature_share": 0.16
+    },
+    "2022": {
+     "role": "Engine",
+     "also": [
+      "Router"
+     ],
+     "rank_eigenvector": 7,
+     "rank_out_degree": 5,
+     "rank_betweenness": 3,
+     "rank_gdp": 6,
+     "places_above_gdp": -1,
+     "pull": 0.962,
+     "signature_sctg": "25",
+     "signature": "Logs and Wood",
+     "signature_lq": 8.93,
+     "signature_share": 0.4095
+    }
+   },
+   "decade": {
+    "role": "Engine",
+    "consistent": true,
+    "router_years": 3,
+    "router_decade": true,
+    "eigenvector_rank_range": 2
+   }
+  },
+  {
+   "state": "RI",
+   "name": "Rhode Island",
+   "years": {
+    "2012": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 46,
+     "rank_out_degree": 39,
+     "rank_betweenness": null,
+     "rank_gdp": 47,
+     "places_above_gdp": 1,
+     "pull": 0.713,
+     "signature_sctg": "17",
+     "signature": "Gasoline",
+     "signature_lq": 11.8,
+     "signature_share": 0.0509
+    },
+    "2017": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 46,
+     "rank_out_degree": 40,
+     "rank_betweenness": null,
+     "rank_gdp": 45,
+     "places_above_gdp": -1,
+     "pull": 0.579,
+     "signature_sctg": "01",
+     "signature": "Live Animals and Fish",
+     "signature_lq": 7.92,
+     "signature_share": 0.0386
+    },
+    "2022": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 47,
+     "rank_out_degree": 43,
+     "rank_betweenness": null,
+     "rank_gdp": 46,
+     "places_above_gdp": -1,
+     "pull": 0.931,
+     "signature_sctg": "31",
+     "signature": "Nonmetallic Mineral Products",
+     "signature_lq": 7.43,
+     "signature_share": 0.0222
+    }
+   },
+   "decade": {
+    "role": "Generalist",
+    "consistent": true,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 1
+   }
+  },
+  {
+   "state": "SC",
+   "name": "South Carolina",
+   "years": {
+    "2012": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 25,
+     "rank_out_degree": 26,
+     "rank_betweenness": null,
+     "rank_gdp": 26,
+     "places_above_gdp": 1,
+     "pull": 1.124,
+     "signature_sctg": "28",
+     "signature": "Paper Articles",
+     "signature_lq": 3.18,
+     "signature_share": 0.0482
+    },
+    "2017": {
+     "role": "Sustainer",
+     "also": [],
+     "rank_eigenvector": 17,
+     "rank_out_degree": 21,
+     "rank_betweenness": null,
+     "rank_gdp": 26,
+     "places_above_gdp": 9,
+     "pull": 1.051,
+     "signature_sctg": "37",
+     "signature": "Transportation Equipment",
+     "signature_lq": 4.96,
+     "signature_share": 0.0919
+    },
+    "2022": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 21,
+     "rank_out_degree": 24,
+     "rank_betweenness": null,
+     "rank_gdp": 24,
+     "places_above_gdp": 3,
+     "pull": 1.055,
+     "signature_sctg": "27",
+     "signature": "Newsprint/Paper",
+     "signature_lq": 2.84,
+     "signature_share": 0.0495
+    }
+   },
+   "decade": {
+    "role": "Generalist",
+    "consistent": false,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 8
+   }
+  },
+  {
+   "state": "SD",
+   "name": "South Dakota",
+   "years": {
+    "2012": {
+     "role": "Specialist",
+     "also": [],
+     "rank_eigenvector": 47,
+     "rank_out_degree": 38,
+     "rank_betweenness": null,
+     "rank_gdp": 48,
+     "places_above_gdp": 1,
+     "pull": 0.599,
+     "signature_sctg": "39",
+     "signature": "Furniture",
+     "signature_lq": 24.43,
+     "signature_share": 0.1275
+    },
+    "2017": {
+     "role": "Specialist",
+     "also": [],
+     "rank_eigenvector": 48,
+     "rank_out_degree": 43,
+     "rank_betweenness": null,
+     "rank_gdp": 48,
+     "places_above_gdp": 0,
+     "pull": 1.111,
+     "signature_sctg": "01",
+     "signature": "Live Animals and Fish",
+     "signature_lq": 25.53,
+     "signature_share": 0.0762
+    },
+    "2022": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 46,
+     "rank_out_degree": 41,
+     "rank_betweenness": null,
+     "rank_gdp": 48,
+     "places_above_gdp": 2,
+     "pull": 1.11,
+     "signature_sctg": "03",
+     "signature": "Other Agricultural Products",
+     "signature_lq": 6.01,
+     "signature_share": 0.0197
+    }
+   },
+   "decade": {
+    "role": "Specialist",
+    "consistent": false,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 2
+   }
+  },
+  {
+   "state": "TN",
+   "name": "Tennessee",
+   "years": {
+    "2012": {
+     "role": "Sustainer",
+     "also": [],
+     "rank_eigenvector": 13,
+     "rank_out_degree": 11,
+     "rank_betweenness": 18,
+     "rank_gdp": 18,
+     "places_above_gdp": 5,
+     "pull": 0.835,
+     "signature_sctg": "01",
+     "signature": "Live Animals and Fish",
+     "signature_lq": 6.65,
+     "signature_share": 0.2228
+    },
+    "2017": {
+     "role": "Sustainer",
+     "also": [],
+     "rank_eigenvector": 12,
+     "rank_out_degree": 9,
+     "rank_betweenness": 16,
+     "rank_gdp": 18,
+     "places_above_gdp": 6,
+     "pull": 0.839,
+     "signature_sctg": "09",
+     "signature": "Tobacco Products",
+     "signature_lq": 3.57,
+     "signature_share": 0.1374
+    },
+    "2022": {
+     "role": "Sustainer",
+     "also": [],
+     "rank_eigenvector": 11,
+     "rank_out_degree": 12,
+     "rank_betweenness": 25,
+     "rank_gdp": 16,
+     "places_above_gdp": 5,
+     "pull": 1.019,
+     "signature_sctg": "25",
+     "signature": "Logs and Wood",
+     "signature_lq": 6.3,
+     "signature_share": 0.195
+    }
+   },
+   "decade": {
+    "role": "Sustainer",
+    "consistent": true,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 2
+   }
+  },
+  {
+   "state": "TX",
+   "name": "Texas",
+   "years": {
+    "2012": {
+     "role": "Engine",
+     "also": [
+      "Router"
+     ],
+     "rank_eigenvector": 1,
+     "rank_out_degree": 3,
+     "rank_betweenness": 2,
+     "rank_gdp": 2,
+     "places_above_gdp": 1,
+     "pull": 1.228,
+     "signature_sctg": "20",
+     "signature": "Basic Chemicals",
+     "signature_lq": 2.44,
+     "signature_share": 0.1558
+    },
+    "2017": {
+     "role": "Engine",
+     "also": [
+      "Router"
+     ],
+     "rank_eigenvector": 1,
+     "rank_out_degree": 2,
+     "rank_betweenness": 2,
+     "rank_gdp": 2,
+     "places_above_gdp": 1,
+     "pull": 1.241,
+     "signature_sctg": "18",
+     "signature": "Fuel Oils",
+     "signature_lq": 5.74,
+     "signature_share": 0.3454
+    },
+    "2022": {
+     "role": "Engine",
+     "also": [
+      "Router"
+     ],
+     "rank_eigenvector": 1,
+     "rank_out_degree": 2,
+     "rank_betweenness": 2,
+     "rank_gdp": 2,
+     "places_above_gdp": 1,
+     "pull": 1.217,
+     "signature_sctg": "20",
+     "signature": "Basic Chemicals",
+     "signature_lq": 3.15,
+     "signature_share": 0.1949
+    }
+   },
+   "decade": {
+    "role": "Engine",
+    "consistent": true,
+    "router_years": 3,
+    "router_decade": true,
+    "eigenvector_rank_range": 0
+   }
+  },
+  {
+   "state": "UT",
+   "name": "Utah",
+   "years": {
+    "2012": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 34,
+     "rank_out_degree": 34,
+     "rank_betweenness": 23,
+     "rank_gdp": 32,
+     "places_above_gdp": -2,
+     "pull": 1.098,
+     "signature_sctg": "13",
+     "signature": "Nonmetallic Minerals",
+     "signature_lq": 5.94,
+     "signature_share": 0.0551
+    },
+    "2017": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 33,
+     "rank_out_degree": 32,
+     "rank_betweenness": null,
+     "rank_gdp": 31,
+     "places_above_gdp": -2,
+     "pull": 0.965,
+     "signature_sctg": "13",
+     "signature": "Nonmetallic Minerals",
+     "signature_lq": 4.52,
+     "signature_share": 0.0479
+    },
+    "2022": {
+     "role": "Router",
+     "also": [],
+     "rank_eigenvector": 35,
+     "rank_out_degree": 25,
+     "rank_betweenness": 11,
+     "rank_gdp": 29,
+     "places_above_gdp": -6,
+     "pull": 0.66,
+     "signature_sctg": "19",
+     "signature": "Coal and Petroleum Products",
+     "signature_lq": 14.12,
+     "signature_share": 0.2206
+    }
+   },
+   "decade": {
+    "role": "Generalist",
+    "consistent": false,
+    "router_years": 1,
+    "router_decade": false,
+    "eigenvector_rank_range": 2
+   }
+  },
+  {
+   "state": "VA",
+   "name": "Virginia",
+   "years": {
+    "2012": {
+     "role": "Market",
+     "also": [],
+     "rank_eigenvector": 14,
+     "rank_out_degree": 23,
+     "rank_betweenness": 16,
+     "rank_gdp": 10,
+     "places_above_gdp": -4,
+     "pull": 1.477,
+     "signature_sctg": "11",
+     "signature": "Natural Sands",
+     "signature_lq": 4.88,
+     "signature_share": 0.091
+    },
+    "2017": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 15,
+     "rank_out_degree": 20,
+     "rank_betweenness": 14,
+     "rank_gdp": 12,
+     "places_above_gdp": -3,
+     "pull": 1.271,
+     "signature_sctg": "15",
+     "signature": "Coal",
+     "signature_lq": 2.81,
+     "signature_share": 0.0538
+    },
+    "2022": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 17,
+     "rank_out_degree": 21,
+     "rank_betweenness": 20,
+     "rank_gdp": 13,
+     "places_above_gdp": -4,
+     "pull": 1.239,
+     "signature_sctg": "08",
+     "signature": "Alcoholic Beverages",
+     "signature_lq": 7.39,
+     "signature_share": 0.1394
+    }
+   },
+   "decade": {
+    "role": "Generalist",
+    "consistent": false,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 3
+   }
+  },
+  {
+   "state": "VT",
+   "name": "Vermont",
+   "years": {
+    "2012": {
+     "role": "Sustainer",
+     "also": [
+      "Specialist"
+     ],
+     "rank_eigenvector": 45,
+     "rank_out_degree": 46,
+     "rank_betweenness": null,
+     "rank_gdp": 51,
+     "places_above_gdp": 6,
+     "pull": 1.124,
+     "signature_sctg": "12",
+     "signature": "Gravel and Crushed Stone",
+     "signature_lq": 38.83,
+     "signature_share": 0.0993
+    },
+    "2017": {
+     "role": "Specialist",
+     "also": [],
+     "rank_eigenvector": 47,
+     "rank_out_degree": 45,
+     "rank_betweenness": null,
+     "rank_gdp": 51,
+     "places_above_gdp": 4,
+     "pull": 0.993,
+     "signature_sctg": "12",
+     "signature": "Gravel and Crushed Stone",
+     "signature_lq": 34.9,
+     "signature_share": 0.0844
+    },
+    "2022": {
+     "role": "Specialist",
+     "also": [
+      "Market"
+     ],
+     "rank_eigenvector": 49,
+     "rank_out_degree": 47,
+     "rank_betweenness": null,
+     "rank_gdp": 51,
+     "places_above_gdp": 2,
+     "pull": 1.316,
+     "signature_sctg": "10",
+     "signature": "Building Stone",
+     "signature_lq": 287.79,
+     "signature_share": 0.504
+    }
+   },
+   "decade": {
+    "role": "Specialist",
+    "consistent": false,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 4
+   }
+  },
+  {
+   "state": "WA",
+   "name": "Washington",
+   "years": {
+    "2012": {
+     "role": "Router",
+     "also": [],
+     "rank_eigenvector": 19,
+     "rank_out_degree": 20,
+     "rank_betweenness": 9,
+     "rank_gdp": 14,
+     "places_above_gdp": -5,
+     "pull": 1.125,
+     "signature_sctg": "37",
+     "signature": "Transportation Equipment",
+     "signature_lq": 10.26,
+     "signature_share": 0.1992
+    },
+    "2017": {
+     "role": "Router",
+     "also": [],
+     "rank_eigenvector": 21,
+     "rank_out_degree": 18,
+     "rank_betweenness": 8,
+     "rank_gdp": 13,
+     "places_above_gdp": -8,
+     "pull": 1.008,
+     "signature_sctg": "37",
+     "signature": "Transportation Equipment",
+     "signature_lq": 5.75,
+     "signature_share": 0.1209
+    },
+    "2022": {
+     "role": "Market",
+     "also": [],
+     "rank_eigenvector": 19,
+     "rank_out_degree": 22,
+     "rank_betweenness": 14,
+     "rank_gdp": 10,
+     "places_above_gdp": -9,
+     "pull": 1.328,
+     "signature_sctg": "26",
+     "signature": "Wood Products",
+     "signature_lq": 2.51,
+     "signature_share": 0.0443
+    }
+   },
+   "decade": {
+    "role": "Router",
+    "consistent": false,
+    "router_years": 2,
+    "router_decade": true,
+    "eigenvector_rank_range": 2
+   }
+  },
+  {
+   "state": "WI",
+   "name": "Wisconsin",
+   "years": {
+    "2012": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 17,
+     "rank_out_degree": 14,
+     "rank_betweenness": null,
+     "rank_gdp": 20,
+     "places_above_gdp": 3,
+     "pull": 0.816,
+     "signature_sctg": "11",
+     "signature": "Natural Sands",
+     "signature_lq": 5.57,
+     "signature_share": 0.1472
+    },
+    "2017": {
+     "role": "Generalist",
+     "also": [],
+     "rank_eigenvector": 16,
+     "rank_out_degree": 13,
+     "rank_betweenness": null,
+     "rank_gdp": 20,
+     "places_above_gdp": 4,
+     "pull": 0.843,
+     "signature_sctg": "11",
+     "signature": "Natural Sands",
+     "signature_lq": 6.38,
+     "signature_share": 0.1753
+    },
+    "2022": {
+     "role": "Sustainer",
+     "also": [],
+     "rank_eigenvector": 15,
+     "rank_out_degree": 13,
+     "rank_betweenness": 15,
+     "rank_gdp": 21,
+     "places_above_gdp": 6,
+     "pull": 0.852,
+     "signature_sctg": "12",
+     "signature": "Gravel and Crushed Stone",
+     "signature_lq": 8.95,
+     "signature_share": 0.2408
+    }
+   },
+   "decade": {
+    "role": "Generalist",
+    "consistent": false,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 2
+   }
+  },
+  {
+   "state": "WV",
+   "name": "West Virginia",
+   "years": {
+    "2012": {
+     "role": "Sustainer",
+     "also": [
+      "Specialist"
+     ],
+     "rank_eigenvector": 36,
+     "rank_out_degree": 37,
+     "rank_betweenness": null,
+     "rank_gdp": 41,
+     "places_above_gdp": 5,
+     "pull": 1.229,
+     "signature_sctg": "15",
+     "signature": "Coal",
+     "signature_lq": 52.29,
+     "signature_share": 0.2979
+    },
+    "2017": {
+     "role": "Sustainer",
+     "also": [
+      "Specialist"
+     ],
+     "rank_eigenvector": 36,
+     "rank_out_degree": 39,
+     "rank_betweenness": null,
+     "rank_gdp": 41,
+     "places_above_gdp": 5,
+     "pull": 1.241,
+     "signature_sctg": "15",
+     "signature": "Coal",
+     "signature_lq": 79.17,
+     "signature_share": 0.3962
+    },
+    "2022": {
+     "role": "Sustainer",
+     "also": [
+      "Specialist"
+     ],
+     "rank_eigenvector": 36,
+     "rank_out_degree": 38,
+     "rank_betweenness": null,
+     "rank_gdp": 43,
+     "places_above_gdp": 7,
+     "pull": 1.206,
+     "signature_sctg": "15",
+     "signature": "Coal",
+     "signature_lq": 95.47,
+     "signature_share": 0.5098
+    }
+   },
+   "decade": {
+    "role": "Sustainer",
+    "consistent": true,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 0
+   }
+  },
+  {
+   "state": "WY",
+   "name": "Wyoming",
+   "years": {
+    "2012": {
+     "role": "Specialist",
+     "also": [],
+     "rank_eigenvector": 48,
+     "rank_out_degree": 47,
+     "rank_betweenness": null,
+     "rank_gdp": 50,
+     "places_above_gdp": 2,
+     "pull": 1.274,
+     "signature_sctg": "15",
+     "signature": "Coal",
+     "signature_lq": 102.69,
+     "signature_share": 0.2118
+    },
+    "2017": {
+     "role": "Specialist",
+     "also": [
+      "Market"
+     ],
+     "rank_eigenvector": 50,
+     "rank_out_degree": 47,
+     "rank_betweenness": null,
+     "rank_gdp": 50,
+     "places_above_gdp": 0,
+     "pull": 1.511,
+     "signature_sctg": "15",
+     "signature": "Coal",
+     "signature_lq": 117.97,
+     "signature_share": 0.1791
+    },
+    "2022": {
+     "role": "Specialist",
+     "also": [
+      "Market"
+     ],
+     "rank_eigenvector": 48,
+     "rank_out_degree": 48,
+     "rank_betweenness": null,
+     "rank_gdp": 50,
+     "places_above_gdp": 2,
+     "pull": 2.059,
+     "signature_sctg": "15",
+     "signature": "Coal",
+     "signature_lq": 84.61,
+     "signature_share": 0.1288
+    }
+   },
+   "decade": {
+    "role": "Specialist",
+    "consistent": true,
+    "router_years": 0,
+    "router_decade": false,
+    "eigenvector_rank_range": 2
+   }
+  }
+ ]
+}

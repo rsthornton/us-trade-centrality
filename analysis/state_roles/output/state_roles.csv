@@ -1,0 +1,154 @@
+state,year,role,also,rank_eigenvector,rank_out_degree,rank_betweenness,rank_gdp,places_above_gdp,pull,signature_sctg,signature,signature_lq,signature_share
+AK,2012,Market,,50,49,,44,-6,2.891,,,,
+AK,2017,Market,,51,49,,47,-4,4.88,,,,
+AK,2022,Market,,45,49,,49,4,8.288,,,,
+AL,2012,Generalist,,24,25,20.0,25,1,1.053,01,Live Animals and Fish,6.25,0.1088
+AL,2017,Generalist,,25,23,,27,2,0.875,12,Gravel and Crushed Stone,6.17,0.1136
+AL,2022,Sustainer,,22,19,23.0,27,5,0.816,27,Newsprint/Paper,3.39,0.0735
+AR,2012,Generalist,,33,35,,35,2,1.176,25,Logs and Wood,10.31,0.0977
+AR,2017,Generalist,,35,34,,35,0,1.034,25,Logs and Wood,9.15,0.0841
+AR,2022,Sustainer,,29,31,,34,5,1.046,22,Fertilizers,7.65,0.0879
+AZ,2012,Market,,23,32,,22,-1,1.481,14,Metallic Ores,9.23,0.0962
+AZ,2017,Generalist,,23,29,,21,-2,1.201,37,Transportation Equipment,4.23,0.0511
+AZ,2022,Market,,18,30,,17,-1,1.33,11,Natural Sands,3.02,0.0395
+CA,2012,Engine,Router,3,1,1.0,1,-2,0.76,08,Alcoholic Beverages,2.72,0.208
+CA,2017,Engine,Router,2,1,1.0,1,-1,0.787,08,Alcoholic Beverages,3.0,0.2422
+CA,2022,Engine,Router,2,1,1.0,1,-1,0.875,35,Electronic Equipment,2.12,0.1644
+CO,2012,Generalist,,27,31,15.0,19,-8,1.059,14,Metallic Ores,7.3,0.0885
+CO,2017,Router,,28,31,11.0,19,-9,1.161,19,Coal and Petroleum Products,4.2,0.0448
+CO,2022,Specialist,,28,34,,15,-13,1.294,10,Building Stone,16.34,0.1685
+CT,2012,Generalist,,31,21,,23,-8,0.613,19,Coal and Petroleum Products,3.9,0.0752
+CT,2017,Generalist,,29,24,,23,-6,0.74,01,Live Animals and Fish,3.45,0.0573
+CT,2022,Generalist,,33,28,,23,-10,0.755,37,Transportation Equipment,8.95,0.1254
+DC,2012,Market,,51,51,,34,-17,7.982,41,Waste/Scrap,63.44,0.0117
+DC,2017,Market,,49,50,,34,-15,17.224,,,,
+DC,2022,Market,,51,51,,36,-15,4.652,,,,
+DE,2012,Generalist,,42,42,,42,0,1.024,20,Basic Chemicals,9.3,0.0371
+DE,2017,Generalist,,42,36,,42,0,0.71,20,Basic Chemicals,5.59,0.0287
+DE,2022,Generalist,,42,37,,42,0,0.753,18,Fuel Oils,8.09,0.0413
+FL,2012,Market,,7,18,,4,-3,1.903,01,Live Animals and Fish,10.71,0.2164
+FL,2017,Market,,5,19,,4,-1,2.251,25,Logs and Wood,5.72,0.1185
+FL,2022,Market,,3,16,23.0,4,1,1.894,09,Tobacco Products,6.85,0.167
+GA,2012,Router,,11,10,11.0,9,-2,0.994,13,Nonmetallic Minerals,5.87,0.196
+GA,2017,Router,,10,10,10.0,9,-1,1.009,25,Logs and Wood,3.2,0.1215
+GA,2022,Router,,10,9,12.0,8,-2,0.935,13,Nonmetallic Minerals,4.11,0.1496
+HI,2012,Market,,49,50,,39,-10,6.457,18,Fuel Oils,80.35,0.0161
+HI,2017,Market,,45,51,,39,-6,18.815,,,,
+HI,2022,Market,,50,50,,41,-9,4.23,,,,
+IA,2012,Generalist,,28,24,,30,2,0.87,04,Animal Feed,6.0,0.1061
+IA,2017,Generalist,,31,22,13.0,30,-1,0.727,04,Animal Feed,6.09,0.1136
+IA,2022,Generalist,,27,23,22.0,31,4,0.838,04,Animal Feed,6.45,0.1139
+ID,2012,Generalist,,44,43,,43,-1,1.198,22,Fertilizers,14.61,0.051
+ID,2017,Specialist,,43,41,,43,0,1.235,22,Fertilizers,17.49,0.0623
+ID,2022,Specialist,Market,39,40,,39,0,1.829,14,Metallic Ores,24.42,0.1038
+IL,2012,Engine,Router,6,2,3.0,5,-1,0.72,22,Fertilizers,4.08,0.2784
+IL,2017,Engine,Router,6,3,5.0,5,-1,0.835,11,Natural Sands,3.32,0.196
+IL,2022,Engine,Router,4,3,5.0,5,1,0.85,11,Natural Sands,3.66,0.2034
+IN,2012,Sustainer,,10,8,,17,7,0.888,32,Base Metals,2.95,0.1052
+IN,2017,Sustainer,,11,8,19.0,16,5,0.837,17,Gasoline,2.68,0.1041
+IN,2022,Sustainer,,9,6,18.0,19,10,0.778,04,Animal Feed,2.75,0.1221
+KS,2012,Generalist,,30,22,17.0,31,1,0.686,02,Cereal Grains,10.83,0.2011
+KS,2017,Generalist,,34,26,,32,-2,0.769,02,Cereal Grains,5.08,0.0752
+KS,2022,Generalist,,34,26,,33,-1,0.736,18,Fuel Oils,7.21,0.107
+KY,2012,Sustainer,,16,13,20.0,27,11,0.816,15,Coal,6.19,0.1641
+KY,2017,Sustainer,,14,15,,28,14,0.973,15,Coal,5.42,0.1256
+KY,2022,Sustainer,,14,14,20.0,28,14,0.936,15,Coal,3.75,0.0971
+LA,2012,Sustainer,Router,12,17,12.0,24,12,1.298,18,Fuel Oils,11.78,0.2333
+LA,2017,Sustainer,,19,25,,24,5,1.087,17,Gasoline,12.27,0.183
+LA,2022,Sustainer,Market,16,29,17.0,25,9,1.321,17,Gasoline,10.82,0.1491
+MA,2012,Router,,22,19,6.0,12,-10,1.103,38,Precision Instruments,3.29,0.065
+MA,2017,Router,,22,17,6.0,11,-11,0.938,17,Gasoline,5.0,0.1116
+MA,2022,Router,,23,17,4.0,12,-11,0.804,27,Newsprint/Paper,3.83,0.0931
+MD,2012,Router,,20,27,10.0,15,-5,1.211,31,Nonmetallic Mineral Products,3.55,0.0535
+MD,2017,Market,,20,28,15.0,15,-5,1.477,39,Furniture,2.16,0.0286
+MD,2022,Router,,25,27,10.0,18,-7,1.131,06,Milled Grain Products,4.01,0.0581
+ME,2012,Market,,43,45,,46,3,1.589,27,Newsprint/Paper,13.77,0.0395
+ME,2017,Market,,44,44,,44,0,1.524,01,Live Animals and Fish,10.49,0.0288
+ME,2022,Market,,43,44,,44,1,1.747,25,Logs and Wood,11.77,0.034
+MI,2012,Sustainer,,8,12,,13,5,1.017,36,Motorized Vehicles,4.03,0.1329
+MI,2017,Sustainer,,8,11,18.0,14,6,0.992,36,Motorized Vehicles,4.09,0.1503
+MI,2022,Sustainer,,8,10,,14,6,1.137,36,Motorized Vehicles,3.68,0.1284
+MN,2012,Router,,26,15,8.0,16,-10,0.816,14,Metallic Ores,7.13,0.1633
+MN,2017,Router,,26,16,9.0,17,-9,0.777,01,Live Animals and Fish,7.52,0.1696
+MN,2022,Router,Specialist,24,15,8.0,20,-4,0.705,14,Metallic Ores,29.38,0.7384
+MO,2012,Generalist,,18,16,19.0,21,3,1.038,04,Animal Feed,2.93,0.0611
+MO,2017,Generalist,,18,14,17.0,22,4,0.839,14,Metallic Ores,5.59,0.1375
+MO,2022,Generalist,,20,18,19.0,22,2,0.934,12,Gravel and Crushed Stone,3.93,0.0925
+MS,2012,Sustainer,,29,29,23.0,37,8,0.961,31,Nonmetallic Mineral Products,4.56,0.06
+MS,2017,Sustainer,,27,27,,37,10,0.958,21,Pharmaceutical Products,3.49,0.0488
+MS,2022,Sustainer,,31,32,,37,6,1.079,19,Coal and Petroleum Products,8.95,0.1016
+MT,2012,Sustainer,"Specialist, Market",37,48,,49,12,3.927,14,Metallic Ores,50.6,0.0937
+MT,2017,Sustainer,Market,41,48,,49,8,3.744,02,Cereal Grains,37.27,0.0498
+MT,2022,Specialist,Market,44,45,,47,3,2.664,14,Metallic Ores,60.75,0.1078
+NC,2012,Generalist,,15,9,13.0,11,-4,0.723,09,Tobacco Products,7.71,0.2732
+NC,2017,Router,,13,12,12.0,10,-3,0.796,09,Tobacco Products,8.34,0.2929
+NC,2022,Generalist,,13,11,13.0,11,-2,0.882,23,Chemical Products,2.89,0.0983
+ND,2012,Specialist,Market,41,44,,45,4,1.679,02,Cereal Grains,22.5,0.0685
+ND,2017,Sustainer,"Specialist, Market",40,42,,46,6,1.538,02,Cereal Grains,21.53,0.0733
+ND,2022,Specialist,Market,41,42,,45,4,1.735,02,Cereal Grains,16.09,0.0511
+NE,2012,Generalist,,39,33,,36,-3,0.832,02,Cereal Grains,10.25,0.0993
+NE,2017,Generalist,,37,35,,36,-1,0.861,05,Meat/Seafood,9.96,0.083
+NE,2022,Generalist,,37,35,,35,-2,0.758,05,Meat/Seafood,8.48,0.0814
+NH,2012,Market,,40,41,,40,0,1.513,18,Fuel Oils,3.95,0.017
+NH,2017,Market,,39,38,,40,1,1.303,18,Fuel Oils,6.01,0.0307
+NH,2022,Market,,40,39,,40,0,1.328,09,Tobacco Products,2.14,0.0105
+NJ,2012,Generalist,,9,6,14.0,8,-1,0.731,10,Building Stone,2.66,0.1158
+NJ,2017,Generalist,,9,6,,8,-1,0.822,10,Building Stone,2.23,0.0936
+NJ,2022,Router,,12,7,9.0,9,-3,0.769,11,Natural Sands,2.04,0.0815
+NM,2012,Specialist,,38,40,,38,0,1.279,14,Metallic Ores,18.81,0.0822
+NM,2017,Market,,38,46,,38,0,2.498,22,Fertilizers,14.27,0.027
+NM,2022,Market,,38,46,,38,0,3.0,22,Fertilizers,7.48,0.0134
+NV,2012,Specialist,,35,36,,33,-2,1.097,14,Metallic Ores,34.6,0.2529
+NV,2017,Specialist,Market,32,37,,33,1,1.786,14,Metallic Ores,55.35,0.2813
+NV,2022,Generalist,,32,36,,32,0,1.27,39,Furniture,4.39,0.0303
+NY,2012,Engine,"Router, Market",2,7,4.0,3,1,1.565,30,Textiles/Leather,2.5,0.1
+NY,2017,Engine,"Router, Market",3,7,3.0,3,0,1.351,30,Textiles/Leather,2.31,0.0943
+NY,2022,Router,,6,8,7.0,3,-3,1.201,40,Misc. Manufactured Products,2.35,0.0885
+OH,2012,Engine,Router,4,4,7.0,7,3,0.898,32,Base Metals,1.97,0.0985
+OH,2017,Engine,Router,4,5,7.0,7,3,0.963,06,Milled Grain Products,2.69,0.127
+OH,2022,Engine,Router,5,4,6.0,7,2,0.844,32,Base Metals,1.72,0.0909
+OK,2012,Sustainer,,21,30,,28,7,1.169,19,Coal and Petroleum Products,12.56,0.151
+OK,2017,Sustainer,Market,24,33,,29,5,1.387,22,Fertilizers,7.85,0.0761
+OK,2022,Generalist,,26,33,,30,4,1.104,22,Fertilizers,11.29,0.1213
+OR,2012,Generalist,,32,28,22.0,29,-3,1.004,26,Wood Products,5.24,0.0689
+OR,2017,Generalist,,30,30,,25,-5,1.09,26,Wood Products,6.91,0.0807
+OR,2022,Generalist,,30,20,16.0,26,-4,0.664,30,Textiles/Leather,3.68,0.0706
+PA,2012,Engine,Router,5,5,5.0,6,1,0.93,15,Coal,2.3,0.1106
+PA,2017,Engine,Router,7,4,4.0,6,-1,0.796,25,Logs and Wood,2.93,0.16
+PA,2022,Engine,Router,7,5,3.0,6,-1,0.962,25,Logs and Wood,8.93,0.4095
+RI,2012,Generalist,,46,39,,47,1,0.713,17,Gasoline,11.8,0.0509
+RI,2017,Generalist,,46,40,,45,-1,0.579,01,Live Animals and Fish,7.92,0.0386
+RI,2022,Generalist,,47,43,,46,-1,0.931,31,Nonmetallic Mineral Products,7.43,0.0222
+SC,2012,Generalist,,25,26,,26,1,1.124,28,Paper Articles,3.18,0.0482
+SC,2017,Sustainer,,17,21,,26,9,1.051,37,Transportation Equipment,4.96,0.0919
+SC,2022,Generalist,,21,24,,24,3,1.055,27,Newsprint/Paper,2.84,0.0495
+SD,2012,Specialist,,47,38,,48,1,0.599,39,Furniture,24.43,0.1275
+SD,2017,Specialist,,48,43,,48,0,1.111,01,Live Animals and Fish,25.53,0.0762
+SD,2022,Generalist,,46,41,,48,2,1.11,03,Other Agricultural Products,6.01,0.0197
+TN,2012,Sustainer,,13,11,18.0,18,5,0.835,01,Live Animals and Fish,6.65,0.2228
+TN,2017,Sustainer,,12,9,16.0,18,6,0.839,09,Tobacco Products,3.57,0.1374
+TN,2022,Sustainer,,11,12,25.0,16,5,1.019,25,Logs and Wood,6.3,0.195
+TX,2012,Engine,Router,1,3,2.0,2,1,1.228,20,Basic Chemicals,2.44,0.1558
+TX,2017,Engine,Router,1,2,2.0,2,1,1.241,18,Fuel Oils,5.74,0.3454
+TX,2022,Engine,Router,1,2,2.0,2,1,1.217,20,Basic Chemicals,3.15,0.1949
+UT,2012,Generalist,,34,34,23.0,32,-2,1.098,13,Nonmetallic Minerals,5.94,0.0551
+UT,2017,Generalist,,33,32,,31,-2,0.965,13,Nonmetallic Minerals,4.52,0.0479
+UT,2022,Router,,35,25,11.0,29,-6,0.66,19,Coal and Petroleum Products,14.12,0.2206
+VA,2012,Market,,14,23,16.0,10,-4,1.477,11,Natural Sands,4.88,0.091
+VA,2017,Generalist,,15,20,14.0,12,-3,1.271,15,Coal,2.81,0.0538
+VA,2022,Generalist,,17,21,20.0,13,-4,1.239,08,Alcoholic Beverages,7.39,0.1394
+VT,2012,Sustainer,Specialist,45,46,,51,6,1.124,12,Gravel and Crushed Stone,38.83,0.0993
+VT,2017,Specialist,,47,45,,51,4,0.993,12,Gravel and Crushed Stone,34.9,0.0844
+VT,2022,Specialist,Market,49,47,,51,2,1.316,10,Building Stone,287.79,0.504
+WA,2012,Router,,19,20,9.0,14,-5,1.125,37,Transportation Equipment,10.26,0.1992
+WA,2017,Router,,21,18,8.0,13,-8,1.008,37,Transportation Equipment,5.75,0.1209
+WA,2022,Market,,19,22,14.0,10,-9,1.328,26,Wood Products,2.51,0.0443
+WI,2012,Generalist,,17,14,,20,3,0.816,11,Natural Sands,5.57,0.1472
+WI,2017,Generalist,,16,13,,20,4,0.843,11,Natural Sands,6.38,0.1753
+WI,2022,Sustainer,,15,13,15.0,21,6,0.852,12,Gravel and Crushed Stone,8.95,0.2408
+WV,2012,Sustainer,Specialist,36,37,,41,5,1.229,15,Coal,52.29,0.2979
+WV,2017,Sustainer,Specialist,36,39,,41,5,1.241,15,Coal,79.17,0.3962
+WV,2022,Sustainer,Specialist,36,38,,43,7,1.206,15,Coal,95.47,0.5098
+WY,2012,Specialist,,48,47,,50,2,1.274,15,Coal,102.69,0.2118
+WY,2017,Specialist,Market,50,47,,50,0,1.511,15,Coal,117.97,0.1791
+WY,2022,Specialist,Market,48,48,,50,2,2.059,15,Coal,84.61,0.1288
