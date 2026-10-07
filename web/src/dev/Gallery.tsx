@@ -35,9 +35,9 @@ export default function Gallery() {
 
       <Section title="Pill">
         {[
-          { key: "eigenvector", label: "Eigenvector", sub: "Trade prestige", color: "#44cc88" },
-          { key: "betweenness", label: "Betweenness", sub: "Bridge position", color: "#4488ff" },
-          { key: "out_degree", label: "Out-Degree", sub: "Export reach", color: "#ff9944" },
+          { key: "eigenvector", label: "Eigenvector", sub: "Trade prestige", color: "#009e73" },
+          { key: "betweenness", label: "Betweenness", sub: "Bridge position", color: "#0072b2" },
+          { key: "out_degree", label: "Out-Degree", sub: "Export reach", color: "#d55e00" },
         ].map((m) => (
           <Pill
             key={m.key}

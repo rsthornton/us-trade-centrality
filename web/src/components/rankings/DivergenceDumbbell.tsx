@@ -1,13 +1,13 @@
 import { useMemo } from "react";
 import type { BaseCentralityRow, Measure } from "../../types";
 import { MEASURES } from "./constants";
+import { divergentStates, rankGap } from "../../lib/ranks";
 
 const W = 680;
 const ROW_H = 26;
 const TOP = 26; // axis label band
 const LEFT = 70; // state label gutter
 const RIGHT = 64; // delta gutter
-const TOP_N = 14; // biggest movers shown
 
 export interface DivergenceDumbbellProps {
   centralities: BaseCentralityRow[];
@@ -26,27 +26,25 @@ export default function DivergenceDumbbell({
   const measureLabel = MEASURES.find((m) => m.key === measure)?.label ?? measure;
 
   const rows = useMemo(() => {
-    const all = centralities.map((r) => ({
-      state: r.state,
-      name: r.state_name ?? r.state,
-      gdp: r.gdp_rank,
-      net: r[rankKey],
-      delta: r.gdp_rank - r[rankKey], // > 0: network rank beats GDP rank (overperforms)
-    }));
-    // The N biggest movers, then ordered overperform → underperform.
-    return all
-      .slice()
-      .sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta))
-      .slice(0, TOP_N)
+    // Every state the headline counts (gap of 5 or more, ranked), higher network rank first.
+    return divergentStates(centralities, measure)
+      .map((r) => ({
+        state: r.state,
+        name: r.state_name ?? r.state,
+        gdp: r.gdp_rank,
+        net: r[rankKey],
+        delta: rankGap(r, measure), // > 0: network rank higher than GDP rank
+      }))
       .sort((a, b) => b.delta - a.delta);
-  }, [centralities, rankKey]);
+  }, [centralities, rankKey, measure]);
 
   const H = TOP + rows.length * ROW_H + 6;
   const xScale = (rank: number) => LEFT + ((rank - 1) / 50) * (W - LEFT - RIGHT);
   const firstNeg = rows.findIndex((r) => r.delta < 0);
 
   const dirColor = (delta: number) =>
-    delta > 0 ? "var(--accent-green)" : delta < 0 ? "var(--accent-red)" : "var(--text-muted)";
+    delta > 0 ? "var(--gap-above)" : delta < 0 ? "var(--gap-below)" : "var(--text-muted)";
+  const signed = (delta: number) => (delta > 0 ? `+${delta}` : `\u2212${Math.abs(delta)}`);
 
   const top = rows[0];
   const bottom = rows[rows.length - 1];
@@ -55,53 +53,51 @@ export default function DivergenceDumbbell({
     <div>
       {top && (
         <div className="text-xs mb-3" style={{ color: "var(--text-secondary)" }}>
-          Biggest gaps:{" "}
-          <span style={{ color: "var(--accent-green)", fontWeight: 600 }}>
-            {top.name} +{top.delta}
-          </span>{" "}
-          overperforms
+          Largest gaps:{" "}
+          <span style={{ color: "var(--gap-above)", fontWeight: 600 }}>
+            {top.name} {signed(top.delta)}
+          </span>
           {bottom && bottom.delta < 0 && (
             <>
               ,{" "}
-              <span style={{ color: "var(--accent-red)", fontWeight: 600 }}>
-                {bottom.name} {bottom.delta}
-              </span>{" "}
-              underperforms
+              <span style={{ color: "var(--gap-below)", fontWeight: 600 }}>
+                {bottom.name} {signed(bottom.delta)}
+              </span>
             </>
           )}
           .
         </div>
       )}
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto">
-        {/* faint semantic bands: green behind overperformers, red behind underperformers */}
+        {/* faint bands behind higher-than-GDP and lower-than-GDP rows */}
         {firstNeg > 0 && (
           <rect
             x={0} y={TOP - 4} width={W} height={firstNeg * ROW_H}
-            fill="var(--accent-green)" opacity={0.05} rx={6}
+            fill="var(--gap-above)" opacity={0.05} rx={6}
           />
         )}
         {firstNeg >= 0 && firstNeg < rows.length && (
           <rect
             x={0} y={TOP - 4 + firstNeg * ROW_H} width={W} height={(rows.length - firstNeg) * ROW_H}
-            fill="var(--accent-red)" opacity={0.05} rx={6}
+            fill="var(--gap-below)" opacity={0.05} rx={6}
           />
         )}
 
-        {/* rank axis hints */}
-        <text x={xScale(1)} y={14} fontSize={9} fill="var(--text-muted)">
-          rank #1
-        </text>
-        <text x={xScale(51)} y={14} fontSize={9} fill="var(--text-muted)" textAnchor="end">
-          #51
-        </text>
-        <line
-          x1={xScale(1)} y1={TOP - 6} x2={xScale(1)} y2={H - 4}
-          stroke="var(--border)" strokeWidth={1} strokeDasharray="2,3"
-        />
-        <line
-          x1={xScale(51)} y1={TOP - 6} x2={xScale(51)} y2={H - 4}
-          stroke="var(--border)" strokeWidth={1} strokeDasharray="2,3"
-        />
+        {/* rank axis: gridlines and labels at 1, 10, 20, 30, 40, 51 */}
+        {[1, 10, 20, 30, 40, 51].map((t) => (
+          <g key={t}>
+            <text
+              x={xScale(t)} y={14} fontSize={10} fill="var(--text-muted)" textAnchor="middle"
+              fontFamily="var(--font-mono)"
+            >
+              {t}
+            </text>
+            <line
+              x1={xScale(t)} y1={TOP - 6} x2={xScale(t)} y2={H - 4}
+              stroke="var(--hairline)" strokeWidth={1}
+            />
+          </g>
+        ))}
 
         {rows.map((r, i) => {
           const y = TOP + i * ROW_H + ROW_H / 2;
@@ -117,8 +113,7 @@ export default function DivergenceDumbbell({
               onClick={() => onSelectState(isSel ? null : r.state)}
             >
               <title>
-                {r.name}: GDP #{r.gdp} → {measureLabel} #{r.net} ({r.delta > 0 ? "+" : ""}
-                {r.delta})
+                {r.name}: GDP #{r.gdp}, {measureLabel} #{r.net} ({signed(r.delta)})
               </title>
               {isSel && (
                 <rect
@@ -144,7 +139,7 @@ export default function DivergenceDumbbell({
               <text
                 x={W - RIGHT + 12} y={y + 3} fontSize={11} fontWeight={600} fill={color}
               >
-                {r.delta > 0 ? `+${r.delta}` : r.delta}
+                {signed(r.delta)}
               </text>
             </g>
           );
@@ -174,8 +169,8 @@ export default function DivergenceDumbbell({
           <span className="inline-block w-2.5 h-2.5 rounded-full" style={{ background: "var(--text-secondary)" }} />
           {measureLabel} rank
         </span>
-        <span style={{ color: "var(--accent-green)" }}>▲ above GDP weight</span>
-        <span style={{ color: "var(--accent-red)" }}>▼ below GDP weight</span>
+        <span style={{ color: "var(--gap-above)" }}>+ network rank higher than GDP rank</span>
+        <span style={{ color: "var(--gap-below)" }}>{"\u2212"} network rank lower</span>
       </div>
     </div>
   );

@@ -41,7 +41,7 @@ export default function ColorLegend({
             style={{ backgroundColor: color }}
           />
         )}
-        <span style={{ color: color ?? "var(--text-muted)" }}>{label}</span>
+        <span style={{ color: "var(--text-secondary)" }}>{label}</span>
       </span>
     </div>
   );

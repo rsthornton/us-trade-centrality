@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { geoToSvgPaths, projectPoint, MAP_WIDTH, MAP_HEIGHT } from "../lib/geo";
 import { centralityToColor } from "../lib/colors";
+import { hasRank } from "../lib/ranks";
 import Tooltip from "./ui/Tooltip";
 import { mapColors } from "../tokens";
 import type { BaseCentralityRow, Edge, FeatureCollection, Measure } from "../types";
@@ -200,15 +201,15 @@ export default function TradeMap({
         const fill = data ? centralityToColor(value, min, max) : mapColors.empty;
         const isSelected = abbr === selectedState;
         const isHovered = abbr === hoveredState;
+        // Other states keep their fill at reduced opacity, so the choropleth stays readable.
         const dimmed = selectedState && !isSelected;
-        const washed = dimmed ? mapColors.wash : null;
 
-        // selection uses white outline + glow, not fill change; hover uses medium outline
+        // selection: dark outline over a white glow; hover uses the measure color
         let stroke: string = mapColors.stroke;
         let strokeWidth = 0.5;
         if (isSelected) {
-          stroke = "#ffffff";
-          strokeWidth = 2.5;
+          stroke = "#111111";
+          strokeWidth = 2;
         } else if (isHovered) {
           stroke = accent;
           strokeWidth = 2;
@@ -222,7 +223,8 @@ export default function TradeMap({
             filter={isSelected ? "url(#glow)" : undefined}
             className="cursor-pointer"
             style={{
-              fill: washed || fill,
+              fill,
+              fillOpacity: dimmed ? 0.4 : 1,
               stroke,
               strokeWidth,
               transition: "fill 450ms ease, stroke 250ms ease, stroke-width 250ms ease",
@@ -232,7 +234,7 @@ export default function TradeMap({
               if (!abbr) return;
               setHoverInfo({
                 name: name ?? abbr,
-                rank: data ? data[`rank_${measure}`] : null,
+                rank: data && hasRank(data, measure) ? data[`rank_${measure}`] : null,
                 gdpRank: data ? data.gdp_rank : null,
                 x: e.clientX,
                 y: e.clientY,
@@ -297,7 +299,9 @@ export default function TradeMap({
             <div style={{ color: "var(--text-secondary)" }}>
               {hoverInfo.rank != null
                 ? `${MEASURE_LABEL[measure]} #${hoverInfo.rank} · GDP #${hoverInfo.gdpRank}`
-                : "No data for this commodity"}
+                : hoverInfo.gdpRank != null
+                  ? `${MEASURE_LABEL[measure]}: none · GDP #${hoverInfo.gdpRank}`
+                  : "No data for this commodity"}
             </div>
           </>
         )}
