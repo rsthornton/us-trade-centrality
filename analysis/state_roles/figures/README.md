@@ -10,13 +10,12 @@ Re-run the script after any change to `roles.yaml`.
 | `tile-map-decade` | Decade role on a U.S. tile map; codes give the role in each year, dashed outline marks a change |
 | `role-stability` | Role per state and year, sorted by decade role |
 
-Design draft from the first exploration (October 2026), kept as reference. It
-was drawn from thesis 2017 data with a decade-level router rule, so three 2017
-roles differ from `output/` (see the main README).
+Design drafts from the first exploration (October 2026), kept as reference.
+They were drawn from thesis 2017 data with a decade-level router rule, so three
+2017 roles differ from `output/` (see the main README).
 
 | File | Board |
 |---|---|
 | `draft-a-periodic-table.png` | Roles as element families: one tile per state with network rank, places versus GDP, signature commodity and decade stability |
-
-Boards B (tile map) and C (element key and role rules) are pending export as
-`draft-b-tile-map.png` and `draft-c-element-key.png`.
+| `draft-b-tile-map.png` | Roles in place: the same roles on a U.S. tile map |
+| `draft-c-element-key.png` | Element key and role rules, with the counterfactual for each role |
