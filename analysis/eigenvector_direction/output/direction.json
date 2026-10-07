@@ -1,0 +1,341 @@
+{
+ "note": "Post-hoc check. See README.md.",
+ "results": [
+  {
+   "source": "thesis 2017 (data/bilateral_flows_51x51.csv vs dashboard)",
+   "states": 51,
+   "stored_matches": "in_flow",
+   "max_abs_diff_stored_vs_in_flow": 4.980863347464615e-07,
+   "spearman_in_vs_out": 0.951,
+   "states_moving_5plus_ranks": 16,
+   "largest_moves": {
+    "FL": {
+     "in_flow": 5,
+     "out_flow": 17
+    },
+    "MN": {
+     "in_flow": 26,
+     "out_flow": 16
+    },
+    "MD": {
+     "in_flow": 20,
+     "out_flow": 29
+    },
+    "LA": {
+     "in_flow": 17,
+     "out_flow": 25
+    },
+    "NM": {
+     "in_flow": 38,
+     "out_flow": 46
+    },
+    "IA": {
+     "in_flow": 31,
+     "out_flow": 23
+    },
+    "KS": {
+     "in_flow": 34,
+     "out_flow": 27
+    },
+    "OK": {
+     "in_flow": 24,
+     "out_flow": 31
+    }
+   },
+   "watch": {
+    "TX": {
+     "in_flow": 1,
+     "out_flow": 5
+    },
+    "CA": {
+     "in_flow": 2,
+     "out_flow": 1
+    },
+    "FL": {
+     "in_flow": 5,
+     "out_flow": 17
+    },
+    "KY": {
+     "in_flow": 14,
+     "out_flow": 15
+    },
+    "MS": {
+     "in_flow": 27,
+     "out_flow": 28
+    },
+    "IN": {
+     "in_flow": 10,
+     "out_flow": 8
+    },
+    "LA": {
+     "in_flow": 17,
+     "out_flow": 25
+    },
+    "TN": {
+     "in_flow": 12,
+     "out_flow": 10
+    },
+    "MI": {
+     "in_flow": 8,
+     "out_flow": 9
+    },
+    "DC": {
+     "in_flow": 49,
+     "out_flow": 51
+    }
+   }
+  },
+  {
+   "source": "evolution cache 2012",
+   "states": 51,
+   "stored_matches": "in_flow",
+   "max_abs_diff_stored_vs_in_flow": 5.551115123125783e-16,
+   "spearman_in_vs_out": 0.945,
+   "states_moving_5plus_ranks": 18,
+   "largest_moves": {
+    "MT": {
+     "in_flow": 37,
+     "out_flow": 48
+    },
+    "MN": {
+     "in_flow": 26,
+     "out_flow": 15
+    },
+    "FL": {
+     "in_flow": 7,
+     "out_flow": 18
+    },
+    "CT": {
+     "in_flow": 31,
+     "out_flow": 21
+    },
+    "VA": {
+     "in_flow": 14,
+     "out_flow": 23
+    },
+    "IA": {
+     "in_flow": 28,
+     "out_flow": 19
+    },
+    "OK": {
+     "in_flow": 21,
+     "out_flow": 29
+    },
+    "KS": {
+     "in_flow": 30,
+     "out_flow": 22
+    }
+   },
+   "watch": {
+    "TX": {
+     "in_flow": 1,
+     "out_flow": 3
+    },
+    "CA": {
+     "in_flow": 3,
+     "out_flow": 2
+    },
+    "FL": {
+     "in_flow": 7,
+     "out_flow": 18
+    },
+    "KY": {
+     "in_flow": 16,
+     "out_flow": 14
+    },
+    "MS": {
+     "in_flow": 29,
+     "out_flow": 31
+    },
+    "IN": {
+     "in_flow": 10,
+     "out_flow": 8
+    },
+    "LA": {
+     "in_flow": 12,
+     "out_flow": 17
+    },
+    "TN": {
+     "in_flow": 13,
+     "out_flow": 11
+    },
+    "MI": {
+     "in_flow": 8,
+     "out_flow": 9
+    },
+    "DC": {
+     "in_flow": 51,
+     "out_flow": 51
+    }
+   }
+  },
+  {
+   "source": "evolution cache 2017",
+   "states": 51,
+   "stored_matches": "in_flow",
+   "max_abs_diff_stored_vs_in_flow": 4.718447854656915e-16,
+   "spearman_in_vs_out": 0.951,
+   "states_moving_5plus_ranks": 15,
+   "largest_moves": {
+    "FL": {
+     "in_flow": 5,
+     "out_flow": 17
+    },
+    "MN": {
+     "in_flow": 26,
+     "out_flow": 16
+    },
+    "MD": {
+     "in_flow": 20,
+     "out_flow": 29
+    },
+    "NM": {
+     "in_flow": 38,
+     "out_flow": 46
+    },
+    "IA": {
+     "in_flow": 31,
+     "out_flow": 23
+    },
+    "OK": {
+     "in_flow": 24,
+     "out_flow": 31
+    },
+    "MT": {
+     "in_flow": 41,
+     "out_flow": 48
+    },
+    "VA": {
+     "in_flow": 15,
+     "out_flow": 22
+    }
+   },
+   "watch": {
+    "TX": {
+     "in_flow": 1,
+     "out_flow": 5
+    },
+    "CA": {
+     "in_flow": 2,
+     "out_flow": 1
+    },
+    "FL": {
+     "in_flow": 5,
+     "out_flow": 17
+    },
+    "KY": {
+     "in_flow": 14,
+     "out_flow": 15
+    },
+    "MS": {
+     "in_flow": 27,
+     "out_flow": 28
+    },
+    "IN": {
+     "in_flow": 11,
+     "out_flow": 8
+    },
+    "LA": {
+     "in_flow": 19,
+     "out_flow": 25
+    },
+    "TN": {
+     "in_flow": 12,
+     "out_flow": 10
+    },
+    "MI": {
+     "in_flow": 8,
+     "out_flow": 9
+    },
+    "DC": {
+     "in_flow": 49,
+     "out_flow": 51
+    }
+   }
+  },
+  {
+   "source": "evolution cache 2022",
+   "states": 51,
+   "stored_matches": "in_flow",
+   "max_abs_diff_stored_vs_in_flow": 4.996003610813204e-16,
+   "spearman_in_vs_out": 0.954,
+   "states_moving_5plus_ranks": 17,
+   "largest_moves": {
+    "FL": {
+     "in_flow": 3,
+     "out_flow": 15
+    },
+    "LA": {
+     "in_flow": 16,
+     "out_flow": 25
+    },
+    "AZ": {
+     "in_flow": 18,
+     "out_flow": 26
+    },
+    "UT": {
+     "in_flow": 35,
+     "out_flow": 27
+    },
+    "MN": {
+     "in_flow": 24,
+     "out_flow": 16
+    },
+    "NM": {
+     "in_flow": 38,
+     "out_flow": 45
+    },
+    "CO": {
+     "in_flow": 28,
+     "out_flow": 35
+    },
+    "OR": {
+     "in_flow": 30,
+     "out_flow": 23
+    }
+   },
+   "watch": {
+    "TX": {
+     "in_flow": 1,
+     "out_flow": 4
+    },
+    "CA": {
+     "in_flow": 2,
+     "out_flow": 1
+    },
+    "FL": {
+     "in_flow": 3,
+     "out_flow": 15
+    },
+    "KY": {
+     "in_flow": 14,
+     "out_flow": 14
+    },
+    "MS": {
+     "in_flow": 31,
+     "out_flow": 33
+    },
+    "IN": {
+     "in_flow": 9,
+     "out_flow": 5
+    },
+    "LA": {
+     "in_flow": 16,
+     "out_flow": 25
+    },
+    "TN": {
+     "in_flow": 11,
+     "out_flow": 12
+    },
+    "MI": {
+     "in_flow": 8,
+     "out_flow": 8
+    },
+    "DC": {
+     "in_flow": 51,
+     "out_flow": 50
+    }
+   }
+  }
+ ]
+}
