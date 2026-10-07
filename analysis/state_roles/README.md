@@ -76,8 +76,9 @@ Readings:
 
 - Seven of the eight states the thesis identified as structurally undervalued
   (IN, KY, LA, MI, MS, TN, MT) are Sustainers in 2012 and 2017; all but Montana
-  remain so in 2022, when Montana's grain specialization makes it a
-  Specialist. South Carolina is a Sustainer only in 2017.
+  remain so in 2022. Montana's gap narrows to 3 places in 2022, below the
+  threshold, and its grain specialization makes it a Specialist that year.
+  South Carolina is a Sustainer only in 2017. Dated findings: `LOG.md`.
 - Massachusetts and Minnesota rank low on embeddedness but route in every
   year: their role is brokerage, not supply. Washington and Maryland route in
   two of three years.
