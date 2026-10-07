@@ -73,3 +73,45 @@ only KY. The threshold-free statement: all six stay at least 5 places above
 their GDP rank in every survey year (minimum gaps KY 11, MS 6, IN 5, LA 5,
 TN 5, MI 5). Claims about individual states should cite the gaps, not the
 role label.
+
+Persisted as `sensitivity.py` (`output/sensitivity.json`); it reproduces the
+table above.
+
+## 2026-10-07: clustering check
+
+Question: do rule-free clusters recover the roles? `cluster_check.py`, seed
+42. Profile clusters use the seven standardized measures the rules read
+(eigenvector, out-degree and betweenness ranks, places above GDP, log pull,
+log signature LQ, signature share). Structural equivalence uses Ward on
+unit-length outbound plus inbound partner-share vectors (after Maoz et al.
+2006).
+
+| ARI vs rules | 2012 | 2017 | 2022 |
+|---|---|---|---|
+| k-means k = 6 | 0.228 | 0.161 | 0.273 |
+| Ward k = 6 | 0.156 | 0.194 | 0.164 |
+| Structural equivalence k = 6 | −0.033 | 0.005 | 0.016 |
+
+- Best silhouette: 0.28 (k = 8, 2012), 0.34 (k = 6, 2017), 0.37 (k = 4,
+  2022). Weak structure, no stable k.
+- k = 6 clusters across years: ARI 0.41 (2012-17), 0.20 (2017-22), 0.34
+  (2012-22). The clusters are less stable than the rule roles (30 of 51 states
+  constant).
+- The only pure-role cluster every year is Market: DC and HI, plus AK in
+  2017 and 2022 (AK sits in a mixed cluster in 2012).
+- Partner similarity groups states by region, not role.
+- Near-router Generalists (CO, CT, VA with MA, MD, MN, WA) group in 2012 and
+  2017 and dissolve in 2022. **No Generalist split warranted.**
+
+Finding: the roles are definitions, not discovered clusters. The measure
+space is a continuum organized mainly by scale; the rules cut it by
+counterfactual (what stops if this state's flows stop). Present the taxonomy
+as an interpretive classification.
+
+## 2026-10-07: script-generated figures
+
+`make_figures.py` replaces the canvas drafts with four reproducible figures
+(PNG and SVG): undervalued-state gaps by year, 2017 periodic table, decade tile
+map with per-year codes, role-by-year grid. Fonts fall back to Helvetica Neue
+when IBM Plex is not installed. The draft-a canvas board stays as a design
+reference.

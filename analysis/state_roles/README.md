@@ -104,7 +104,58 @@ under the year rule, and Maryland's 2017 role is Market (it routes in 2012 and
 - Roles describe position in commodity flows. They are not claims about
   political power or coercion: states cannot interrupt interstate trade, the
   condition Hirschman (1945, p. 16) names for trade-based coercion.
-- Thresholds are not tuned; a sensitivity analysis is the next step.
+- Thresholds are not tuned. See Robustness below for how much the roles move
+  when each one shifts.
+
+## Robustness
+
+`sensitivity.py` moves each threshold one step down and one step up, all else
+fixed (`output/sensitivity.json`). No single step changes more than 10 of the
+153 state-years (6.5%). The Sustainer cutoff is the most sensitive: at 6
+places only Kentucky and Mississippi stay Sustainers in all three years, at 7
+only Kentucky. The statement that does not depend on any cutoff: Kentucky,
+Mississippi, Indiana, Louisiana, Tennessee and Michigan sit at least 5 places
+above their GDP rank in every survey year (minimum gaps 11, 6, 5, 5, 5, 5).
+Claims about individual states should cite the gaps, not the role label.
+
+## Clustering check
+
+`cluster_check.py` asks whether rule-free grouping recovers the roles
+(`output/cluster_check.json`). Agreement is the adjusted Rand index (ARI;
+0 = chance, 1 = identical).
+
+| | 2012 | 2017 | 2022 |
+|---|---|---|---|
+| k-means, k = 6, on the standardized measures | 0.23 | 0.16 | 0.27 |
+| Ward, k = 6, same measures | 0.16 | 0.19 | 0.16 |
+| Structural equivalence (partner-share profiles), k = 6 | −0.03 | 0.01 | 0.02 |
+
+- Clusters recover the roles only weakly, and the profile space has no strong
+  natural grouping (best silhouette 0.28 to 0.37, at a different k each year).
+  The k = 6 clusters are themselves unstable across years (ARI 0.20 to 0.41).
+  The main axis they find is scale, which the rules split into Engines,
+  Sustainers and the rest.
+- The one grouping clusters find every year is a pure Market core: DC and
+  Hawaii in every year, joined by Alaska in 2017 and 2022.
+- Partner similarity groups states by region (South, New England,
+  Mid-Atlantic, Northwest, Midwest, Mountain West), not by role.
+- A near-router group (CO, CT, VA with MA, MD, MN, WA) appears in 2012 and
+  2017 and dissolves in 2022, so no split of the Generalists is warranted.
+
+Reading: the roles are definitions, an interpretive classification of
+distinct ways to matter, not types discovered in the data. They should be
+presented that way.
+
+## Figures
+
+`make_figures.py` draws four figures from `output/state_roles.json` into
+`figures/` (PNG at 200 dpi and SVG):
+
+- `gap-undervalued`: places above GDP rank for the eight undervalued states,
+  2012, 2017, 2022, with the Sustainer cutoff marked
+- `periodic-table-2017`: one tile per state, grouped by 2017 role
+- `tile-map-decade`: decade role on a tile map, with the role in each year
+- `role-stability`: role per state and year
 
 ## Lineage
 
@@ -125,6 +176,9 @@ Requires the local evolution cache (not committed).
 
 ```
 python analysis/state_roles/run_state_roles.py
+python analysis/state_roles/sensitivity.py
+python analysis/state_roles/cluster_check.py   # needs scikit-learn
+python analysis/state_roles/make_figures.py
 pytest tests/test_state_roles.py
 ```
 
@@ -134,4 +188,6 @@ pytest tests/test_state_roles.py
 - `run_state_roles.py`: classification script
 - `output/state_roles.json`: per-state, per-year roles, measures and decade summary
 - `output/state_roles.csv`: the same data, one row per state and year
-- `figures/`: design drafts (see `figures/README.md`)
+- `sensitivity.py`, `output/sensitivity.json`: threshold sensitivity
+- `cluster_check.py`, `output/cluster_check.json`: clustering check
+- `make_figures.py`, `figures/`: figures and the first design draft (see `figures/README.md`)
