@@ -74,3 +74,62 @@ def test_o_information_signs():
     assert oi(np.corrcoef(np.column_stack([x, total]).T)) < -0.5
     assert oi(np.corrcoef(copies.T)) > 0.5
     assert abs(oi(np.corrcoef(independent.T))) < 0.01
+
+
+dependence = load("run_dependence")
+
+
+def test_sole_supplier_link_needs_a_majority():
+    import pandas as pd
+
+    cells = pd.DataFrame({
+        "d": ["X", "X", "Y", "Y", "Y"],
+        "SCTG": ["02"] * 5,
+        "o": ["A", "B", "A", "B", "C"],
+        "usd": [60.0, 40.0, 40.0, 35.0, 25.0],
+        "records": [6, 4, 4, 3, 2],
+    })
+    links = dependence.sole_supplier_links(cells)
+    assert list(zip(links.d, links.o)) == [("X", "A")]
+    assert links.records.tolist() == [6] and links.dc_records.tolist() == [10]
+
+
+def test_mode_groups_reject_unknown_codes():
+    import pandas as pd
+    import pytest
+
+    assert dependence.mode_group(2022, pd.Series([111, 21, 15])).tolist() == [
+        "truck", "air/parcel", "pipeline"
+    ]
+    assert dependence.mode_group(2017, pd.Series([4, 14, 12])).tolist() == [
+        "truck", "air/parcel", "pipeline"
+    ]
+    with pytest.raises(KeyError):
+        dependence.mode_group(2022, pd.Series([4]))
+
+
+def test_hhi_bounds():
+    import pandas as pd
+
+    w = pd.Series([1.0, 1.0, 1.0, 1.0, 5.0])
+    keys = pd.Series(["even"] * 4 + ["single"])
+    h = dependence.hhi(w, keys)
+    assert abs(h["even"] - 0.25) < 1e-12 and h["single"] == 1.0
+
+
+def test_groups_without_three_way_structure_pool_into_some():
+    rng = np.random.default_rng(4)
+    _, a, _ = synthetic(rng)
+    _, b, _ = synthetic(rng)
+    for t in (a, b):
+        assert three_way.kl(t / t.sum(), three_way.fit_pairs(t / t.sum())) < 1e-9
+    pooled_t = a + b
+    pooled = three_way.cell_terms(pooled_t / pooled_t.sum(), three_way.fit_pairs(
+        pooled_t / pooled_t.sum()
+    ))
+    assert pooled.sum() > 0.01
+    shares = [dependence.attributed_share(pooled, pooled_t, t) for t in (a, b)]
+    assert abs(sum(shares) - 1) < 1e-9
+    _, c, offdiag = synthetic(rng)
+    c = c * np.exp(rng.normal(0, 1, c.shape)) * offdiag
+    assert three_way.kl(c / c.sum(), three_way.fit_pairs(c / c.sum())) > 0.01
