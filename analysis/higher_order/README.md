@@ -322,6 +322,157 @@ commodities. Asymmetry is buyer minus supplier HHI.
   manufacturer's sales office and a wholesaler can ship the same goods.
 - The mode mapping is inferred from shipment profiles (see above).
 
+## Bounded replaceability
+
+`run_replaceability.py`, writing `output/replaceability_*`. Dependence here means
+concentration of observed flows plus a stated, bounded replaceability. Capacity
+is not claimed.
+
+### Definition
+
+The links are the sole-supplier links above (same code, same filters): origin
+s sends more than 50% of destination d's inbound interstate value of commodity
+c. Dollar-weighted (WGT_FACTOR x SHIPMT_VALUE).
+
+- v: the value d receives of c from s.
+- r: the median great-circle distance (SHIPMT_DIST_GC) of the s to d shipments
+  of c, unweighted.
+- An **alternative** is any origin o other than s and d whose total interstate
+  shipments of c, to all destinations, are at least k x v, and whose distance
+  to d is at most (1 + delta) x r.
+- The alternative's distance to d is the median of its shipments of c to d; if
+  it ships none, the median of all its shipments to d; if none, the median of
+  all d's shipments to it; if none, the great-circle distance between the two
+  states' 2020 centers of population (Census Bureau,
+  `CenPop2020_Mean_ST.txt`). Over the three years, about 75% of candidate
+  rows use the all-commodity pair median, 24% the commodity median, under 1%
+  the reverse direction and 72 rows (2012 and 2017 only) the centroid.
+- Classes: **replaceable** by volume and distance (3 or more alternatives),
+  **thin** (1 or 2), **none** (0).
+
+k is 1, 2 or 5; delta is 0, 0.25 or 1. `replaceability_links.csv` holds every
+link with its count at each setting and `delta_needed_k1`, the smallest delta
+at which one origin with at least v of c qualifies.
+
+### Classes by setting
+
+Links replaceable / thin / none:
+
+| k | delta | 2012 (502) | 2017 (441) | 2022 (435) |
+|---|---|---|---|---|
+| 1 | 0 | 180 / 131 / 191 | 132 / 110 / 199 | 131 / 108 / 196 |
+| 1 | 0.25 | 218 / 137 / 147 | 171 / 126 / 144 | 174 / 108 / 153 |
+| 1 | 1 | 297 / 113 / 92 | 242 / 100 / 99 | 234 / 96 / 105 |
+| 2 | 0 | 148 / 121 / 233 | 104 / 110 / 227 | 114 / 100 / 221 |
+| 2 | 0.25 | 185 / 125 / 192 | 141 / 119 / 181 | 151 / 106 / 178 |
+| 2 | 1 | 263 / 110 / 129 | 206 / 110 / 125 | 207 / 96 / 132 |
+| 5 | 0 | 110 / 98 / 294 | 69 / 89 / 283 | 87 / 99 / 249 |
+| 5 | 0.25 | 145 / 99 / 258 | 91 / 112 / 238 | 122 / 95 / 218 |
+| 5 | 1 | 204 / 104 / 194 | 150 / 111 / 180 | 173 / 74 / 188 |
+
+Share with no alternative, persistent (60 links) / transient:
+
+| k | delta | 2012 | 2017 | 2022 |
+|---|---|---|---|---|
+| 1 | 0 | 65% / 34% | 63% / 42% | 73% / 41% |
+| 1 | 1 | 38% / 16% | 40% / 20% | 47% / 21% |
+| 2 | 0.25 | 58% / 36% | 55% / 39% | 62% / 38% |
+| 5 | 0 | 82% / 55% | 75% / 62% | 80% / 54% |
+
+By commodity group and destination role (three years pooled), share with no
+alternative at the loosest setting (k=1, delta=1) and at k=2, delta=0.25:
+
+| Commodity group | Links | k=1, delta=1 | k=2, delta=0.25 |
+|---|---|---|---|
+| fuels | 243 | 39% | 60% |
+| wood and paper | 138 | 20% | 37% |
+| scrap and mixed | 70 | 20% | 44% |
+| bulk minerals | 465 | 19% | 36% |
+| farm and food | 272 | 17% | 35% |
+| chemicals | 104 | 16% | 36% |
+| metals and minerals | 21 | 10% | 52% |
+| machinery and vehicles | 50 | 10% | 18% |
+| other manufactured | 15 | 7% | 40% |
+
+| Destination role | Links | k=1, delta=1 | k=2, delta=0.25 |
+|---|---|---|---|
+| Engine | 64 | 33% | 56% |
+| Router | 120 | 31% | 49% |
+| Generalist | 415 | 21% | 40% |
+| Specialist | 199 | 21% | 37% |
+| Market | 336 | 19% | 36% |
+| Sustainer | 244 | 18% | 39% |
+
+### Strongest candidates for genuine dependence
+
+Persistent links with no alternative at k=1, delta=1 in all three years: 15
+of the 60. Distances in miles: r, then the nearest origin that ships at least
+v of the commodity.
+
+| Destination, commodity, origin | Share 2012 / 2017 / 2022 | r / nearest, 2012 | 2017 | 2022 |
+|---|---|---|---|---|
+| WI, pharmaceuticals (21), from IL | 76% / 68% / 74% | 112 / 312 | 98 / 281 | 103 / 367 |
+| WA, mixed freight (43), from OR | 59% / 57% / 77% | 159 / 766 | 157 / 721 | 157 / 687 |
+| OR, mixed freight (43), from WA | 56% / 57% / 54% | 136 / 536 | 135 / 622 | 171 / 570 |
+| MS, gasoline (17), from LA | 79% / 68% / 85% | 129 / 520 | 85 / 428 | 124 / 319 |
+| MS, fuel oils (18), from LA | 89% / 83% / 86% | 111 / 427 | 58 / 428 | 124 / 426 |
+| NM, fuel oils (18), from TX | 97% / 99% / 77% | 163 / 654 | 141 / 516 | 148 / 738 |
+| PA, coal (15), from WV | 85% / 86% / 91% | 85 / 259 | 52 / 289 | 73 / 289 |
+| NM, coal (15), from CO | 100% / 100% / 100% | 120 / 538 | 127 / 482 | 121 / 432 |
+| SD, coal (15), from WY | 100% / 100% / 100% | 111 / 292 | 114 / 289 | 115 / 308 |
+| WV, gasoline (17), from KY | 90% / 85% / 92% | 29 / 434 | 27 / 94 | 5 / 449 |
+| NJ, other agricultural (03), from NY | 51% / 60% / 62% | 24 / 72 | 28 / 552 | 18 / 77 |
+| OR, fuel oils (18), from WA | 57% / 93% / 94% | 21 / 50 | 54 / 1,424 | 118 / 1,428 |
+| ME, fuel oils (18), from NH | 96% / 99% / 53% | 8 / 168 | 7 / 136 | 28 / 141 |
+| NH, fuel oils (18), from MA | 71% / 74% / 73% | 9 / 105 | 20 / 90 | 35 / 117 |
+| DC, other agricultural (03), from MD | 63% / 62% / 94% | 8 / 62 | 9 / 24 | 21 / 62 |
+
+The values range from $0.02 billion (coal to New Mexico and South Dakota) to
+$11.8 billion (pharmaceuticals to Wisconsin) in 2017.
+
+### Reading
+
+- Most sole-supplier links have a nearby origin of sufficient size. At the
+  loosest setting 18 to 24% of links have none; at the strictest (k=5,
+  delta=0) 57 to 64%. The count of "none" rises by a factor of 2.4 to 3.2
+  from loosest to strictest.
+- Persistent links are about twice as likely as transient ones to have no
+  alternative at every setting (38 to 47% against 16 to 21% at the loosest).
+  Part of this is distance: persistent links are short (median r 129 to 139
+  miles against 300 to 321), and the distance bound is relative to r.
+- Fuels stand apart: 39% have no alternative at the loosest setting, twice
+  any other group. Engine and Router destinations have the highest "none"
+  shares (31 to 33%), against 18 to 21% for the other roles.
+- Of the 15 named links, the first nine hold up in absolute terms: in every
+  year the nearest origin of sufficient size is 170 to 610 miles farther
+  than the current supplier (coal, refined fuels from Louisiana and Texas,
+  the Washington and Oregon mixed-freight pair, Illinois pharmaceuticals to
+  Wisconsin). The last six rest on short r (5 to 35 miles in most years), so
+  a neighbour 24 to 170 miles away fails the bound; they are weaker
+  candidates. Oregon's fuel oils from Washington is the exception among them
+  in 2017 and 2022 (nearest about 1,400 miles), and New Jersey's 2017 figure
+  (552 miles) is an outlier against 72 and 77 in the other years.
+
+### Caveats
+
+- This is a lower bound on replaceability by volume and distance only. An
+  alternative's output may be committed to other buyers; there are no
+  prices, contracts, capacity, product grades or modal access (a refinery
+  without a pipeline to d is still counted).
+- The distance bound is relative to r, so it is strict for short links and
+  loose for long ones. `delta_needed_k1` and the nearest-alternative miles
+  above show how far each link is from gaining one alternative.
+- The alternative's supply is its total interstate shipments of c, including
+  any to d itself; in-state shipments are not counted, so a large producer
+  that mostly serves its own state is undercounted.
+- Two-digit SCTG mixes products (fuel oils with other refined products;
+  pharmaceuticals across all drugs), so an origin of sufficient size may not
+  make the same goods.
+- Distances are medians of unweighted records. For most candidate pairs the
+  distance is the all-commodity pair median, not commodity-specific.
+- The survey caveats above apply: weighted values have no sample size, and
+  2022 is a different sample.
+
 ## Reproduce
 
 ```bash
@@ -329,5 +480,6 @@ cd analysis/higher_order
 python run_three_way.py           # writes output/three_way_*
 python run_states_as_variables.py # writes output/states_as_variables_*
 python run_dependence.py          # writes output/dependence_*
+python run_replaceability.py      # writes output/replaceability_*
 pytest tests/test_higher_order.py # each measure passes a case and fails one
 ```

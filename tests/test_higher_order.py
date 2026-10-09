@@ -161,3 +161,49 @@ def test_different_margins_give_different_fits():
     independence = [(0,), (1,), (2,)]
     mu, _ = equivalence.poisson_fit(n, independence)
     assert np.abs(equivalence.ipf(n, pairs) - mu).max() > 1
+
+
+replaceability = load("run_replaceability")
+
+
+def replaceability_case(alt_supply, alt_miles):
+    """NH buys 100 of SCTG 02, all from MA over 100 miles; ME ships alt_supply of 02 to
+    VT, and ME's shipments to NH have a median of alt_miles."""
+    import pandas as pd
+
+    cells = pd.DataFrame({
+        "o": ["MA", "ME"], "d": ["NH", "VT"], "SCTG": ["02", "02"],
+        "usd": [100.0, alt_supply], "dist": [100.0, 80.0],
+    })
+    pairs = pd.DataFrame({"o": ["MA", "ME", "ME"], "d": ["NH", "VT", "NH"],
+                          "dist": [100.0, 80.0, alt_miles]})
+    links = pd.DataFrame({"d": ["NH"], "SCTG": ["02"], "o": ["MA"], "usd": [100.0],
+                          "r": [100.0]})
+    return replaceability.candidates(links, cells, pairs, ["MA", "ME", "NH", "VT"])
+
+
+def test_an_obvious_alternative_is_counted():
+    cand = replaceability_case(alt_supply=500.0, alt_miles=90.0)
+    assert set(cand.alt) == {"ME", "VT"}
+    for k in replaceability.KS:
+        assert replaceability.count_alternatives(cand, k, 0).tolist() == [1]
+
+
+def test_no_alternative_without_volume():
+    import pandas as pd
+
+    cand = replaceability_case(alt_supply=50.0, alt_miles=90.0)
+    for k in replaceability.KS:
+        for delta in replaceability.DELTAS:
+            assert replaceability.count_alternatives(cand, k, delta).tolist() == [0]
+    classes = replaceability.classify(pd.Series([0, 2, 3])).tolist()
+    assert classes == ["none", "thin", "replaceable"]
+
+
+def test_a_far_alternative_needs_a_looser_distance_bound():
+    cand = replaceability_case(alt_supply=500.0, alt_miles=150.0)
+    assert replaceability.count_alternatives(cand, 1, 0).tolist() == [0]
+    assert replaceability.count_alternatives(cand, 1, 1).tolist() == [1]
+    assert abs(replaceability.delta_needed(cand, 1).iloc[0] - 0.5) < 1e-12
+    vt = cand[cand.alt == "VT"].iloc[0]
+    assert vt.dist_source == "centroid" and 0 < vt.alt_dist < 100
