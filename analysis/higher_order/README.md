@@ -106,6 +106,31 @@ framing B, market states) take part most. Varley et al. report the analogue in t
 functional connectivity rarely sit together in synergistic subsets. This is a
 hypothesis about the network, not yet a finding about the economy.
 
+## RA, log-linear models and gravity
+
+`run_equivalence.py` checks on the data that reconstructability analysis and
+gravity-style Poisson regression with fixed effects fit the same model. Table:
+origin division x destination division x commodity, 2017, interstate shipment
+records (2,943,533 records, 3,240 cells).
+
+| Model | Largest difference in fitted counts, IPF vs Poisson | 2 N ln 2 x RA loss | Poisson deviance |
+|---|---|---|---|
+| O:D:C (exporter and importer effects only) | 1.9e-10 (cells up to 9,871) | 1,183,247.9 | 1,183,247.9 |
+| OD:OC:DC (pair, exporter-product, importer-product) | 1.6e-9 (cells up to 18,302) | 202,120.8 | 202,120.8 |
+
+Gravity specifications estimated by Poisson pseudo-maximum likelihood with only
+fixed effects are hierarchical log-linear models. Their fitted values match the
+observed fixed-effect margins (Arvis and Shepherd 2013, p. 6 of the World Bank
+manuscript; Fally 2015, Lemma 2) and, when the estimate exists, equal the
+maximum-entropy reconstruction from those margins (the log-linear literature,
+e.g. Bishop, Fienberg and Holland 1975). That makes them points in RA's lattice
+of structures: exporter + importer effects is independence; adding pair,
+exporter-product and importer-product effects is OD:OC:DC. Pair covariates such
+as distance take a specification outside the lattice. Cells with a zero kept
+margin are fitted as zero, where the estimate sits on the boundary (Fally 2015,
+fn 13). The three-way part reported above is what the full fixed-effect
+specification leaves out.
+
 ## Caveats
 
 - Survey design: the record counts ignore the sampling design; dollar-weighted

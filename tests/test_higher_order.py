@@ -82,13 +82,15 @@ dependence = load("run_dependence")
 def test_sole_supplier_link_needs_a_majority():
     import pandas as pd
 
-    cells = pd.DataFrame({
-        "d": ["X", "X", "Y", "Y", "Y"],
-        "SCTG": ["02"] * 5,
-        "o": ["A", "B", "A", "B", "C"],
-        "usd": [60.0, 40.0, 40.0, 35.0, 25.0],
-        "records": [6, 4, 4, 3, 2],
-    })
+    cells = pd.DataFrame(
+        {
+            "d": ["X", "X", "Y", "Y", "Y"],
+            "SCTG": ["02"] * 5,
+            "o": ["A", "B", "A", "B", "C"],
+            "usd": [60.0, 40.0, 40.0, 35.0, 25.0],
+            "records": [6, 4, 4, 3, 2],
+        }
+    )
     links = dependence.sole_supplier_links(cells)
     assert list(zip(links.d, links.o)) == [("X", "A")]
     assert links.records.tolist() == [6] and links.dc_records.tolist() == [10]
@@ -99,10 +101,14 @@ def test_mode_groups_reject_unknown_codes():
     import pytest
 
     assert dependence.mode_group(2022, pd.Series([111, 21, 15])).tolist() == [
-        "truck", "air/parcel", "pipeline"
+        "truck",
+        "air/parcel",
+        "pipeline",
     ]
     assert dependence.mode_group(2017, pd.Series([4, 14, 12])).tolist() == [
-        "truck", "air/parcel", "pipeline"
+        "truck",
+        "air/parcel",
+        "pipeline",
     ]
     with pytest.raises(KeyError):
         dependence.mode_group(2022, pd.Series([4]))
@@ -124,12 +130,34 @@ def test_groups_without_three_way_structure_pool_into_some():
     for t in (a, b):
         assert three_way.kl(t / t.sum(), three_way.fit_pairs(t / t.sum())) < 1e-9
     pooled_t = a + b
-    pooled = three_way.cell_terms(pooled_t / pooled_t.sum(), three_way.fit_pairs(
-        pooled_t / pooled_t.sum()
-    ))
+    pooled = three_way.cell_terms(
+        pooled_t / pooled_t.sum(), three_way.fit_pairs(pooled_t / pooled_t.sum())
+    )
     assert pooled.sum() > 0.01
     shares = [dependence.attributed_share(pooled, pooled_t, t) for t in (a, b)]
     assert abs(sum(shares) - 1) < 1e-9
     _, c, offdiag = synthetic(rng)
     c = c * np.exp(rng.normal(0, 1, c.shape)) * offdiag
     assert three_way.kl(c / c.sum(), three_way.fit_pairs(c / c.sum())) > 0.01
+
+
+equivalence = load("run_equivalence")
+
+
+def test_ipf_and_poisson_regression_give_the_same_fit():
+    rng = np.random.default_rng(4)
+    n = rng.poisson(rng.gamma(2, 20, (4, 5, 3))).astype(float)
+    n[0, 1, :] = 0  # a zero margin puts the estimate on the boundary
+    pairs = [(0, 1), (0, 2), (1, 2)]
+    r = equivalence.compare(n, pairs)
+    assert r["max_abs_difference"] < 1e-6
+    assert abs(r["two_n_ln2_loss"] - r["poisson_deviance"]) < 1e-6 * r["poisson_deviance"]
+
+
+def test_different_margins_give_different_fits():
+    rng = np.random.default_rng(5)
+    n = rng.poisson(rng.gamma(2, 20, (4, 5, 3))).astype(float)
+    pairs = [(0, 1), (0, 2), (1, 2)]
+    independence = [(0,), (1,), (2,)]
+    mu, _ = equivalence.poisson_fit(n, independence)
+    assert np.abs(equivalence.ipf(n, pairs) - mu).max() > 1
